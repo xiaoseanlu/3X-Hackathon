@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tax Assistant — macOS Widget Prototype v4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ────────────────────────────────────────────
+   Design Tokens — Component Inventory v2.3
+   + Gallery aliases so ep-* components drop in
+   ──────────────────────────────────────────── */
+:root {
+  /* Core tokens */
+  --color-brand:          #1B4F8A;
+  --color-brand-hover:    #154073;
+  --color-brand-subtle:   #EBF2FA;
+  --color-success:        #00875A;
+  --color-warning:        #FF8B00;
+  --color-warning-subtle: #FFF4E5;
+  --color-danger:         #DE350B;
+  --color-bg:             #FFFFFF;
+  --color-border:         #E3E8EF;
+  --color-border-strong:  #C1C9D2;
+  --color-text-primary:   #0A2540;
+  --color-text-secondary: #425466;
+  --color-text-tertiary:  #8792A2;
+
+  /* Gallery component aliases — flat widget context (no elevation) */
+  --brand:         var(--color-brand);
+  --brand-hover:   var(--color-brand-hover);
+  --brand-subtle:  var(--color-brand-subtle);
+  --success:       var(--color-success);
+  --warning:       var(--color-warning);
+  --danger:        var(--color-danger);
+  --border:        var(--color-border);
+  --border-strong: var(--color-border-strong);
+  --bg-card:       var(--color-bg);   /* flat — no card elevation in widget */
+  --bg-surface:    #F6F8FA;
+  --text-primary:   var(--color-text-primary);
+  --text-secondary: var(--color-text-secondary);
+  --text-tertiary:  var(--color-text-tertiary);
+
+  /* Type */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --fw-regular: 400; --fw-medium: 500; --fw-semibold: 600; --fw-bold: 700;
+  --text-xs: 11px; --text-sm: 13px; --text-base: 14px; --text-md: 16px; --text-xl: 28px;
+
+  /* Space */
+  /* Spacing scale — 4px base grid */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 20px; --s6: 24px; --s7: 28px; --s8: 32px;
+
+  /* Radius */
+  --r-sm: 4px; --r-md: 6px; --r-lg: 8px; --r-xl: 12px; --r-full: 9999px;
+
+  /* Shadow — only on outer panel, never inner components */
+  --shadow-panel: 0 8px 32px rgba(0,0,0,.15), 0 2px 8px rgba(0,0,0,.08), 0 0 0 0.5px rgba(0,0,0,.07);
+
+  /* Motion */
+  --dur-fast: 100ms; --dur-base: 180ms; --dur-slow: 260ms;
+  --ease: cubic-bezier(0.4,0,0.2,1);
+  --ease-spring: cubic-bezier(0.34,1.4,0.64,1);
+}
+
+/* ── Layout ── */
+body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-select: none; -webkit-font-smoothing: antialiased; }
+
+/* ── Desktop (official Figma wallpaper) ── */
+.desktop { position: fixed; inset: 0; background: url('https://www.figma.com/api/mcp/asset/461d7ab1-bafb-4d1a-858f-28b7150eeb68') center/cover no-repeat; }
+
+/* ── Menu Bar ── */
+.menubar {
+  position: fixed; top: 0; left: 0; right: 0; height: 28px;
+  background: rgba(0,0,0,.12);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-bottom: 0.5px solid rgba(255,255,255,.1);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 10px; z-index: 10000;
+}
+.mb-left { display: flex; align-items: center; gap: 2px; }
+.mb-item {
+  padding: 3px 10px; border-radius: 4px;
+  font-size: 13px; color: rgba(255,255,255,.9); line-height: 16px;
+  white-space: nowrap; cursor: default; transition: background 80ms;
+}
+.mb-item:hover { background: rgba(255,255,255,.14); }
+.mb-item.bold { font-weight: 700; }
+.mb-right { display: flex; align-items: center; gap: 0; }
+.mb-icon {
+  width: 28px; height: 22px; display: flex; align-items: center; justify-content: center;
+  border-radius: 4px; cursor: default; transition: background 80ms; color: rgba(255,255,255,.85);
+}
+.mb-icon:hover { background: rgba(255,255,255,.14); }
+.mb-icon svg { width: 14px; height: 14px; }
+.mb-clock {
+  padding: 3px 10px; border-radius: 4px; font-size: 13px; color: rgba(255,255,255,.9);
+  font-variant-numeric: tabular-nums; letter-spacing: -.01em; cursor: default; white-space: nowrap;
+}
+
+/* TurboTax icon — first in right group */
+.tt-icon-wrap {
+  position: relative; width: 28px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 4px; cursor: pointer; transition: background 80ms;
+}
+.tt-icon-wrap:hover, .tt-icon-wrap.active { background: rgba(255,255,255,.18); }
+.tt-icon-wrap svg { width: 15px; height: 15px; }
+
+/* Notification badge — numbered with glow pulse */
+.tt-badge {
+  position: absolute; top: 0px; right: -1px;
+  min-width: 14px; height: 14px;
+  background: #FF3B30; border-radius: 7px;
+  border: 1.5px solid rgba(0,0,0,.1);
+  font-size: 8px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 3px; font-family: var(--font-family);
+  animation: badge-glow 2.2s ease-in-out infinite;
+}
+@keyframes badge-glow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,59,48,.6); }
+  50%      { box-shadow: 0 0 0 4px rgba(255,59,48,.0); }
+}
+
+/* ── Dock ── */
+.dock {
+  position: fixed; bottom: 5px; left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 9px;
+  padding: 10px 8px 11px; z-index: 9998;
+}
+.dock-bg {
+  position: absolute; inset: 0;
+  background: rgba(246,246,246,.36);
+  backdrop-filter: blur(68px); -webkit-backdrop-filter: blur(68px);
+  border: 1px solid rgba(26,26,26,.46); border-radius: 15px;
+  box-shadow: 0 0 6px rgba(0,0,0,.15);
+}
+.dock-icon { width: 36px; height: 36px; position: relative; flex-shrink: 0; cursor: pointer; transition: transform 150ms var(--ease); }
+.dock-icon:hover { transform: scale(1.2) translateY(-4px); }
+.dock-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dock-sep { width: 1px; height: 41px; background: rgba(60,60,67,.29); position: relative; flex-shrink: 0; }
+
+/* ── Meeting notification toast ── */
+.meeting-toast {
+  position: fixed; top: 44px; right: 14px;
+  background: #1C1C1E; color: #F2F3F5;
+  border-radius: 14px; padding: 12px 14px;
+  display: flex; align-items: flex-start; gap: 10px;
+  width: 290px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.36), 0 1px 0 rgba(255,255,255,.06) inset;
+  transform: translateY(-14px) scale(0.96); opacity: 0;
+  transition: transform 420ms cubic-bezier(0.34,1.4,0.64,1), opacity 280ms ease;
+  z-index: 99999; pointer-events: none;
+  border: 0.5px solid rgba(255,255,255,.1);
+}
+.meeting-toast.show { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
+.toast-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+.toast-body { flex: 1; min-width: 0; }
+.toast-app  { font-size: 10px; font-weight: 600; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px; }
+.toast-title { font-size: 13px; font-weight: 600; color: #F2F3F5; line-height: 1.3; }
+.toast-sub  { font-size: 11px; color: rgba(255,255,255,.55); margin-top: 2px; }
+.toast-dismiss {
+  background: none; border: none; color: rgba(255,255,255,.35);
+  font-size: 13px; cursor: pointer; flex-shrink: 0; padding: 0 0 0 4px;
+  line-height: 1; margin-top: 1px;
+}
+.toast-dismiss:hover { color: rgba(255,255,255,.7); }
+
+/* ── Widget Anchor ── */
+.widget-anchor { position: fixed; top: 32px; right: 10px; z-index: 9999; }
+.widget-notch {
+  position: absolute; top: -6px; right: 8px;
+  width: 12px; height: 12px; background: var(--color-bg);
+  border-left: 1px solid var(--color-border); border-top: 1px solid var(--color-border);
+  transform: rotate(45deg); z-index: 1;
+}
+
+/* ── Main Widget Panel — flat, single surface ── */
+.widget {
+  width: 340px; /* slightly wider for comfort */
+  background: var(--color-bg);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-panel);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  transform-origin: top right;
+  transition: transform var(--dur-slow) var(--ease-spring), opacity var(--dur-base) var(--ease);
+  display: flex; flex-direction: column;
+  height: 532px;
+  max-height: calc(100vh - 80px);
+}
+.widget.hidden { transform: scale(0.92) translateY(-6px); opacity: 0; pointer-events: none; }
+
+/* ── Widget Header ── */
+.widget-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px var(--s4) 8px;
+  flex-shrink: 0; min-height: 40px;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  position: relative; z-index: 2;
+}
+.wh-left { display: flex; align-items: center; gap: var(--s2); }
+.wh-back {
+  width: 22px; height: 22px; border-radius: var(--r-full);
+  background: #F0F2F5; border: none; cursor: pointer;
+  display: none; align-items: center; justify-content: center;
+  transition: background var(--dur-fast); color: var(--color-text-secondary); flex-shrink: 0;
+}
+.wh-back.visible { display: flex; }
+.wh-back:hover { background: var(--color-border); }
+.wh-back svg { width: 10px; height: 10px; }
+.wh-brand { display: flex; align-items: center; gap: 6px; }
+.wh-brand-name {
+  font-size: var(--text-xs); font-weight: var(--fw-semibold);
+  letter-spacing: .05em; text-transform: uppercase; color: var(--color-text-tertiary);
+}
+.wh-title { font-size: var(--text-sm); font-weight: var(--fw-semibold); color: var(--color-text-primary); display: none; }
+.wh-gear {
+  width: 26px; height: 26px; border-radius: var(--r-full); background: transparent; border: none;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background var(--dur-fast); color: var(--color-text-tertiary);
+}
+.wh-gear:hover { background: #F6F8FA; color: var(--color-text-secondary); }
+.wh-gear svg { width: 14px; height: 14px; }
+
+/* ── Views Host (multi-view nav, Component Inventory v2.3) ── */
+.views-host {
+  position: relative; flex: 1; overflow: hidden; min-height: 0;
+  margin: 4px 6px; border-radius: 10px;
+  background: #FAFBFC; /* minimal 1-stop tint — barely there */
+}
+.view {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  overflow-y: auto; overflow-x: hidden; background: #FAFBFC;
+  transform: translateX(100%); transition: transform var(--dur-slow) var(--ease);
+  scrollbar-width: none;
+}
+.view::-webkit-scrollbar { display: none; }
+.view.v-active { transform: translateX(0); }
+.view.v-behind  { transform: translateX(-28%); pointer-events: none; }
+
+/* ── Flat section ── */
+.w-sec { padding: var(--s4); border-bottom: 1px solid var(--color-border); }
+.w-sec:last-child { border-bottom: none; }
+
+/* Year badge */
+.yr-badge {
+  display: inline-flex; align-items: center;
+  font-size: var(--text-xs); font-weight: var(--fw-semibold);
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: var(--r-sm); margin-bottom: var(--s3);
+}
+.yr-badge.brand { background: var(--color-brand); color: #fff; }
+.yr-badge.green  { background: var(--color-success); color: #fff; }
+
+/* Status */
+.status-main { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2px; }
+.status-label { font-size: var(--text-base); font-weight: var(--fw-semibold); color: var(--color-text-primary); }
+.status-hero  { font-size: var(--text-xl); font-weight: var(--fw-bold); letter-spacing: -.02em; color: var(--color-danger); }
+.status-lines { display: flex; flex-direction: column; gap: 2px; margin-bottom: var(--s3); }
+.status-line  { display: flex; justify-content: space-between; }
+.sl-lbl { font-size: var(--text-sm); color: var(--color-text-secondary); }
+.sl-val { font-size: var(--text-sm); font-weight: var(--fw-medium); color: var(--color-danger); }
+.status-note { font-size: var(--text-xs); color: var(--color-text-tertiary); line-height: 1.5; margin-bottom: var(--s3); }
+.status-link { font-size: var(--text-sm); font-weight: var(--fw-medium); color: var(--color-brand); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+.status-link:hover { color: var(--color-brand-hover); }
+.status-link svg { width: 11px; height: 11px; }
+
+/* Action rows — full row tap target, no inline CTA (v2.3) */
+.action-row {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s3) var(--s4);
+  border-bottom: 1px solid var(--color-border);
+  cursor: pointer; transition: background var(--dur-fast);
+  margin: 0 calc(-1 * var(--s4));
+  padding-left: var(--s4); padding-right: var(--s4);
+}
+.action-row:last-child { border-bottom: none; }
+.action-row:hover { background: #F6F8FA; }
+.action-icon { width: 28px; height: 28px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.action-icon.warn    { background: var(--color-warning-subtle); color: var(--color-warning); }
+.action-icon.info    { background: var(--color-brand-subtle);   color: var(--color-brand); }
+.action-icon.neutral { background: #F0F2F5;                     color: var(--color-text-secondary); }
+.action-icon svg { width: 14px; height: 14px; }
+.action-body { flex: 1; min-width: 0; }
+.action-title { font-size: var(--text-sm); font-weight: var(--fw-medium); color: var(--color-text-primary); line-height: 1.35; margin-bottom: 2px; }
+.action-sub   { font-size: var(--text-xs); color: var(--color-text-tertiary); }
+.action-chev  { color: var(--color-text-tertiary); flex-shrink: 0; }
+.action-chev svg { width: 12px; height: 12px; }
+
+/* ── Expert Profile Card — from Component Gallery (ep-* classes) ── */
+/* Flat widget override: all ep-* use --color-bg, no inner elevation */
+.ep-card { border: none; border-radius: 0; overflow: visible; }
+.ep-hero {
+  padding: 20px var(--s4) var(--s4);
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+.ep-avatar {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: rgba(27,79,138,.1);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700; color: var(--brand);
+  margin: 0 auto 12px; position: relative;
+  overflow: hidden;
+}
+.ep-avatar img { width: 72px; height: 72px; object-fit: cover; border-radius: 50%; display: block; }
+.ep-avatar-dot {
+  position: absolute; bottom: 3px; right: 3px;
+  width: 14px; height: 14px; border-radius: 50%;
+  border: 2.5px solid var(--bg-card);
+}
+.ep-name  { font-size: 18px; font-weight: 700; color: var(--text-primary); letter-spacing: -.3px; }
+.ep-creds { display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
+.ep-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--brand-subtle); color: var(--brand); }
+.ep-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--color-border); }
+.ep-stat  { background: var(--bg-card); padding: 14px 8px; text-align: center; }
+.ep-stat-val   { font-size: 24px; font-weight: 700; color: var(--text-primary); letter-spacing: -.6px; line-height: 1; }
+.ep-stat-label { font-size: 10px; color: var(--text-tertiary); margin-top: 4px; }
+.ep-stars { display: flex; justify-content: center; gap: 1px; margin-bottom: 3px; }
+.ep-star  { font-size: 13px; color: var(--warning); }
+.ep-body  { padding: 14px var(--s4); background: var(--bg-card); }
+.ep-tags  { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+.ep-tag   { font-size: 11px; color: var(--text-secondary); padding: 3px 9px; border-radius: 99px; border: 0.5px solid var(--border-strong); background: var(--bg-surface); }
+.ep-avail { display: flex; align-items: center; gap: 7px; margin-top: var(--s3); margin-bottom: 10px; }
+.ep-avail-dot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.ep-avail-text { font-size: 13px; color: var(--text-primary); font-weight: 500; flex: 1; }
+.ep-avail-sched{ font-size: 11px; color: var(--text-tertiary); }
+.ep-bio   { font-size: 13px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 14px; }
+.ep-book-btn {
+  width: 100%; height: 38px; background: transparent; color: var(--brand);
+  border: 0.5px solid var(--border-strong); border-radius: 8px;
+  font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer; transition: all 80ms;
+}
+.ep-book-btn:hover, .ep-book-btn.open { background: var(--brand-subtle); border-color: var(--brand); }
+.ep-scheduler { border-top: 1px solid var(--color-border); padding: 14px var(--s4); background: var(--bg-card); display: none; }
+.ep-scheduler.show { display: block; }
+.ep-sched-label { font-size: 11px; color: var(--text-tertiary); margin-bottom: 8px; }
+.ep-date-strip { display: flex; gap: 5px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 12px; scrollbar-width: none; }
+.ep-date-strip::-webkit-scrollbar { display: none; }
+.ep-day {
+  min-width: 44px; height: 52px; border-radius: 8px;
+  border: 0.5px solid var(--border); background: var(--bg-surface);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 2px; cursor: pointer; transition: all 80ms; flex-shrink: 0;
+}
+.ep-day.sel { background: var(--brand); border-color: var(--brand); }
+.ep-day.unavail { opacity: .3; pointer-events: none; }
+.ep-day-dow { font-size: 9px; color: var(--text-tertiary); line-height: 1; }
+.ep-day-num { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1; }
+.ep-day.sel .ep-day-dow, .ep-day.sel .ep-day-num { color: white; }
+.ep-slots { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+.ep-slot {
+  height: 36px; border-radius: 7px; background: var(--bg-surface);
+  border: 0.5px solid var(--border); font-size: 12px; font-weight: 500;
+  color: var(--text-primary); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 80ms; font-family: inherit;
+}
+.ep-slot:hover { background: var(--brand-subtle); border-color: var(--brand); color: var(--brand); }
+.ep-slot.sel    { background: var(--brand-subtle); border-color: var(--brand); color: var(--brand); }
+.ep-slot.booked { text-decoration: line-through; color: var(--text-tertiary); opacity: .4; pointer-events: none; }
+.ep-confirm-btn {
+  width: 100%; height: 38px; background: var(--brand); color: #fff; border: none;
+  border-radius: 8px; font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer; transition: background 80ms;
+}
+.ep-confirm-btn:disabled { opacity: .35; cursor: default; }
+.ep-confirm-btn:not(:disabled):hover { background: var(--brand-hover); }
+.ep-scheduled {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px var(--s4); background: var(--bg-card);
+  border-top: 1px solid var(--color-border);
+}
+.ep-sched-icon {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(0,135,90,.12); display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0;
+}
+
+/* Channel cards — below ep-card in expert view */
+.channel-cards { padding: var(--s3) var(--s4) var(--s4); display: flex; flex-direction: column; gap: var(--s2); border-top: 1px solid var(--color-border); }
+.ch-section-label { font-size: var(--text-xs); font-weight: var(--fw-semibold); letter-spacing: .06em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: var(--s2); }
+.channel-card {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s3) var(--s4); border: 1px solid var(--color-border);
+  border-radius: var(--r-lg); cursor: pointer;
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+  background: var(--color-bg);
+}
+.channel-card:hover { border-color: var(--color-brand); background: var(--color-brand-subtle); }
+.ch-icon {
+  width: 36px; height: 36px; border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; background: var(--color-brand-subtle); color: var(--color-brand);
+  transition: background var(--dur-fast);
+}
+.channel-card:hover .ch-icon { background: #D6E8F7; }
+.ch-icon svg { width: 18px; height: 18px; }
+.ch-body { flex: 1; min-width: 0; }
+.ch-label { font-size: var(--text-sm); font-weight: var(--fw-semibold); color: var(--color-text-primary); margin-bottom: 1px; }
+.ch-sub   { font-size: var(--text-xs); color: var(--color-text-tertiary); }
+.ch-chev  { color: var(--color-text-tertiary); flex-shrink: 0; }
+.ch-chev svg { width: 12px; height: 12px; }
+
+/* ── Action Detail Views ── */
+.action-detail-content { padding: var(--s4); }
+.ad-title { font-size: var(--text-md); font-weight: var(--fw-bold); color: var(--color-text-primary); margin-bottom: var(--s1); }
+.ad-sub   { font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--s4); line-height: 1.5; }
+.detail-card {
+  padding: var(--s3) var(--s4); border: 1px solid var(--color-border);
+  border-radius: var(--r-lg); margin-bottom: var(--s2); cursor: pointer;
+  transition: border-color var(--dur-fast), background var(--dur-fast);
+}
+.detail-card:hover { border-color: var(--color-brand); background: var(--color-brand-subtle); }
+.dc-label { font-size: var(--text-xs); font-weight: var(--fw-semibold); text-transform: uppercase; letter-spacing: .06em; color: var(--color-text-tertiary); margin-bottom: var(--s1); }
+.dc-val   { font-size: 20px; font-weight: var(--fw-bold); color: var(--color-text-primary); margin-bottom: 2px; }
+.dc-val.warn { color: var(--color-warning); }
+.dc-desc  { font-size: var(--text-xs); color: var(--color-text-tertiary); line-height: 1.4; }
+.ret-row  { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--color-border); }
+.ret-row:last-child { border-bottom: none; }
+.ret-yr   { font-size: var(--text-sm); font-weight: var(--fw-medium); color: var(--color-text-primary); }
+.ret-type { font-size: var(--text-xs); color: var(--color-text-tertiary); flex: 1; padding-left: var(--s2); }
+.ret-amt  { font-size: var(--text-sm); font-weight: var(--fw-semibold); }
+.ret-amt.pos { color: var(--color-success); }
+.ret-amt.neg { color: var(--color-danger); }
+.law-item { display: flex; gap: var(--s3); padding: var(--s3) 0; border-bottom: 1px solid var(--color-border); }
+.law-item:last-child { border-bottom: none; }
+.law-num  { width: 20px; height: 20px; border-radius: var(--r-full); background: var(--color-brand-subtle); color: var(--color-brand); font-size: 10px; font-weight: var(--fw-bold); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.law-title { font-size: var(--text-sm); font-weight: var(--fw-medium); color: var(--color-text-primary); margin-bottom: 2px; }
+.law-desc  { font-size: var(--text-xs); color: var(--color-text-tertiary); line-height: 1.4; }
+.biz-check { display: flex; align-items: center; gap: var(--s3); padding: var(--s2) 0; border-bottom: 1px solid var(--color-border); cursor: pointer; }
+.biz-check:last-child { border-bottom: none; }
+.biz-check-box { width: 18px; height: 18px; border-radius: var(--r-sm); border: 1.5px solid var(--color-border-strong); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all var(--dur-fast); }
+.biz-check:hover .biz-check-box { border-color: var(--color-brand); }
+.biz-check-lbl { font-size: var(--text-sm); color: var(--color-text-secondary); }
+
+/* ── Widget Footer — always pinned (ExpertFooterCard 3.9a + BottomBar) ── */
+.widget-footer {
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  position: relative; z-index: 2;
+}
+
+/* ExpertFooterCard (3.9b) — rich presence, always pinned above ask input */
+.expert-footer-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px var(--s4);
+  cursor: pointer; transition: background var(--dur-fast); background: var(--color-bg);
+}
+.expert-footer-card:hover { background: #F6F8FA; }
+.efc-avatar { position: relative; flex-shrink: 0; }
+.efc-avatar-inner {
+  width: 56px; height: 56px; border-radius: var(--r-full);
+  position: relative; overflow: hidden;
+}
+.efc-avatar-inner img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; border-radius: 50%; z-index: 1;
+}
+.efc-dot { position: absolute; bottom: 1px; right: 1px; width: 11px; height: 11px; border-radius: var(--r-full); border: 2px solid var(--color-bg); background: var(--color-success); z-index: 2; }
+.efc-info { flex: 1; min-width: 0; }
+.efc-name   { font-size: 15px; font-weight: var(--fw-semibold); color: var(--color-text-primary); line-height: 1.2; margin-bottom: 3px; }
+.efc-stats  { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--color-text-secondary); margin-bottom: 2px; }
+.efc-star   { color: #F59E0B; font-size: 10px; }
+.efc-sep    { color: var(--color-text-tertiary); }
+.efc-avail  { font-size: 11px; color: var(--color-success); display: flex; align-items: center; gap: 4px; }
+.efc-avail-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-success); flex-shrink: 0; }
+.efc-chev   { color: var(--color-text-tertiary); flex-shrink: 0; }
+.efc-chev svg { width: 12px; height: 12px; }
+
+/* BottomBar */
+.bottom-bar {
+  border-top: 1px solid var(--color-border); padding: var(--s2) var(--s3) var(--s1);
+  background: var(--color-bg); display: flex; flex-direction: column; gap: var(--s1);
+}
+.bottom-bar-row { display: flex; align-items: center; gap: var(--s2); }
+.ask-async-note { font-size: 10px; color: var(--color-text-tertiary); text-align: center; padding-bottom: 2px; }
+.ask-wrap { flex: 1; position: relative; display: flex; align-items: center; }
+.ask-icon { position: absolute; left: 10px; color: var(--color-text-tertiary); pointer-events: none; }
+.ask-icon svg { width: 13px; height: 13px; }
+.ask-input {
+  width: 100%; height: 34px; padding: 0 10px 0 30px;
+  border: 1px solid var(--color-border); border-radius: var(--r-md);
+  font-size: var(--text-sm); font-family: var(--font-family);
+  color: var(--color-text-primary); background: var(--color-bg); outline: none;
+  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+}
+.ask-input::placeholder { color: var(--color-text-tertiary); }
+.ask-input:focus { border-color: var(--color-brand); box-shadow: 0 0 0 3px var(--color-brand-subtle); }
+.ask-send {
+  width: 34px; height: 34px; background: var(--color-brand); border: none;
+  border-radius: var(--r-md); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background var(--dur-fast); flex-shrink: 0;
+}
+.ask-send:hover { background: var(--color-brand-hover); }
+.ask-send svg { width: 14px; height: 14px; color: #fff; }
+
+/* ── Expert Snapshot Card (in main view — "Your Expert" section) ── */
+.expert-snap {
+  display: flex; align-items: center; gap: var(--s3);
+  padding: 12px var(--s3); background: var(--color-brand-subtle);
+  border: 1px solid rgba(27,79,138,.15); border-radius: var(--r-lg);
+  cursor: pointer; transition: background var(--dur-fast);
+}
+.expert-snap:hover { background: #ddeaf8; }
+.es-av {
+  width: 48px; height: 48px; border-radius: var(--r-full);
+  background: linear-gradient(135deg, #1B4F8A 0%, #2D6BC4 100%);
+  flex-shrink: 0; position: relative; overflow: hidden;
+}
+.es-av img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; border-radius: 50%;
+}
+.es-av-text {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 15px; font-weight: 700; color: #fff;
+}
+.es-dot {
+  position: absolute; bottom: 1px; right: 1px; width: 11px; height: 11px;
+  border-radius: var(--r-full); background: var(--color-success);
+  border: 2px solid var(--color-brand-subtle);
+}
+.es-info { flex: 1; min-width: 0; }
+.es-name { font-size: var(--text-sm); font-weight: var(--fw-semibold); color: var(--color-text-primary); display: flex; align-items: center; gap: 5px; margin-bottom: 2px; }
+.es-cred { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: var(--r-full); background: var(--color-brand); color: #fff; }
+.es-avail { font-size: var(--text-xs); color: var(--color-success); font-weight: 500; margin-bottom: 2px; }
+.es-note { font-size: var(--text-xs); color: var(--color-text-tertiary); line-height: 1.35; }
+.es-chev { color: var(--color-brand); flex-shrink: 0; opacity: .7; }
+.es-chev svg { width: 12px; height: 12px; }
+
+/* ── Chat View ── */
+/* #v-chat inherits .view overflow-y:auto — no flex override needed */
+.chat-messages {
+  padding: var(--s4) var(--s4) var(--s2);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.chat-messages::-webkit-scrollbar { display: none; }
+.chat-msg-row { display: flex; align-items: flex-end; gap: 7px; }
+.chat-msg-row.user { flex-direction: row-reverse; }
+.chat-av {
+  width: 26px; height: 26px; border-radius: var(--r-full); flex-shrink: 0;
+  background: linear-gradient(135deg, #1B4F8A, #2D6BC4);
+  position: relative; overflow: hidden;
+}
+.chat-av img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.chat-av-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
+.chat-bubble {
+  max-width: 76%; padding: 9px 12px;
+  font-size: var(--text-sm); line-height: 1.55; border-radius: 14px;
+}
+.chat-msg-row.ai .chat-bubble { background: #F0F4F9; color: var(--color-text-primary); border-bottom-left-radius: 4px; }
+.chat-msg-row.user .chat-bubble { background: var(--color-brand); color: #fff; border-bottom-right-radius: 4px; }
+.chat-user-av {
+  width: 26px; height: 26px; border-radius: var(--r-full); flex-shrink: 0;
+  background: var(--color-bg-subtle, #F6F8FA);
+  border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center;
+}
+.chat-user-av svg { width: 14px; height: 14px; color: var(--color-text-tertiary); }
+.chat-typing { display: flex; align-items: center; gap: 4px; padding: 10px 12px; background: #F0F4F9; border-radius: 14px; border-bottom-left-radius: 4px; }
+.chat-typing span { width: 6px; height: 6px; border-radius: var(--r-full); background: var(--color-text-tertiary); animation: dot-bounce 1.4s ease-in-out infinite; }
+.chat-typing span:nth-child(2) { animation-delay: .2s; }
+.chat-typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes dot-bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-5px); }
+}
+/* chat-input-bar removed — global bottom bar handles all input */
+
+/* ── Settings Panel ── */
+.settings-panel {
+  position: absolute; top: 0; right: 344px; width: 276px;
+  background: var(--color-bg); border-radius: var(--r-xl);
+  box-shadow: var(--shadow-panel); border: 1px solid var(--color-border); overflow: hidden;
+  transform-origin: top right;
+  transition: transform var(--dur-slow) var(--ease-spring), opacity var(--dur-base) var(--ease);
+}
+.settings-panel.hidden { transform: scale(0.93) translateX(8px); opacity: 0; pointer-events: none; }
+.s-header { display: flex; align-items: center; justify-content: space-between; padding: var(--s3) var(--s4); border-bottom: 1px solid var(--color-border); }
+.s-title  { font-size: var(--text-sm); font-weight: var(--fw-semibold); color: var(--color-text-primary); }
+.s-close  { width: 22px; height: 22px; border-radius: var(--r-full); background: #F6F8FA; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background var(--dur-fast); color: var(--color-text-secondary); }
+.s-close:hover { background: var(--color-border); }
+.s-close svg { width: 10px; height: 10px; }
+.s-body   { overflow-y: auto; max-height: 540px; scrollbar-width: none; }
+.s-body::-webkit-scrollbar { display: none; }
+.s-sec    { padding: var(--s3) var(--s4); border-bottom: 1px solid var(--color-border); }
+.s-sec:last-child { border-bottom: none; }
+.s-sec-label { font-size: var(--text-xs); font-weight: var(--fw-semibold); letter-spacing: .06em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: var(--s2); }
+.biz-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.biz-stat { padding: var(--s2) var(--s3); background: #F6F8FA; border-radius: var(--r-md); }
+.biz-stat-lbl { font-size: 10px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 2px; }
+.biz-stat-val { font-size: var(--text-base); font-weight: var(--fw-bold); color: var(--color-text-primary); }
+.acct-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
+.acct-lbl { font-size: var(--text-xs); color: var(--color-text-tertiary); }
+.acct-val { font-size: var(--text-xs); font-weight: var(--fw-medium); color: var(--color-text-primary); }
+.notif-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; }
+.notif-lbl { font-size: var(--text-sm); color: var(--color-text-secondary); }
+.toggle { width: 32px; height: 18px; border-radius: var(--r-full); border: none; cursor: pointer; position: relative; transition: background var(--dur-base); flex-shrink: 0; }
+.toggle.on  { background: var(--color-brand); }
+.toggle.off { background: var(--color-border-strong); }
+.toggle::after { content: ''; position: absolute; top: 2px; width: 14px; height: 14px; border-radius: var(--r-full); background: #fff; transition: left var(--dur-base) var(--ease); box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+.toggle.on::after  { left: 16px; }
+.toggle.off::after { left: 2px; }
+</style>
+</head>
+<body>
+
+<!-- Desktop wallpaper (official Figma) -->
+<div class="desktop"></div>
+
+<!-- ── macOS Menu Bar ── -->
+<div class="menubar">
+  <div class="mb-left">
+    <span class="mb-item" style="font-size:15px;padding:2px 8px">&#63743;</span>
+    <span class="mb-item bold">Finder</span>
+    <span class="mb-item">File</span>
+    <span class="mb-item">Edit</span>
+    <span class="mb-item">View</span>
+    <span class="mb-item">Go</span>
+    <span class="mb-item">Window</span>
+    <span class="mb-item">Help</span>
+  </div>
+  <div class="mb-right">
+    <!-- TurboTax icon — FIRST in right group (per macOS convention: 3rd-party extras left of system icons) -->
+    <div class="tt-icon-wrap" id="ttIcon" onclick="toggleWidget()">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="10" cy="10" r="9" fill="#1B4F8A"/>
+        <path d="M6.5 10.2l2.3 2.4 4.7-5.1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="tt-badge">3</div>
+    </div>
+
+    <!-- System status icons — consistent SVG style -->
+    <!-- Do Not Disturb / Focus -->
+    <div class="mb-icon" title="Focus">
+      <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="rgba(255,255,255,.85)" stroke-width="1.2"/><path d="M4.5 7h5" stroke="rgba(255,255,255,.85)" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </div>
+    <!-- Wi-Fi -->
+    <div class="mb-icon" title="Wi-Fi">
+      <svg viewBox="0 0 14 14" fill="none"><path d="M1.5 5.5a8 8 0 0 1 11 0" stroke="rgba(255,255,255,.85)" stroke-width="1.2" stroke-linecap="round"/><path d="M3.5 7.5a5 5 0 0 1 7 0" stroke="rgba(255,255,255,.85)" stroke-width="1.2" stroke-linecap="round"/><path d="M5.5 9.5a2.5 2.5 0 0 1 3 0" stroke="rgba(255,255,255,.85)" stroke-width="1.2" stroke-linecap="round"/><circle cx="7" cy="12" r=".8" fill="rgba(255,255,255,.85)"/></svg>
+    </div>
+    <!-- Spotlight -->
+    <div class="mb-icon" title="Spotlight">
+      <svg viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="rgba(255,255,255,.85)" stroke-width="1.2"/><path d="M9.2 9.2L12.5 12.5" stroke="rgba(255,255,255,.85)" stroke-width="1.3" stroke-linecap="round"/></svg>
+    </div>
+    <!-- Siri -->
+    <div class="mb-icon" title="Siri">
+      <svg viewBox="0 0 14 14" fill="none"><path d="M4 8.5V9a3 3 0 0 0 6 0v-.5" stroke="rgba(255,255,255,.85)" stroke-width="1.2" stroke-linecap="round"/><rect x="5" y="3" width="4" height="6" rx="2" stroke="rgba(255,255,255,.85)" stroke-width="1.2"/><path d="M7 12v1" stroke="rgba(255,255,255,.85)" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </div>
+    <!-- Control Center -->
+    <div class="mb-icon" title="Control Center">
+      <svg viewBox="0 0 14 14" fill="none"><circle cx="4" cy="4.5" r="1.5" stroke="rgba(255,255,255,.85)" stroke-width="1.1"/><path d="M7 4.5h4" stroke="rgba(255,255,255,.85)" stroke-width="1.2" stroke-linecap="round"/><circle cx="10" cy="9.5" r="1.5" stroke="rgba(255,255,255,.85)" stroke-width="1.1"/><path d="M3 9.5h5" stroke="rgba(255,255,255,.85)" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </div>
+    <!-- Clock -->
+    <span class="mb-clock" id="clock">Mon Jun 10  9:41 AM</span>
+  </div>
+</div>
+
+<!-- ── Dock (official Figma assets) ── -->
+<div class="dock">
+  <div class="dock-bg"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/53c2e7a7-0556-4772-ad77-21389c4466f9" alt="Finder"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/5e233ff8-b058-497c-b886-7f9081db0e45" alt="Launchpad"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/baed24a6-b041-4848-acaa-f2d877fdca02" alt="Safari"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/d0736771-f105-43fb-b0a9-1f0912ee6aa3" alt="Messages"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/1fe8e866-b57c-49e7-821c-237aaf23b3b5" alt="Mail"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/2edaf3f1-135f-4c72-9599-06c71c9e52a8" alt="Maps"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/ae9af9a3-2527-433c-8531-eea7f00d64b1" alt="Photos"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/daf9dc84-dafa-4bf6-bc7b-82c0fb309b29" alt="FaceTime"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/a0552080-20e9-4465-9910-6dab65fd75ec" alt="Calendar"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/d50ef108-d51c-48dc-918e-c378356323c2" alt="Contacts"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/0e8357c7-e1c1-4000-86a6-7ad3eecb989f" alt="Reminders"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/f2e1982a-3e4d-4a0a-b0a6-779bf2203205" alt="Notes"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/c99046f7-6f79-4c84-a7d1-1060aae6e147" alt="Freeform"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/248d6b9a-f7fa-4165-856f-849f1525c44e" alt="Apple TV"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/a2ff8c7c-ee7e-4b3b-a6d7-0309976672e0" alt="Music"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/409f955f-1efd-4875-943a-f5b50ae22ec2" alt="News"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/466550f9-169f-42c0-8e97-7d8d264cbdef" alt="App Store"></div>
+  <div class="dock-sep"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/4949a115-baff-4a87-b0e5-ce0890529540" alt="Folder"></div>
+  <div class="dock-icon"><img src="https://www.figma.com/api/mcp/asset/b8b830ce-5305-4511-b0aa-fe3f5f16e6ce" alt="Trash"></div>
+</div>
+
+<!-- ── Widget Anchor ── -->
+<div class="widget-anchor">
+  <div class="widget-notch" id="widgetNotch"></div>
+
+  <!-- Settings Panel -->
+  <div class="settings-panel hidden" id="settingsPanel">
+    <div class="s-header">
+      <span class="s-title">Account &amp; Settings</span>
+      <button class="s-close" onclick="toggleSettings()"><svg viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
+    </div>
+    <div class="s-body">
+      <div class="s-sec">
+        <div class="s-sec-label">Business</div>
+        <div style="margin-bottom:8px"><div style="font-size:13px;font-weight:600;color:var(--color-text-primary)">Acme Design Co.</div><div style="font-size:11px;color:var(--color-text-tertiary)">S Corp · California</div></div>
+        <div class="biz-grid">
+          <div class="biz-stat"><div class="biz-stat-lbl">Revenue</div><div class="biz-stat-val">$284k</div></div>
+          <div class="biz-stat"><div class="biz-stat-lbl">Deductions</div><div class="biz-stat-val">$14.8k</div></div>
+          <div class="biz-stat"><div class="biz-stat-lbl">Eff. Rate</div><div class="biz-stat-val">18.4%</div></div>
+          <div class="biz-stat"><div class="biz-stat-lbl">With TT</div><div class="biz-stat-val">6 yrs</div></div>
+        </div>
+      </div>
+      <div class="s-sec">
+        <div class="s-sec-label">Past Returns</div>
+        <div class="ret-row"><span class="ret-yr">2025</span><span class="ret-type">Federal + CA</span><span class="ret-amt neg">−$4,187</span></div>
+        <div class="ret-row"><span class="ret-yr">2024</span><span class="ret-type">Federal + CA</span><span class="ret-amt pos">+$1,240</span></div>
+        <div class="ret-row"><span class="ret-yr">2023</span><span class="ret-type">Federal + CA</span><span class="ret-amt neg">−$2,950</span></div>
+        <div class="ret-row" style="border-bottom:none"><span class="ret-yr">2022</span><span class="ret-type">Federal only</span><span class="ret-amt pos">+$3,820</span></div>
+      </div>
+      <div class="s-sec">
+        <div class="s-sec-label">Account</div>
+        <div class="acct-row"><span class="acct-lbl">Name</span><span class="acct-val">Sean Xiao</span></div>
+        <div class="acct-row"><span class="acct-lbl">Email</span><span class="acct-val">xiao_lu@intuit.com</span></div>
+        <div class="acct-row"><span class="acct-lbl">Plan</span><span class="acct-val" style="color:var(--color-brand)">TT Live Full Service</span></div>
+      </div>
+      <div class="s-sec">
+        <div class="s-sec-label">Notifications</div>
+        <div class="notif-row"><span class="notif-lbl">Expert messages</span><button class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
+        <div class="notif-row"><span class="notif-lbl">Tax deadlines</span><button class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
+        <div class="notif-row"><span class="notif-lbl">Tax law updates</span><button class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
+        <div class="notif-row"><span class="notif-lbl">Document requests</span><button class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Main Widget ── -->
+  <div class="widget hidden" id="widget">
+
+    <!-- Header -->
+    <div class="widget-header">
+      <div class="wh-left">
+        <button class="wh-back" id="backBtn" onclick="goBack()">
+          <svg viewBox="0 0 12 12" fill="none"><path d="M7.5 2L3.5 6l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="wh-brand" id="whBrand">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
+            <circle cx="10" cy="10" r="9" fill="#1B4F8A"/>
+            <path d="M6.5 10.2l2.3 2.4 4.7-5.1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <!-- Updated label per feedback -->
+          <span class="wh-brand-name">TurboTax Business Tax</span>
+        </div>
+        <span class="wh-title" id="whTitle"></span>
+      </div>
+      <button class="wh-gear" onclick="toggleSettings()">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M6.5 2.3l-.38 1.06a4.5 4.5 0 0 0-.88.51L4.14 3.6 3.1 5.4l.77.78a4.4 4.4 0 0 0 0 1.64l-.77.78 1.04 1.8 1.1-.27c.27.2.57.37.88.51l.38 1.06h2.1l.38-1.06c.3-.14.6-.31.88-.51l1.1.27 1.04-1.8-.77-.78a4.4 4.4 0 0 0 0-1.64l.77-.78L12.9 3.6l-1.1.27a4.5 4.5 0 0 0-.88-.51L10.5 2.3H6.5z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="7.5" cy="7.2" r="1.7" stroke="currentColor" stroke-width="1.2"/></svg>
+      </button>
+    </div>
+
+    <!-- Views Host -->
+    <div class="views-host">
+
+      <!-- View: Main -->
+      <div class="view v-active" id="v-main">
+        <div class="w-sec">
+          <div class="yr-badge brand">2026 Tax Year</div>
+          <div class="status-main"><span class="status-label">Total taxes due</span><span class="status-hero">$4,187</span></div>
+          <div class="status-lines">
+            <div class="status-line"><span class="sl-lbl">Federal</span><span class="sl-val">$3,387</span></div>
+            <div class="status-line"><span class="sl-lbl">State: California</span><span class="sl-val">$800</span></div>
+          </div>
+          <p class="status-note">Return submitted 4/10/2026 · accepted by IRS 4/13/2026.</p>
+          <span class="status-link">
+            Access tax documents
+            <svg viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <div class="w-sec">
+          <div class="yr-badge green">2027 Tax Year Strategy</div>
+          <div class="action-row" onclick="navigate('action-q2')">
+            <div class="action-icon warn"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 1v3M11 1v3M2 7h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="10.5" r=".8" fill="currentColor"/></svg></div>
+            <div class="action-body"><div class="action-title">Q2 estimated tax due June 15</div><div class="action-sub">$3,840 · 34 days away</div></div>
+            <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="action-row" onclick="navigate('action-laws')">
+            <div class="action-icon info"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="8" cy="5" r=".8" fill="currentColor"/></svg></div>
+            <div class="action-body"><div class="action-title">3 new tax laws may affect you</div><div class="action-sub">Home office deduction, S Corp updates</div></div>
+            <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="action-row" onclick="navigate('action-biz')">
+            <div class="action-icon neutral"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 5V4a3 3 0 0 1 6 0v1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="9.5" r="1" fill="currentColor"/></svg></div>
+            <div class="action-body"><div class="action-title">Any business changes this year?</div><div class="action-sub">New hire, entity update, or big purchase</div></div>
+            <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- View: Expert — uses ExpertProfileCard (ep-*) from Component Gallery -->
+      <div class="view" id="v-expert">
+        <!-- ep-card with flat widget overrides (no outer border/radius since widget provides it) -->
+        <div class="ep-card">
+          <div class="ep-hero">
+            <!-- Susan photo: drop Susan.png alongside this HTML file to show her photo -->
+            <div class="ep-avatar" id="susanAvatar" style="background:linear-gradient(135deg,#1B4F8A,#2D6BC4)">
+              <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;z-index:0">SL</span>
+              <img src="Susan.png" alt="Susan Larsen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1">
+              <div class="ep-avatar-dot" style="background:var(--success);z-index:2"></div>
+            </div>
+            <div class="ep-name">Susan Larsen</div>
+            <div class="ep-creds">
+              <span class="ep-badge">CPA</span>
+              <span class="ep-badge">EA</span>
+              <span class="ep-badge">S Corp</span>
+            </div>
+          </div>
+          <div class="ep-stats">
+            <div class="ep-stat">
+              <div class="ep-stat-val">19</div>
+              <div class="ep-stat-label">years exp.</div>
+            </div>
+            <div class="ep-stat">
+              <div class="ep-stars"><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span></div>
+              <div class="ep-stat-val">4.9</div>
+              <div class="ep-stat-label">372 reviews</div>
+            </div>
+            <div class="ep-stat">
+              <div class="ep-stat-val">847</div>
+              <div class="ep-stat-label">returns filed</div>
+            </div>
+          </div>
+          <div class="ep-body">
+            <div class="ep-tags">
+              <span class="ep-tag">S Corp</span>
+              <span class="ep-tag">Sole Prop</span>
+              <span class="ep-tag">Small Business</span>
+              <span class="ep-tag">California</span>
+              <span class="ep-tag">English</span>
+              <span class="ep-tag">Spanish</span>
+            </div>
+            <div class="ep-avail">
+              <div class="ep-avail-dot" style="background:var(--success)"></div>
+              <div class="ep-avail-text">Available now</div>
+              <div class="ep-avail-sched">Mon–Fri · 9am–6pm PT</div>
+            </div>
+            <div class="ep-bio">
+              Last reviewed your Q1 books and flagged a home office deduction you missed — estimated $1,200 in savings.
+            </div>
+            <button class="ep-book-btn" id="susanBookBtn" onclick="toggleScheduler(this,'susan-sched')">Book a Meeting</button>
+          </div>
+          <div class="ep-scheduler" id="susan-sched">
+            <div class="ep-sched-label">Select a date</div>
+            <div class="ep-date-strip">
+              <div class="ep-day sel" onclick="epSelDay(this,'susan-sched','Tue, May 12')"><span class="ep-day-dow">TUE</span><span class="ep-day-num">12</span></div>
+              <div class="ep-day" onclick="epSelDay(this,'susan-sched','Wed, May 13')"><span class="ep-day-dow">WED</span><span class="ep-day-num">13</span></div>
+              <div class="ep-day" onclick="epSelDay(this,'susan-sched','Thu, May 14')"><span class="ep-day-dow">THU</span><span class="ep-day-num">14</span></div>
+              <div class="ep-day unavail"><span class="ep-day-dow">FRI</span><span class="ep-day-num">15</span></div>
+              <div class="ep-day unavail"><span class="ep-day-dow">SAT</span><span class="ep-day-num">16</span></div>
+              <div class="ep-day" onclick="epSelDay(this,'susan-sched','Mon, May 18')"><span class="ep-day-dow">MON</span><span class="ep-day-num">18</span></div>
+              <div class="ep-day" onclick="epSelDay(this,'susan-sched','Tue, May 19')"><span class="ep-day-dow">TUE</span><span class="ep-day-num">19</span></div>
+            </div>
+            <div class="ep-sched-label">Select a time</div>
+            <div class="ep-slots" id="susan-slots">
+              <button class="ep-slot" onclick="epSelSlot(this,'susan-sched','9:00 AM')">9:00 AM</button>
+              <button class="ep-slot booked">9:30 AM</button>
+              <button class="ep-slot" onclick="epSelSlot(this,'susan-sched','10:00 AM')">10:00 AM</button>
+              <button class="ep-slot booked">10:30 AM</button>
+              <button class="ep-slot" onclick="epSelSlot(this,'susan-sched','2:00 PM')">2:00 PM</button>
+              <button class="ep-slot" onclick="epSelSlot(this,'susan-sched','3:30 PM')">3:30 PM</button>
+            </div>
+            <button class="ep-confirm-btn" id="ep-confirm-susan" disabled onclick="epConfirm('susan-sched','susan-booked','susanBookBtn','susan-booked-detail')">Select date &amp; time</button>
+          </div>
+          <div class="ep-scheduled" id="susan-booked" style="display:none">
+            <div class="ep-sched-icon">✓</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Meeting scheduled</div><div style="font-size:11px;color:var(--text-tertiary);margin-top:2px" id="susan-booked-detail">Tue, May 12 · 9:00 AM with Susan</div></div>
+            <div style="font-size:12px;color:var(--brand);cursor:pointer">Reschedule</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- View: Action Detail — Q2 -->
+      <div class="view" id="v-action-q2">
+        <div class="action-detail-content">
+          <div class="ad-title">Q2 Estimated Tax</div>
+          <div class="ad-sub">Federal estimated payments are due quarterly. Missing a payment incurs a penalty of ~0.5% per month.</div>
+          <div class="detail-card"><div class="dc-label">Payment due</div><div class="dc-val warn">$3,840</div><div class="dc-desc">June 15, 2026 · 34 days away · IRS Form 1040-ES</div></div>
+          <div class="detail-card"><div class="dc-label">CA estimated payment</div><div class="dc-val" style="font-size:var(--text-md)">$960</div><div class="dc-desc">June 15, 2026 · FTB Form 540-ES</div></div>
+          <div style="margin-top:var(--s4);padding-top:var(--s4);border-top:1px solid var(--color-border)">
+            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-tertiary);margin-bottom:var(--s2)">Year-to-date payments</div>
+            <div class="ret-row"><span class="ret-yr">Q1</span><span class="ret-type">Paid Mar 15</span><span class="ret-amt pos">✓ $3,840</span></div>
+            <div class="ret-row"><span class="ret-yr">Q2</span><span class="ret-type">Due Jun 15</span><span class="ret-amt neg">Pending</span></div>
+            <div class="ret-row"><span class="ret-yr">Q3</span><span class="ret-type">Due Sep 15</span><span style="font-size:13px;color:var(--color-text-tertiary)">—</span></div>
+            <div class="ret-row" style="border-bottom:none"><span class="ret-yr">Q4</span><span class="ret-type">Due Jan 15</span><span style="font-size:13px;color:var(--color-text-tertiary)">—</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View: Action Detail — Tax Laws -->
+      <div class="view" id="v-action-laws">
+        <div class="action-detail-content">
+          <div class="ad-title">New Tax Laws</div>
+          <div class="ad-sub">3 recent changes may affect your 2026 return. Susan has reviewed these and flagged the most relevant ones.</div>
+          <div class="law-item"><div class="law-num">1</div><div><div class="law-title">Home Office Deduction — Simplified Method Update</div><div class="law-desc">Max deduction increased to $6/sq ft. Could increase your deduction by $800–$1,200 based on your workspace.</div></div></div>
+          <div class="law-item"><div class="law-num">2</div><div><div class="law-title">S Corp Reasonable Salary Safe Harbor</div><div class="law-desc">IRS clarified the 60/40 rule for S Corp owner-employee compensation. Your current split is compliant, but worth a review.</div></div></div>
+          <div class="law-item"><div class="law-num">3</div><div><div class="law-title">Section 179 Expensing Limit Increase</div><div class="law-desc">Limit raised to $1.22M for 2026. If you're planning equipment purchases, timing matters for maximum deduction.</div></div></div>
+        </div>
+      </div>
+
+      <!-- View: Action Detail — Business Changes -->
+      <div class="view" id="v-action-biz">
+        <div class="action-detail-content">
+          <div class="ad-title">Business Changes</div>
+          <div class="ad-sub">Let Susan know about any changes so she can adjust your tax strategy before year-end.</div>
+          <div class="biz-check" onclick="toggleCheck(this)"><div class="biz-check-box"></div><span class="biz-check-lbl">Hired a new employee or contractor</span></div>
+          <div class="biz-check" onclick="toggleCheck(this)"><div class="biz-check-box"></div><span class="biz-check-lbl">Changed business entity type</span></div>
+          <div class="biz-check" onclick="toggleCheck(this)"><div class="biz-check-box"></div><span class="biz-check-lbl">Made a large equipment purchase (&gt;$5k)</span></div>
+          <div class="biz-check" onclick="toggleCheck(this)"><div class="biz-check-box"></div><span class="biz-check-lbl">Started working from a new state</span></div>
+          <div class="biz-check" onclick="toggleCheck(this)"><div class="biz-check-box"></div><span class="biz-check-lbl">Took on investors or issued equity</span></div>
+          <div class="biz-check" onclick="toggleCheck(this)"><div class="biz-check-box"></div><span class="biz-check-lbl">Added a new product or service line</span></div>
+        </div>
+      </div>
+
+      <!-- View: Chat — identity + greeting set dynamically by chatMode -->
+      <div class="view" id="v-chat">
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-msg-row ai" id="chatGreeting">
+            <div class="chat-av" id="chatGreetingAv">
+              <span class="chat-av-text">TT</span>
+            </div>
+            <div class="chat-bubble" id="chatGreetingBubble">Hi! I'm TurboTax Assistant. Ask me anything about your taxes, deductions, or account.</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /views-host -->
+
+    <!-- ── Widget Footer — pinned (ExpertFooterCard 3.9a + BottomBar) ── -->
+    <div class="widget-footer">
+      <div class="expert-footer-card" onclick="navigate('expert')" id="expertFooterCard">
+        <div class="efc-avatar">
+          <div class="efc-avatar-inner" style="background:linear-gradient(135deg,#1B4F8A,#2D6BC4)">
+            <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;z-index:0">SL</span>
+            <img src="Susan.png" alt="Susan" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1">
+          </div>
+          <div class="efc-dot"></div>
+        </div>
+        <div class="efc-info">
+          <div class="efc-name">Susan Larsen</div>
+          <div class="efc-stats">
+            <span class="efc-star">★</span>
+            <span>4.9 (372)</span>
+            <span class="efc-sep">·</span>
+            <span>19 yrs exp</span>
+          </div>
+          <div class="efc-avail">
+            <span class="efc-avail-dot"></span>
+            <span>Available now</span>
+          </div>
+        </div>
+        <div class="efc-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="bottom-bar">
+        <div class="bottom-bar-row">
+          <div class="ask-wrap">
+            <div class="ask-icon"><svg viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M9.5 9.5L13 13" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+            <input class="ask-input" id="askInput" type="text" placeholder="Ask anything…">
+          </div>
+          <button class="ask-send" id="askSendBtn"><svg viewBox="0 0 14 14" fill="none"><path d="M13 7H1M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+        <div class="ask-async-note">AI‑powered · responds instantly</div>
+      </div>
+    </div>
+
+  </div><!-- /widget -->
+</div><!-- /widget-anchor -->
+
+<!-- Meeting notification toast (macOS-style) -->
+<div class="meeting-toast" id="meetingToast">
+  <div class="toast-icon">🗓</div>
+  <div class="toast-body">
+    <div class="toast-app">TurboTax Business · Reminder</div>
+    <div class="toast-title">Call with Susan starts in 10 min</div>
+    <div class="toast-sub" id="toastDetail">Tue, May 12 · 9:00 AM</div>
+  </div>
+  <button class="toast-dismiss" onclick="dismissToast()" title="Dismiss">✕</button>
+</div>
+
+<script>
+var widgetOpen = false, settingsOpen = false;
+var viewStack = ['main'];
+var chatMode = 'ai'; /* 'ai' = TurboTax Assistant | 'susan' = Susan Larsen */
+var viewTitles = { main:'', expert:'Susan Larsen', 'action-q2':'Q2 Estimated Tax', 'action-laws':'New Tax Laws', 'action-biz':'Business Changes', chat:'Ask anything' };
+var epDate = {}, epSlot = {};
+
+/* ── Ask input context ── */
+function updateAskContext(viewId) {
+  var inp = document.getElementById('askInput');
+  var note = document.querySelector('.ask-async-note');
+  if (!inp) return;
+  if (viewId === 'chat') {
+    /* Already in chat — keep current mode placeholder, hide the note */
+    inp.placeholder = chatMode === 'susan' ? 'Ask Susan…' : 'Ask anything…';
+    if (note) note.style.display = 'none';
+  } else if (viewId === 'expert') {
+    inp.placeholder = 'Ask Susan…';
+    if (note) { note.style.display = ''; note.textContent = 'Async · Susan responds in ~2 hrs'; }
+  } else {
+    inp.placeholder = 'Ask anything…';
+    if (note) { note.style.display = ''; note.textContent = 'AI‑powered · responds instantly'; }
+  }
+}
+
+/* ── Chat identity ── */
+function updateChatIdentity(mode) {
+  var avEl = document.getElementById('chatGreetingAv');
+  var bubbleEl = document.getElementById('chatGreetingBubble');
+  if (mode === 'susan') {
+    avEl.innerHTML = '<span class="chat-av-text">SL</span><img src="Susan.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%">';
+    bubbleEl.textContent = "Hi! I'm Susan, your TurboTax Business Tax specialist. I've reviewed your Q1 books and have your account context ready. What's on your mind?";
+    viewTitles.chat = 'Ask Susan';
+  } else {
+    avEl.innerHTML = '<span class="chat-av-text">TT</span>';
+    bubbleEl.textContent = "Hi! I'm TurboTax Assistant. Ask me anything about your taxes, deductions, or account.";
+    viewTitles.chat = 'Ask anything';
+  }
+}
+
+/* ── Chat avatar HTML (mode-aware) ── */
+function chatAvHTML() {
+  if (chatMode === 'susan') {
+    return '<div class="chat-av"><span class="chat-av-text">SL</span><img src="Susan.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%"></div>';
+  }
+  return '<div class="chat-av"><span class="chat-av-text">TT</span></div>';
+}
+
+/* ── Widget open/close ── */
+function toggleWidget() {
+  if (settingsOpen) { settingsOpen = false; document.getElementById('settingsPanel').classList.add('hidden'); }
+  widgetOpen = !widgetOpen;
+  document.getElementById('widget').classList.toggle('hidden', !widgetOpen);
+  document.getElementById('ttIcon').classList.toggle('active', widgetOpen);
+}
+function toggleSettings() {
+  settingsOpen = !settingsOpen;
+  document.getElementById('settingsPanel').classList.toggle('hidden', !settingsOpen);
+}
+function closeAll() {
+  widgetOpen = false; settingsOpen = false;
+  document.getElementById('widget').classList.add('hidden');
+  document.getElementById('settingsPanel').classList.add('hidden');
+  document.getElementById('ttIcon').classList.remove('active');
+}
+
+/* ── Multi-view navigation (Component Inventory v2.3) ── */
+function navigate(viewId) {
+  var curId = viewStack[viewStack.length - 1];
+  if (curId === viewId) return;
+  document.getElementById('v-' + curId).classList.remove('v-active');
+  document.getElementById('v-' + curId).classList.add('v-behind');
+  document.getElementById('v-' + viewId).classList.add('v-active');
+  viewStack.push(viewId);
+  updateHeader();
+  var hideFooter = viewId === 'expert' || viewId === 'chat';
+  document.getElementById('expertFooterCard').style.display = hideFooter ? 'none' : 'flex';
+  updateAskContext(viewId);
+}
+function goBack() {
+  if (viewStack.length <= 1) return;
+  var curId = viewStack.pop();
+  var prevId = viewStack[viewStack.length - 1];
+  var curEl = document.getElementById('v-' + curId);
+  curEl.classList.remove('v-active');
+  setTimeout(function(){ curEl.classList.remove('v-behind'); }, 280);
+  document.getElementById('v-' + prevId).classList.remove('v-behind');
+  document.getElementById('v-' + prevId).classList.add('v-active');
+  updateHeader();
+  var nowId = viewStack[viewStack.length - 1];
+  document.getElementById('expertFooterCard').style.display = (nowId === 'expert') ? 'none' : 'flex';
+  updateAskContext(nowId);
+}
+function updateHeader() {
+  var id = viewStack[viewStack.length - 1];
+  var isMain = id === 'main';
+  document.getElementById('backBtn').classList.toggle('visible', !isMain);
+  document.getElementById('whBrand').style.display = isMain ? 'flex' : 'none';
+  document.getElementById('whTitle').style.display = isMain ? 'none' : 'block';
+  document.getElementById('whTitle').textContent = viewTitles[id] || '';
+}
+
+/* ── Click outside ── */
+document.addEventListener('mousedown', function(e) {
+  if (!widgetOpen && !settingsOpen) return;
+  var w = document.getElementById('widget'), s = document.getElementById('settingsPanel'), icon = document.getElementById('ttIcon');
+  if (!w.contains(e.target) && !s.contains(e.target) && !icon.contains(e.target)) {
+    closeAll();
+    if (viewStack.length > 1) {
+      document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('v-active','v-behind'); });
+      document.getElementById('v-main').classList.add('v-active');
+      viewStack = ['main']; updateHeader();
+      document.getElementById('expertFooterCard').style.display = 'flex';
+      /* Reset chat, mode, and ask input on widget close */
+      chatMode = 'ai';
+      updateChatIdentity('ai');
+      viewTitles.chat = 'Ask anything';
+      updateAskContext('main');
+      var msgs = document.getElementById('chatMessages');
+      msgs.querySelectorAll('.chat-msg-row:not(#chatGreeting)').forEach(function(r){ r.remove(); });
+    }
+  }
+});
+
+/* ── ExpertProfileCard scheduler (Component Gallery functions) ── */
+function toggleScheduler(btn, schedId) {
+  var sched = document.getElementById(schedId);
+  sched.classList.toggle('show');
+  btn.classList.toggle('open');
+  btn.textContent = sched.classList.contains('show') ? 'Cancel' : 'Book a Meeting';
+}
+function epSelDay(el, schedId, dateStr) {
+  el.closest('.ep-date-strip').querySelectorAll('.ep-day').forEach(function(d){ d.classList.remove('sel'); });
+  el.classList.add('sel');
+  epDate[schedId] = dateStr;
+  epUpdateConfirm(schedId);
+}
+function epSelSlot(el, schedId, timeStr) {
+  el.closest('.ep-slots').querySelectorAll('.ep-slot').forEach(function(s){ s.classList.remove('sel'); });
+  el.classList.add('sel');
+  epSlot[schedId] = timeStr;
+  epUpdateConfirm(schedId);
+}
+function epUpdateConfirm(schedId) {
+  var btn = document.getElementById('ep-confirm-' + schedId.split('-').pop()) ||
+            document.getElementById('ep-confirm-susan');
+  if (!btn) return;
+  var d = epDate[schedId], s = epSlot[schedId];
+  if (d && s) { btn.disabled = false; btn.textContent = 'Confirm ' + s + ' · ' + d.split(',')[0]; }
+}
+function epConfirm(schedId, bookedId, btnId, detailId) {
+  var d = epDate[schedId] || 'Tue, May 12', s = epSlot[schedId] || '9:00 AM';
+  document.getElementById(detailId).textContent = d + ' · ' + s + ' with Susan';
+  document.getElementById(schedId).classList.remove('show');
+  document.getElementById(bookedId).style.display = 'flex';
+  document.getElementById(btnId).style.display = 'none';
+  /* Schedule 10-min notification (8s demo = 10 min real) */
+  document.getElementById('toastDetail').textContent = d + ' · ' + s;
+  if (window._notifTimer) clearTimeout(window._notifTimer);
+  window._notifTimer = setTimeout(function() {
+    document.getElementById('meetingToast').classList.add('show');
+    /* Pulse the menubar TT icon badge */
+    var badge = document.querySelector('.tt-badge');
+    if (badge) { badge.textContent = '!'; badge.style.background = '#1B4F8A'; }
+    /* Auto-dismiss after 8s */
+    setTimeout(dismissToast, 8000);
+  }, 8000);
+}
+function dismissToast() {
+  document.getElementById('meetingToast').classList.remove('show');
+}
+
+/* ── Business changes toggle ── */
+function toggleCheck(row) {
+  var box = row.querySelector('.biz-check-box'), lbl = row.querySelector('.biz-check-lbl');
+  var on = box.dataset.checked === '1';
+  if (on) { box.dataset.checked='0'; box.style.background=''; box.style.borderColor=''; box.innerHTML=''; lbl.style.textDecoration=''; lbl.style.color=''; }
+  else { box.dataset.checked='1'; box.style.background='var(--color-brand)'; box.style.borderColor='var(--color-brand)'; box.innerHTML='<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>'; lbl.style.textDecoration='line-through'; lbl.style.color='var(--color-text-tertiary)'; }
+}
+
+/* ── Live clock ── */
+function updateClock() {
+  var now = new Date(), days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var h=now.getHours(), m=now.getMinutes(), ampm=h>=12?'PM':'AM';
+  h=h%12||12;
+  document.getElementById('clock').textContent = days[now.getDay()] + ' ' + months[now.getMonth()] + ' ' + now.getDate() + '  ' + h + ':' + (m<10?'0':'')+m + ' ' + ampm;
+}
+updateClock(); setInterval(updateClock, 15000);
+
+/* ── Chat system ── */
+var aiResponses = {
+  q2: 'Your Q2 estimated payment is $3,840, due June 15. Based on Q1 revenue, this keeps you clear of underpayment penalties. I can help you set a reminder or walk through the IRS Direct Pay steps — want to?',
+  deduct: 'Great question. Based on your Q1 books I flagged a home office opportunity worth ~$1,200. With the updated simplified method ($6/sq ft), if you\'re using 200 sq ft exclusively for work, that\'s $1,200 off your taxable income right there.',
+  scorp: 'Your S Corp structure looks solid. Main watch item: the IRS reasonable salary rule. With $284k revenue, they expect at least $70–80k in W-2 wages. You\'re at $72k, so you\'re in range — but let\'s revisit before Q4.',
+  tax: 'Three law changes I flagged for your return: (1) home office simplified method increased to $6/sq ft, (2) S Corp reasonable salary guidance updated, (3) Section 179 limit raised to $1.22M for equipment purchases. The first two directly affect your 2026 return.',
+  default: [
+    'Based on your Q1 data, here\'s what I\'m seeing: your effective rate is tracking at 18.4% — slightly above average for S Corps at your revenue level. The main lever to pull is your deduction strategy before year-end.',
+    'Good question — and the answer depends on a few things in your return I\'d want to confirm first. Can you tell me a bit more about the context?',
+    'I reviewed this when I went through your Q1 books. Short version: you\'re in good shape, but there\'s a timing move worth discussing before September 15.',
+    'This comes up often with S Corp owners in California. The good news is the rules are clear — let me walk you through exactly how it applies to your situation.'
+  ]
+};
+
+function escapeHTML(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function getAIResponse(q) {
+  var l = q.toLowerCase();
+  if (/q2|june|estimat|payment/.test(l)) return aiResponses.q2;
+  if (/deduct|write.?off|home.?office|office/.test(l)) return aiResponses.deduct;
+  if (/s.?corp|salary|entity|structure/.test(l)) return aiResponses.scorp;
+  if (/law|rule|change|2026|update/.test(l)) return aiResponses.tax;
+  var d = aiResponses.default;
+  return d[Math.floor(Math.random() * d.length)];
+}
+
+function appendUserBubble(text) {
+  var msgs = document.getElementById('chatMessages');
+  var row = document.createElement('div');
+  row.className = 'chat-msg-row user';
+  row.innerHTML = '<div class="chat-bubble">' + escapeHTML(text) + '</div>' +
+    '<div class="chat-user-av"><svg viewBox="0 0 16 16" fill="none"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor" opacity=".4"/><path d="M2 14c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>';
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function appendTyping() {
+  var msgs = document.getElementById('chatMessages');
+  var row = document.createElement('div');
+  row.className = 'chat-msg-row ai'; row.id = 'chatTypingRow';
+  row.innerHTML = chatAvHTML() + '<div class="chat-typing"><span></span><span></span><span></span></div>';
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function appendAIBubble(text) {
+  var tr = document.getElementById('chatTypingRow');
+  if (tr) tr.remove();
+  var msgs = document.getElementById('chatMessages');
+  var row = document.createElement('div');
+  row.className = 'chat-msg-row ai';
+  row.innerHTML = chatAvHTML() + '<div class="chat-bubble">' + escapeHTML(text) + '</div>';
+  msgs.appendChild(row);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function sendToChat(text) {
+  if (!text.trim()) return;
+  var alreadyInChat = viewStack[viewStack.length - 1] === 'chat';
+  if (!alreadyInChat) navigate('chat');
+  appendUserBubble(text);
+  appendTyping();
+  setTimeout(function() { appendAIBubble(getAIResponse(text)); }, 1400);
+}
+
+/* Global ask bar — context-aware, single input for all views */
+function sendAsk() {
+  var v = document.getElementById('askInput').value.trim();
+  if (!v) return;
+  document.getElementById('askInput').value = '';
+  var curView = viewStack[viewStack.length - 1];
+  /* Set chat mode if we're about to enter (or are in) chat */
+  if (curView !== 'chat') {
+    chatMode = (curView === 'expert') ? 'susan' : 'ai';
+    updateChatIdentity(chatMode);
+    viewTitles.chat = chatMode === 'susan' ? 'Ask Susan' : 'Ask anything';
+  }
+  sendToChat(v);
+}
+document.getElementById('askInput').addEventListener('keydown', function(e){ if(e.key==='Enter') sendAsk(); });
+document.getElementById('askSendBtn').addEventListener('click', sendAsk);
+
+/* chatSendBtn and chatInput removed — global ask input handles everything */
+</script>
+</body>
+</html>
