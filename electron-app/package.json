@@ -18,8 +18,14 @@
     "files": [
       "main.js",
       "preload.js",
-      "assets/**",
-      "../prototype/**"
+      "assets/**"
+    ],
+    "extraResources": [
+      {
+        "from": "../prototype",
+        "to": "prototype",
+        "filter": ["**/*"]
+      }
     ],
     "mac": {
       "category": "public.app-category.finance",

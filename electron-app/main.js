@@ -4,10 +4,19 @@
  *
  * Dev:   cd electron-app && npm install && npm start
  * Build: npm run build  →  dist/TurboTax Business Tax-0.1.0.dmg
+ *
+ * Dev shortcuts (while widget is open):
+ *   Cmd+R           — reload prototype (pick up HTML/CSS/JS edits instantly)
+ *   Cmd+Option+I    — open DevTools
  */
 
-const { app, BrowserWindow, Tray, nativeImage, screen } = require('electron');
+const { app, BrowserWindow, Tray, nativeImage, screen, globalShortcut } = require('electron');
 const path = require('path');
+
+// Resolve prototype path for both dev and packaged builds
+const PROTOTYPE_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'prototype', 'index.html')
+  : path.join(__dirname, '..', 'prototype', 'index.html');
 
 let tray   = null;
 let win    = null;
@@ -56,15 +65,20 @@ function createApp() {
   });
 
   // Load the self-contained prototype HTML
-  win.loadFile(path.join(__dirname, '..', 'prototype', 'index.html'));
+  win.loadFile(PROTOTYPE_PATH);
 
   // Hide when focus is lost (click outside)
   win.on('blur', () => {
     if (!win.webContents.isDevToolsOpened()) win.hide();
   });
 
-  // Open DevTools with Cmd+Option+I during development
+  // Dev keyboard shortcuts
   win.webContents.on('before-input-event', (event, input) => {
+    // Cmd+R — reload prototype (picks up edits to prototype/index.html instantly)
+    if (input.meta && input.key === 'r' && !input.alt) {
+      win.loadFile(PROTOTYPE_PATH);
+    }
+    // Cmd+Option+I — open DevTools in detached window
     if (input.meta && input.alt && input.key === 'i') {
       win.webContents.openDevTools({ mode: 'detach' });
     }
