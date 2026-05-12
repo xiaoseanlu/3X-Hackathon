@@ -1259,6 +1259,36 @@ document.getElementById('askInput').addEventListener('keydown', function(e){ if(
 document.getElementById('askSendBtn').addEventListener('click', sendAsk);
 
 /* chatSendBtn and chatInput removed — global ask input handles everything */
+
+/* ── Electron mode — strip desktop simulation, show widget directly ── */
+(function() {
+  if (!window.electronAPI) return;
+
+  /* Hide simulated desktop chrome */
+  var desktop = document.querySelector('.desktop');
+  var menubar = document.querySelector('.menubar');
+  var dock    = document.querySelector('.dock');
+  var toast   = document.querySelector('.meeting-toast');
+  var notch   = document.getElementById('widgetNotch');
+  if (desktop) desktop.style.display = 'none';
+  if (menubar) menubar.style.display = 'none';
+  if (dock)    dock.style.display    = 'none';
+  if (notch)   notch.style.display   = 'none';
+
+  /* Transparent body so the BrowserWindow shadow shows */
+  document.body.style.background = 'transparent';
+  document.body.style.overflow   = 'hidden';
+
+  /* Reposition widget to sit flush in the BrowserWindow (360×580)
+     Widget is 340×532 — 10px inset each side, ~8px from top */
+  var anchor = document.querySelector('.widget-anchor');
+  if (anchor) { anchor.style.top = '8px'; anchor.style.right = '10px'; }
+
+  /* Show widget immediately — Electron handles BW visibility, not JS */
+  var widget = document.getElementById('widget');
+  if (widget) widget.classList.remove('hidden');
+  widgetOpen = true;
+})();
 </script>
 </body>
 </html>

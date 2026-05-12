@@ -31,13 +31,14 @@ function createApp() {
   if (process.platform === 'darwin') app.dock.hide();
 
   // ── Tray icon ────────────────────────────────────────────────────────────
-  // Place a 16×16 (or 32×32 @2x) PNG at assets/menubar-icon.png
-  // Fallback to a blank image so the app still launches during dev
+  // TTA icon: white checkmark-circle PNG from assets/menubar-icon.png
+  // setTemplateImage(true) → macOS auto-inverts for dark/light menu bar
   let iconPath = path.join(__dirname, 'assets', 'menubar-icon.png');
   let icon;
   try {
     icon = nativeImage.createFromPath(iconPath);
     if (icon.isEmpty()) throw new Error('empty');
+    icon.setTemplateImage(true);   // tells macOS this is a template (inverts automatically)
   } catch {
     icon = nativeImage.createEmpty();
   }

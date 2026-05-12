@@ -1,6 +1,6 @@
 # AI Collaborator Instructions — TurboTax Business Tax Assistant
 **Team Malumin · Intuit x Anthropic Hackathon · May 2026**
-**XD: Sean Lu · Eng: Hailey**
+**XD: Sean Lu · XD: Hailey**
 
 > **How to use this file:** At the start of every Claude session, say:
 > *"Read AI_INSTRUCTIONS.md before we start."*
@@ -14,9 +14,10 @@
 | Role | Person | Owns |
 |------|--------|------|
 | XD (Design) | Sean Lu | Component Inventory, Component Gallery, prototype visual design, all design decisions |
-| Eng | Hailey | Electron app, Claude API integration, document parsing, preload.js API bridge |
+| XD (Design) | Hailey | Design contributions, interaction features, prototype updates |
+| PM | TBD | Product direction, sprint goals, submission |
 
-Both contributors push to `main`. For any design change (colors, layout, components), check with Sean first. For any Electron/API/infra change, Hailey leads.
+Both designers push to `main`. All design changes go through Sean and Hailey. For any Electron/API/infra work, either designer can lead or delegate.
 
 ---
 
