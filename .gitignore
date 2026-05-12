@@ -1,3 +1,16 @@
+# macOS
 .DS_Store
 *.DS_Store
 Thumbs.db
+
+# Node / Electron
+electron-app/node_modules/
+electron-app/dist/
+electron-app/out/
+*.dmg
+*.zip
+
+# Cowork internal files (not for collaborators)
+CLAUDE.md
+MEMORY.md
+"Top 20 Creative Ideas.md"

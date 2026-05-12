@@ -2,7 +2,21 @@
 **Team Malumin · Intuit x Anthropic Hackathon · May 2026**
 **XD: Sean Lu · Eng: Hailey**
 
-Feed this file into your Claude at the start of any session working on this project. It tells Claude exactly how the project is structured, what rules to follow, and how Sean (XD) expects design changes to flow.
+> **How to use this file:** At the start of every Claude session, say:
+> *"Read AI_INSTRUCTIONS.md before we start."*
+> Claude Code picks it up automatically if it's in the project root.
+> This file tells Claude the project structure, design rules, sprint goals, and what requires XD sign-off.
+
+---
+
+## Team & Roles
+
+| Role | Person | Owns |
+|------|--------|------|
+| XD (Design) | Sean Lu | Component Inventory, Component Gallery, prototype visual design, all design decisions |
+| Eng | Hailey | Electron app, Claude API integration, document parsing, preload.js API bridge |
+
+Both contributors push to `main`. For any design change (colors, layout, components), check with Sean first. For any Electron/API/infra change, Hailey leads.
 
 ---
 
@@ -20,15 +34,30 @@ The widget is a **single self-contained HTML file** — no build step, no depend
 ## File Structure
 
 ```
-/
-├── Tax Assistant Widget Prototype.html        ← Primary deliverable (prototype, v7)
-├── CHANGELOG.md                               ← Version history — update on every change
-├── Susan.png                                  ← Expert photo (place alongside HTML)
-└── 3X PM-XD Hackathon Resources/
-    ├── Component Inventory.md                 ← SOURCE OF TRUTH for all design specs
-    ├── Component Gallery.html                 ← Live visual reference for all components
-    └── Tax Assistant — Product Design Requirements.md
+TurboTax-Assistant/
+├── README.md                             ← Project overview + quick start
+├── AI_INSTRUCTIONS.md                    ← This file — feed to Claude each session
+├── CHANGELOG.md                          ← Version history — update on every change
+├── .gitignore
+│
+├── prototype/                            ← Self-contained HTML widget (open in browser)
+│   ├── index.html                        ← Main prototype — all HTML/CSS/JS in one file
+│   ├── Susan.png                         ← Expert photo
+│   └── design-system/                   ← Design reference — read before changing anything
+│       ├── Component Inventory.md        ← SOURCE OF TRUTH for all design tokens + specs
+│       ├── Component Gallery.html        ← Live visual reference for all components
+│       └── Product Design Requirements.md
+│
+└── electron-app/                         ← macOS menu bar app wrapper
+    ├── main.js                           ← Tray icon + BrowserWindow (loads prototype/index.html)
+    ├── preload.js                        ← API bridge — extend here for Claude API, file parsing
+    ├── package.json                      ← npm deps + electron-builder config
+    └── assets/
+        ├── menubar-icon.png              ← 16×16 white PNG for menu bar tray
+        └── app-icon.icns                 ← macOS app icon for .dmg
 ```
+
+**Key rule:** `prototype/index.html` is a single self-contained file. No external JS/CSS. No build step. Open it directly in a browser to preview.
 
 ---
 
@@ -148,6 +177,30 @@ Two modes, one chat view (`#v-chat`). **There is only ONE input field in the ent
 </div>
 ```
 Gradient + initials always render. Photo overlays at z-index:1 if file is present.
+
+---
+
+## 2-Day Sprint Goals (May 12–14, 2026)
+
+When making changes, prioritize in this order:
+
+### Done ✅
+- Prototype v7: multi-view nav, Susan expert card (3.9b), context-aware AI/Susan chat, booking scheduler, 10-min notification toast, background separation, single global input
+
+### Day 1 remaining
+- Demo financial data: QBO-style P&L + cash flow summary visible on widget open
+- Drag and drop document upload UI (HTML5 drop zone in main view)
+
+### Day 2 (Hailey leads on Eng side)
+- **Real Claude API chat:** replace hardcoded `aiResponses` in `prototype/index.html` with actual `fetch()` calls to Anthropic API. Wire through `preload.js` → `main.js` IPC when running in Electron.
+- **Document parsing:** when user drops a PDF/image, send content to Claude API and return a structured tax summary. Show "Pending Susan's review" state.
+- **Expert review workflow:** after parsing, show Susan's review state → customer approval flow.
+- **Electron packaging:** build `.dmg` for arm64 + x64, test on real macOS.
+
+### How the Electron + prototype connect
+`electron-app/main.js` loads `prototype/index.html` in a frameless `BrowserWindow`.
+`electron-app/preload.js` exposes `window.electronAPI` to the prototype's JS.
+To add a backend capability: add it in `preload.js` (contextBridge) + `main.js` (ipcMain.handle), then call `window.electronAPI.yourMethod()` from `prototype/index.html`.
 
 ---
 

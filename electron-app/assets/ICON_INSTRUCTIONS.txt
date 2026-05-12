@@ -1,0 +1,11 @@
+Place your menu bar icon here.
+
+Required files:
+  menubar-icon.png   — 16x16px (or 32x32 @2x retina), PNG, white/transparent
+                       Used in the macOS menu bar tray.
+  app-icon.icns      — macOS app icon for the .dmg installer.
+                       Generate from a 1024x1024 PNG using:
+                       iconutil -c icns <iconset_folder>
+
+Quick placeholder for dev: copy any 16x16 white PNG and rename it menubar-icon.png.
+The app will still launch without it (shows an empty tray slot).
