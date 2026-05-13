@@ -138,6 +138,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-bottom: 16px;
 }
 
@@ -162,8 +164,16 @@ body {
 
 @media (max-width: 680px) {
   .two-col, .three-col { grid-template-columns: 1fr; }
+  .nav-demo-wrap { grid-template-columns: 1fr; }
   .page { padding: 24px 16px 60px; }
-  .sticky-bar { padding: 10px 16px; }
+  .sticky-bar { padding: 8px 16px; flex-wrap: wrap; gap: 8px; }
+  .sticky-title { font-size: 12px; }
+  .sticky-sub { display: none; }
+  .type-row { grid-template-columns: 80px 1fr; gap: 12px; }
+  .fin-grid { grid-template-columns: 1fr; }
+  .icon-demos { gap: 14px; }
+  .bl-type-grid { grid-template-columns: 1fr 1fr; }
+  .ep-slots { grid-template-columns: 1fr 1fr; }
 }
 
 /* ─── Status Bar Icon ─── */
@@ -1006,9 +1016,11 @@ body {
   padding: 20px;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 }
 .mini-widget {
   width: 300px;
+  max-width: 100%;
   border: 0.5px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
@@ -1261,6 +1273,203 @@ body {
 .nav-vback:hover { background: var(--bg-surface); }
 .nav-vtitle { font-size: 13px; font-weight: 600; color: var(--text-primary); flex: 1; }
 .nav-vbody { padding: 14px 16px; }
+
+/* ── Filing Stages Stepper (fs-*) ───────────────────────────────────
+   Horizontal 4-stage progress indicator for the active filing season.
+   Used on v-stage1 header to show where the customer is in the journey.
+   ────────────────────────────────────────────────────────────────── */
+.fs-stepper {
+  display: flex; align-items: flex-start;
+  padding: 16px 16px 12px; background: var(--bg-card);
+  border-bottom: 0.5px solid var(--border);
+}
+.fs-step { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; }
+.fs-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--border-strong); flex-shrink: 0;
+  transition: background 200ms, box-shadow 200ms;
+}
+.fs-step.active .fs-dot { background: var(--brand); box-shadow: 0 0 0 3px var(--brand-subtle); }
+.fs-step.done .fs-dot { background: var(--success); }
+.fs-label {
+  font-size: 9px; font-weight: 600; color: var(--text-tertiary);
+  text-align: center; line-height: 1.3; letter-spacing: .02em;
+}
+.fs-step.active .fs-label { color: var(--brand); font-weight: 700; }
+.fs-step.done .fs-label { color: var(--success); }
+.fs-line {
+  flex: 1; height: 1px; background: var(--border);
+  align-self: flex-start; margin-top: 7px; /* aligns line with dot vertical center */
+}
+.fs-line.done { background: var(--success); }
+
+/* ── Business Context Card (bc-*) ──────────────────────────────────
+   Flat section shown at top of Stage 1 content. Confirms the customer's
+   business identity and return history before asking them to act.
+   Two rows: (1) logo + name + entity badge, (2) prior returns chips.
+   ────────────────────────────────────────────────────────────────── */
+.biz-context { padding:12px 16px;background:var(--bg-card);border-bottom:0.5px solid var(--border); }
+.bc-top { display:flex;align-items:center;gap:10px;margin-bottom:10px; }
+.bc-logo {
+  width:32px;height:32px;border-radius:6px;flex-shrink:0;
+  background:var(--brand-subtle);color:var(--brand);
+  font-size:11px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.bc-info { flex:1;min-width:0; }
+.bc-name { font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.2; }
+.bc-meta { font-size:11px;color:var(--text-tertiary);margin-top:2px; }
+.bc-entity {
+  font-size:10px;font-weight:700;letter-spacing:.04em;
+  color:var(--brand);background:var(--brand-subtle);
+  padding:2px 8px;border-radius:10px;flex-shrink:0;
+}
+.bc-returns { display:flex;align-items:center;gap:6px;flex-wrap:wrap; }
+.bc-returns-label {
+  font-size:10px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.05em;color:var(--text-tertiary);flex-shrink:0;
+}
+.bc-chip {
+  font-size:11px;font-weight:500;padding:2px 8px;border-radius:10px;
+  border:0.5px solid var(--border-strong);background:var(--bg-surface);
+  color:var(--text-secondary);
+}
+.bc-chip.filed { color:var(--success);border-color:rgba(0,135,90,.25);background:rgba(0,135,90,.06); }
+.bc-chip.current { color:var(--brand);border-color:var(--brand);background:var(--brand-subtle);font-weight:600; }
+
+/* ── Expert Match Item (emi-*) ───────────────────────────────────────
+   Selectable expert cards used on v-expert-list matching screen.
+   Three variants: top-pick (Susan), available-soon (David), async (Maria). */
+.emi-list { display:flex;flex-direction:column;gap:10px; }
+/* border:1px matches ic-card and path-card — selected state (brand blue) is the visual differentiator */
+.emi-card { display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:border-color 140ms,background 140ms;position:relative; }
+.emi-card:hover { border-color:var(--brand);background:var(--brand-subtle); }
+.emi-card.selected { border-color:var(--brand);background:var(--brand-subtle); }
+.emi-avatar { position:relative;flex-shrink:0; }
+.emi-avatar-inner { width:52px;height:52px;border-radius:50%;overflow:hidden;position:relative;background:var(--bg-surface); }
+.emi-avatar-inner img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1; }
+.emi-avatar-initials { position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:var(--brand);z-index:0; }
+.emi-dot { position:absolute;bottom:1px;right:1px;width:11px;height:11px;border-radius:50%;border:2px solid var(--bg-card);background:var(--success);z-index:2; }
+.emi-info { flex:1;min-width:0; }
+.emi-top-row { display:flex;align-items:center;gap:6px;margin-bottom:3px; }
+.emi-name { font-size:15px;font-weight:600;color:var(--text-primary); }
+.emi-badge { font-size:10px;font-weight:600;padding:2px 6px;border-radius:100px;background:var(--brand-subtle);color:var(--brand);border:0.5px solid rgba(27,79,138,.2); }
+.emi-creds { font-size:12px;color:var(--text-secondary);margin-bottom:3px; }
+.emi-stats { display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text-secondary); }
+.emi-star { color:#F59E0B;font-size:10px; }
+.emi-sep { color:var(--text-tertiary); }
+.emi-avail { font-size:11px;color:var(--success);display:flex;align-items:center;gap:4px;margin-top:2px; }
+.emi-avail-dot { width:6px;height:6px;border-radius:50%;background:var(--success);flex-shrink:0; }
+.emi-check { width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border-strong);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all 140ms; }
+.emi-card.selected .emi-check { background:var(--brand);border-color:var(--brand); }
+.emi-check svg { display:none; }
+.emi-card.selected .emi-check svg { display:block; }
+.emi-top-pick { font-size:10px;font-weight:600;color:var(--brand);background:var(--brand-subtle);border:0.5px solid rgba(27,79,138,.2);padding:2px 7px;border-radius:100px; }
+
+/* ── Path Cards (path-card, pc-*) ───────────────────────────────────
+   Equal-weight CTA cards used on Stage 1 to present parallel entry points.
+   Two per view, stacked. Border + white bg, no shadow (flat doctrine).
+   Hover: border goes brand-colored, bg gets brand-subtle tint.
+   ────────────────────────────────────────────────────────────────── */
+.path-card {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px; background: var(--bg-card); cursor: pointer;
+  transition: border-color 140ms, background 140ms;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.path-card:hover { border-color: var(--brand); background: var(--brand-subtle); }
+.pc-top { display: flex; align-items: center; gap: 10px; }
+.pc-icon {
+  width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.pc-icon.brand { background: var(--brand-subtle); color: var(--brand); }
+.pc-icon.neutral { background: #F0F2F5; color: var(--text-secondary); }
+.pc-icon svg { width: 18px; height: 18px; }
+.pc-text { flex: 1; min-width: 0; }
+.pc-title { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
+.pc-sub { font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.4; }
+.pc-meta {
+  font-size: 11px; color: var(--text-tertiary);
+  padding-top: 8px; border-top: 0.5px solid var(--border);
+  display: flex; align-items: center; gap: 6px;
+}
+.pc-meta-av {
+  width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg,#1B4F8A,#2D6BC4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 7px; font-weight: 700; color: #fff;
+}
+.pc-cta {
+  width: 100%; height: 34px;
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg-card); color: var(--brand);
+  font-size: 12px; font-weight: 600; font-family: inherit;
+  cursor: pointer; transition: background 120ms, border-color 120ms, color 120ms;
+}
+.pc-cta:hover { background: var(--brand); border-color: var(--brand); color: #fff; }
+.pc-cta.primary {
+  background: var(--brand); border-color: var(--brand); color: #fff;
+}
+.pc-cta.primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); }
+
+/* ── Skeleton Loader (skel-*) ───────────────────────────────────────
+   Shimmer placeholder shown for 1.5s after login while data "loads".
+   Used on v-stage1 before real content appears.
+   ────────────────────────────────────────────────────────────────── */
+.skel-block {
+  border-radius: 4px;
+  background: linear-gradient(90deg,#EEF0F3 25%,#E2E5EA 50%,#EEF0F3 75%);
+  background-size: 200% 100%;
+  animation: skel-shimmer 1.4s infinite linear;
+}
+@keyframes skel-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.skel-card {
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 14px; background: var(--bg-card);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.skel-row { display: flex; align-items: center; gap: 10px; }
+.skel-circle { border-radius: 50%; flex-shrink: 0; }
+
+/* ── Institution Cards (ic-*) ── */
+.ic-card { border:1px solid var(--border);border-radius:8px;background:var(--bg-card);overflow:hidden;transition:border-color 140ms,background 140ms;cursor:pointer; }
+.ic-card:hover { border-color:var(--brand);background:var(--brand-subtle); }
+.ic-card.connected { cursor:default; }
+.ic-card.connected:hover { border-color:var(--border);background:var(--bg-card); }
+.ic-top { display:flex;align-items:center;gap:10px;padding:12px 14px; }
+.ic-logo { width:32px;height:32px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff; }
+.ic-info { flex:1;min-width:0; }
+.ic-name { font-size:13px;font-weight:600;color:var(--text-primary);line-height:1.2; }
+.ic-type { font-size:11px;color:var(--text-tertiary);margin-top:1px; }
+.ic-status { font-size:10px;font-weight:600;letter-spacing:.03em;padding:3px 7px;border-radius:10px;flex-shrink:0; }
+.ic-status.connected { background:#E3FCEF;color:var(--success); }
+.ic-status.reconnect { background:#FFF4E5;color:var(--warning); }
+.ic-data { padding:8px 14px 12px;border-top:0.5px solid var(--border);display:flex;gap:16px; }
+.ic-data-cell { display:flex;flex-direction:column;gap:1px; }
+.ic-data-label { font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary); }
+.ic-data-val { font-size:12px;font-weight:600;color:var(--text-primary); }
+.ic-reconnect-note { padding:6px 14px 10px;border-top:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between; }
+.ic-reconnect-btn { font-size:11px;font-weight:600;color:var(--brand);background:none;border:1px solid var(--brand);border-radius:5px;padding:3px 10px;cursor:pointer;font-family:inherit;transition:background 100ms,color 100ms; }
+.ic-reconnect-btn:hover { background:var(--brand);color:#fff; }
+.ic-add { border:1px dashed var(--border);border-radius:8px;padding:14px;display:flex;align-items:center;gap:10px;cursor:pointer;background:var(--bg-card);transition:border-color 140ms,background 140ms; }
+.ic-add:hover { border-color:var(--brand);background:var(--brand-subtle); }
+.ic-add-circle { width:32px;height:32px;border-radius:6px;border:1.5px dashed var(--border-strong);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--text-tertiary); }
+.ic-add-text { font-size:13px;font-weight:600;color:var(--text-secondary); }
+.ic-add-sub { font-size:11px;color:var(--text-tertiary);margin-top:1px; }
+.inst-search-wrap { position:relative; }
+.inst-search { width:100%;height:36px;border:1px solid var(--border);border-radius:6px;padding:0 12px 0 32px;font-size:13px;color:var(--text-primary);background:var(--bg-card);font-family:inherit;outline:none;transition:border-color 120ms; }
+.inst-search:focus { border-color:var(--brand); }
+.inst-search-icon { position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-tertiary);pointer-events:none; }
+.inst-row { display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid var(--border);cursor:pointer;transition:background 100ms;border-radius:4px; }
+.inst-row:last-child { border-bottom:none; }
+.inst-row:hover { background:var(--brand-subtle);padding-left:4px; }
+.inst-logo { width:28px;height:28px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff; }
+.inst-row-name { font-size:13px;font-weight:500;color:var(--text-primary);flex:1; }
+.inst-row-chev { color:var(--text-tertiary); }
 </style>
 </head>
 <body>
@@ -1623,6 +1832,342 @@ body {
 
   <div class="divider"></div>
 
+  <!-- ─── Filing Stages Stepper ─── -->
+  <div class="sec">
+    <div class="sec-label">Filing stages stepper — active tax season progress indicator</div>
+    <p class="hmw" style="margin-bottom:14px">Four stages: Form Collection → Expert Review → Ready to File → Filed. Active stage uses brand dot + halo. Done stages use success green. Future stages are muted. Used as the persistent header on Stage 1 view.</p>
+
+    <!-- Stage 1 active (what we build now) -->
+    <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px">Stage 1 active — Form Collection</div>
+    <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg-card)">
+      <div class="fs-stepper">
+        <div class="fs-step active">
+          <div class="fs-dot"></div>
+          <div class="fs-label">Form<br>Collection</div>
+        </div>
+        <div class="fs-line"></div>
+        <div class="fs-step">
+          <div class="fs-dot"></div>
+          <div class="fs-label">Expert<br>Review</div>
+        </div>
+        <div class="fs-line"></div>
+        <div class="fs-step">
+          <div class="fs-dot"></div>
+          <div class="fs-label">Ready<br>to File</div>
+        </div>
+        <div class="fs-line"></div>
+        <div class="fs-step">
+          <div class="fs-dot"></div>
+          <div class="fs-label">Filed</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage 2 active (for reference) -->
+    <div style="font-size:11px;color:var(--text-tertiary);margin:16px 0 8px">Stage 2 active — Expert Review</div>
+    <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg-card)">
+      <div class="fs-stepper">
+        <div class="fs-step done">
+          <div class="fs-dot"></div>
+          <div class="fs-label">Form<br>Collection</div>
+        </div>
+        <div class="fs-line done"></div>
+        <div class="fs-step active">
+          <div class="fs-dot"></div>
+          <div class="fs-label">Expert<br>Review</div>
+        </div>
+        <div class="fs-line"></div>
+        <div class="fs-step">
+          <div class="fs-dot"></div>
+          <div class="fs-label">Ready<br>to File</div>
+        </div>
+        <div class="fs-line"></div>
+        <div class="fs-step">
+          <div class="fs-dot"></div>
+          <div class="fs-label">Filed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Business Context Card ─── -->
+  <div class="sec">
+    <div class="sec-label">Business context card (bc-*) — account confirmation at top of Stage 1</div>
+    <p class="hmw" style="margin-bottom:14px">Confirms who the customer is before asking them to act. Two rows: business name + entity badge, then prior year return chips. Flat — white bg, hairline bottom border, no shadow. Prior returns use green filed chips + brand active chip for the current year.</p>
+    <div style="max-width:310px">
+      <div class="biz-context">
+        <div class="bc-top">
+          <div class="bc-logo">AC</div>
+          <div class="bc-info">
+            <div class="bc-name">Acme Design Co.</div>
+            <div class="bc-meta">3rd year with TurboTax Business</div>
+          </div>
+          <div class="bc-entity">S Corp</div>
+        </div>
+        <div class="bc-returns">
+          <div class="bc-returns-label">Prior returns</div>
+          <span class="bc-chip filed">2022 ✓</span>
+          <span class="bc-chip filed">2023 ✓</span>
+          <span class="bc-chip filed">2024 ✓</span>
+          <span class="bc-chip current">2025 ›</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Expert Match Items ─── -->
+  <div class="sec">
+    <div class="sec-label">Expert match item (emi-*) — selectable expert cards on v-expert-list</div>
+    <p class="hmw" style="margin-bottom:14px">Three states: top-pick (Susan, online dot, "Top pick" badge), available-soon (David, muted dot), async (Maria, muted dot). Select via click — border turns brand blue, bg tints brand-subtle, checkmark fills. Continue CTA enables on first selection. Gallery is interactive: click to toggle selected state.</p>
+    <div style="max-width:310px">
+      <div class="emi-list" id="galleryEmiList">
+
+        <!-- Susan — top pick -->
+        <div class="emi-card" onclick="gallerySelectEmi(this)">
+          <div class="emi-avatar">
+            <div class="emi-avatar-inner">
+              <div class="emi-avatar-initials">SL</div>
+              <img src="../Susan.png" onerror="this.style.display='none'">
+            </div>
+            <div class="emi-dot"></div>
+          </div>
+          <div class="emi-info">
+            <div class="emi-top-row">
+              <span class="emi-name">Susan Larsen</span>
+              <span class="emi-top-pick">Top pick</span>
+            </div>
+            <div class="emi-creds">CPA · EA · S Corp specialist · 19 yrs exp</div>
+            <div class="emi-stats"><span class="emi-star">★</span><span>4.9</span><span class="emi-sep">·</span><span>372 reviews</span><span class="emi-sep">·</span><span>California</span></div>
+            <div class="emi-avail"><span class="emi-avail-dot"></span><span>Available now</span></div>
+          </div>
+          <div class="emi-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+
+        <!-- David Kim -->
+        <div class="emi-card" onclick="gallerySelectEmi(this)">
+          <div class="emi-avatar">
+            <div class="emi-avatar-inner"><div class="emi-avatar-initials" style="color:var(--text-secondary)">DK</div></div>
+          </div>
+          <div class="emi-info">
+            <div class="emi-top-row"><span class="emi-name">David Kim</span></div>
+            <div class="emi-creds">CPA · Multi-state · 12 yrs exp</div>
+            <div class="emi-stats"><span class="emi-star">★</span><span>4.8</span><span class="emi-sep">·</span><span>218 reviews</span><span class="emi-sep">·</span><span>California</span></div>
+            <div class="emi-avail" style="color:var(--text-tertiary)"><span class="emi-avail-dot" style="background:var(--text-tertiary)"></span><span>Responds in ~2 hrs</span></div>
+          </div>
+          <div class="emi-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+
+        <!-- Maria Chen -->
+        <div class="emi-card" onclick="gallerySelectEmi(this)">
+          <div class="emi-avatar">
+            <div class="emi-avatar-inner"><div class="emi-avatar-initials" style="color:var(--text-secondary)">MC</div></div>
+          </div>
+          <div class="emi-info">
+            <div class="emi-top-row"><span class="emi-name">Maria Chen</span></div>
+            <div class="emi-creds">EA · S Corp · LLC · 9 yrs exp</div>
+            <div class="emi-stats"><span class="emi-star">★</span><span>4.7</span><span class="emi-sep">·</span><span>145 reviews</span><span class="emi-sep">·</span><span>California</span></div>
+            <div class="emi-avail" style="color:var(--text-tertiary)"><span class="emi-avail-dot" style="background:var(--text-tertiary)"></span><span>Responds in ~4 hrs</span></div>
+          </div>
+          <div class="emi-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+
+      </div>
+      <button id="galleryEmiBtn" style="margin-top:12px;width:100%;height:40px;background:var(--brand);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;opacity:.4;transition:opacity 140ms" disabled>Match with expert</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Upload Screen ─── -->
+  <div class="sec">
+    <div class="sec-label">Upload screen (v-upload) — dedicated tax form upload view</div>
+    <p class="hmw" style="margin-bottom:14px">Full-screen drop zone at top, file list below. Three file states: uploaded+processed (green check), processing (amber spinner). Expert note at bottom. Background #F4F6F9 matches other hub screens.</p>
+    <div style="max-width:310px;background:#F4F6F9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+      <!-- Drop zone -->
+      <div class="drop-zone">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+        <div class="drop-zone-primary">Drop W-2s, 1099s, K-1s here <span class="drop-zone-link">or browse</span></div>
+        <div class="drop-zone-caption">PDF, JPG, PNG up to 25 MB · <span class="drop-zone-link">Import from Google Drive</span></div>
+      </div>
+      <div style="font-size:10px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em">Uploaded (3)</div>
+      <!-- File: processed -->
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px">
+        <div style="width:32px;height:36px;background:var(--brand-subtle);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="var(--brand)" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="var(--brand)" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">W-2_2025_Acme.pdf</div><div style="font-size:11px;color:var(--text-tertiary)">124 KB · W-2</div></div>
+        <div style="width:18px;height:18px;border-radius:50%;background:var(--success);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <!-- File: processing -->
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px">
+        <div style="width:32px;height:36px;background:rgba(245,158,11,.08);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="#D97706" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="#D97706" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">K-1_Vanguard_2025.pdf</div><div style="font-size:11px;color:#D97706">Processing…</div></div>
+        <div style="width:18px;height:18px;border-radius:50%;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="3.5" stroke="#D97706" stroke-width="1.2" stroke-dasharray="2 2"/></svg></div>
+      </div>
+      <div style="font-size:11px;color:var(--text-tertiary);text-align:center">Expert will review once all forms are processed</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── QB Detail View ─── -->
+  <div class="sec">
+    <div class="sec-label">QB Detail view (v-qb-detail) — connected account deep-dive with Open in browser CTA</div>
+    <p class="hmw" style="margin-bottom:14px">Tapped from the QuickBooks card in v-data-in. Shows financial summary (4-cell grid), recent transactions list, an Open QuickBooks in browser link, and an expert CTA. Background #F4F6F9. The "Open QuickBooks" button is brand-blue — it's a primary action that takes the user out of the widget context.</p>
+    <div style="max-width:310px;background:#F4F6F9;border-radius:12px;overflow:hidden">
+      <!-- QB header row -->
+      <div style="display:flex;align-items:center;gap:12px;padding:16px;border-bottom:0.5px solid var(--border)">
+        <div style="width:40px;height:40px;border-radius:8px;background:#2CA01C;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0">QB</div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:600;color:var(--text-primary)">QuickBooks</div>
+          <div style="font-size:11px;color:var(--text-tertiary)">Business accounting · Intuit</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--success)">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" fill="var(--success)" opacity=".15"/><path d="M2.5 5l2 2 3-3" stroke="var(--success)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Synced today
+        </div>
+      </div>
+      <!-- Financial summary grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin:12px 16px 0">
+        <div style="background:var(--bg-card);padding:12px 16px"><div style="font-size:11px;color:var(--text-tertiary);margin-bottom:2px">Revenue (YTD)</div><div style="font-size:14px;font-weight:600;color:var(--text-primary)">$48,320</div></div>
+        <div style="background:var(--bg-card);padding:12px 16px"><div style="font-size:11px;color:var(--text-tertiary);margin-bottom:2px">Expenses (YTD)</div><div style="font-size:14px;font-weight:600;color:var(--text-primary)">$12,840</div></div>
+        <div style="background:var(--bg-card);padding:12px 16px"><div style="font-size:11px;color:var(--text-tertiary);margin-bottom:2px">Net Income</div><div style="font-size:14px;font-weight:600;color:var(--success)">$35,480</div></div>
+        <div style="background:var(--bg-card);padding:12px 16px"><div style="font-size:11px;color:var(--text-tertiary);margin-bottom:2px">Open invoices</div><div style="font-size:14px;font-weight:600;color:var(--warning)">3 ($4,200)</div></div>
+      </div>
+      <!-- Recent transactions -->
+      <div style="padding:16px 16px 4px;display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:10px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em">Recent transactions</div>
+        <div style="font-size:11px;color:var(--brand);cursor:pointer">See all</div>
+      </div>
+      <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin:0 16px;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:0.5px solid var(--border)">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--success);flex-shrink:0"></div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Client payment — Acme Corp</div><div style="font-size:11px;color:var(--text-tertiary)">May 10, 2026</div></div>
+          <div style="font-size:13px;font-weight:600;color:var(--success)">+$6,400</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:0.5px solid var(--border)">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--danger);flex-shrink:0"></div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Adobe Creative Cloud</div><div style="font-size:11px;color:var(--text-tertiary)">May 8, 2026 · Software</div></div>
+          <div style="font-size:13px;font-weight:600;color:var(--danger)">−$59</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--success);flex-shrink:0"></div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Blue Sky Design payment</div><div style="font-size:11px;color:var(--text-tertiary)">May 3, 2026</div></div>
+          <div style="font-size:13px;font-weight:600;color:var(--success)">+$3,200</div>
+        </div>
+      </div>
+      <!-- Open QuickBooks button -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:16px;padding:12px 16px;background:var(--brand);color:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M5 2H2.5A1.5 1.5 0 0 0 1 3.5v7A1.5 1.5 0 0 0 2.5 12h7A1.5 1.5 0 0 0 11 10.5V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 1h4v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 7.5L12 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        Open QuickBooks in browser
+      </div>
+      <!-- Expert CTA -->
+      <div style="margin:0 16px 16px;background:var(--brand-subtle);border:1px solid rgba(27,79,138,.15);border-radius:8px;padding:12px">
+        <div style="font-size:13px;color:var(--text-secondary)">Susan can review your QuickBooks data and identify any deductions or corrections before your S Corp return is filed.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Path Cards ─── -->
+  <div class="sec">
+    <div class="sec-label">Path cards (pc-*) — equal-weight entry point cards for Stage 1</div>
+    <p class="hmw" style="margin-bottom:14px">Two stacked cards of identical visual weight present the parallel entry paths: expert-led or document-first. Border + white bg, no shadow (flat doctrine). Hover lifts border to brand blue + brand-subtle bg. Each card has icon, title, sub-copy, optional meta row, and a CTA button.</p>
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:310px">
+
+      <!-- Path: Meet your expert -->
+      <div class="path-card">
+        <div class="pc-top">
+          <div class="pc-icon brand">
+            <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3.5" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 15c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+          </div>
+          <div class="pc-text">
+            <div class="pc-title">Meet your expert</div>
+            <div class="pc-sub">Let your CPA guide you through what's needed — they'll reach out to get started</div>
+          </div>
+        </div>
+        <div class="pc-meta">
+          <div class="pc-meta-av">SL</div>
+          <span>Susan Larsen · CPA · EA · S Corp · 4.9★</span>
+        </div>
+      </div>
+
+      <!-- Path: Upload documents -->
+      <div class="path-card">
+        <div class="pc-top">
+          <div class="pc-icon neutral">
+            <svg viewBox="0 0 18 18" fill="none"><rect x="3" y="2" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M6 6h6M6 9h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6 13l2-2 1.5 1.5L11 11l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="pc-text">
+            <div class="pc-title">Connect accounts &amp; upload forms</div>
+            <div class="pc-sub">Link financial accounts or drop W-2s, 1099s, and K-1s — we'll organize everything</div>
+          </div>
+        </div>
+        <div class="pc-meta">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="var(--text-tertiary)" stroke-width="1.1"/><path d="M6 3v3l2 1" stroke="var(--text-tertiary)" stroke-width="1.1" stroke-linecap="round"/></svg>
+          <span>~10–30 min to process · expert reviews after</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Skeleton Loader ─── -->
+  <div class="sec">
+    <div class="sec-label">Skeleton loader (skel-*) — shimmer placeholder for async data load</div>
+    <p class="hmw" style="margin-bottom:14px">Shown for ~1.5s after login while the widget fetches account state. Preserves the exact layout shape of Stage 1 so the transition to real content feels instantaneous.</p>
+    <div style="max-width:310px;display:flex;flex-direction:column;gap:10px">
+      <!-- Stepper skeleton -->
+      <div style="border:1px solid var(--border);border-radius:8px;padding:14px 16px;background:var(--bg-card)">
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="skel-block skel-circle" style="width:8px;height:8px"></div>
+          <div class="skel-block" style="width:60px;height:8px"></div>
+          <div class="skel-block" style="flex:1;height:1px"></div>
+          <div class="skel-block skel-circle" style="width:8px;height:8px"></div>
+          <div class="skel-block" style="width:50px;height:8px"></div>
+          <div class="skel-block" style="flex:1;height:1px"></div>
+          <div class="skel-block skel-circle" style="width:8px;height:8px"></div>
+          <div class="skel-block" style="width:44px;height:8px"></div>
+          <div class="skel-block" style="flex:1;height:1px"></div>
+          <div class="skel-block skel-circle" style="width:8px;height:8px"></div>
+          <div class="skel-block" style="width:30px;height:8px"></div>
+        </div>
+      </div>
+      <!-- Headline skeleton -->
+      <div class="skel-block" style="height:13px;width:55%"></div>
+      <div class="skel-block" style="height:11px;width:80%;margin-top:-4px"></div>
+      <!-- Path card skeletons -->
+      <div class="skel-card">
+        <div class="skel-row">
+          <div class="skel-block skel-circle" style="width:36px;height:36px;border-radius:8px"></div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+            <div class="skel-block" style="height:12px;width:70%"></div>
+            <div class="skel-block" style="height:10px;width:90%"></div>
+          </div>
+        </div>
+        <div class="skel-block" style="height:10px;width:85%"></div>
+        <div class="skel-block" style="height:34px;width:100%;border-radius:6px"></div>
+      </div>
+      <div class="skel-card">
+        <div class="skel-row">
+          <div class="skel-block skel-circle" style="width:36px;height:36px;border-radius:8px"></div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+            <div class="skel-block" style="height:12px;width:80%"></div>
+            <div class="skel-block" style="height:10px;width:75%"></div>
+          </div>
+        </div>
+        <div class="skel-block" style="height:10px;width:70%"></div>
+        <div class="skel-block" style="height:34px;width:100%;border-radius:6px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
   <!-- ─── Onboarding Wizard ─── -->
   <div class="sec">
     <div class="state-row">
@@ -1918,6 +2463,104 @@ body {
 
     </div>
     <p class="hmw">HMW — trust: the profile surfaces every signal a customer needs to feel confident — credentials earned, years in practice, reviews from people like them, and a path to get on the calendar without leaving the widget.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Institution Cards ─── -->
+  <div class="sec">
+    <div class="sec-label">Institution cards (ic-*) — Data In / Connect Accounts view</div>
+    <p class="hmw" style="margin-bottom:14px">Three ordered states. Connected (top): green badge + data summary, non-interactive. Recommended (middle): amber badge + reconnect CTA for lapsed connections. Add new (bottom): dashed border tap target → institution search view. Order always: connected first, recommended second, add-new last.</p>
+    <div style="max-width:310px;display:flex;flex-direction:column;gap:8px">
+
+      <!-- State 1: Connected (QuickBooks — already linked via Intuit) -->
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);font-weight:600;margin-bottom:2px">Connected</div>
+      <div class="ic-card connected">
+        <div class="ic-top">
+          <div class="ic-logo" style="background:#2CA01C">QB</div>
+          <div class="ic-info">
+            <div class="ic-name">QuickBooks</div>
+            <div class="ic-type">Business accounting · Intuit</div>
+          </div>
+          <div class="ic-status connected">✓ Synced</div>
+        </div>
+        <div class="ic-data">
+          <div class="ic-data-cell"><div class="ic-data-label">Revenue</div><div class="ic-data-val">$48,320</div></div>
+          <div class="ic-data-cell"><div class="ic-data-label">Expenses</div><div class="ic-data-val">$12,840</div></div>
+          <div class="ic-data-cell"><div class="ic-data-label">Last sync</div><div class="ic-data-val" style="color:var(--text-tertiary)">Today</div></div>
+        </div>
+      </div>
+
+      <!-- State 2: Recommended / Reconnect -->
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);font-weight:600;margin-top:6px;margin-bottom:2px">Recommended</div>
+      <div class="ic-card">
+        <div class="ic-top">
+          <div class="ic-logo" style="background:#DC1F26">BA</div>
+          <div class="ic-info">
+            <div class="ic-name">Bank of America</div>
+            <div class="ic-type">Business Checking ···4821</div>
+          </div>
+          <div class="ic-status reconnect">Reconnect</div>
+        </div>
+        <div class="ic-reconnect-note">
+          <span style="font-size:11px;color:var(--text-tertiary)">Previously connected · import 2025 transactions</span>
+          <button class="ic-reconnect-btn">Connect</button>
+        </div>
+      </div>
+      <div class="ic-card">
+        <div class="ic-top">
+          <div class="ic-logo" style="background:#117ACA">CH</div>
+          <div class="ic-info">
+            <div class="ic-name">Chase</div>
+            <div class="ic-type">Business Checking</div>
+          </div>
+          <div class="ic-status reconnect">Reconnect</div>
+        </div>
+        <div class="ic-reconnect-note">
+          <span style="font-size:11px;color:var(--text-tertiary)">Previously connected · last synced Jan 2025</span>
+          <button class="ic-reconnect-btn">Connect</button>
+        </div>
+      </div>
+
+      <!-- State 3: Add new institution -->
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);font-weight:600;margin-top:6px;margin-bottom:2px">Add account</div>
+      <div class="ic-add">
+        <div class="ic-add-circle">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="ic-add-text">Add financial account</div>
+          <div class="ic-add-sub">ETrade, Fidelity, Robinhood, PayPal &amp; more</div>
+        </div>
+        <div style="margin-left:auto;color:var(--text-tertiary)">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+    <p class="hmw" style="margin-top:14px">HMW — proactivity + trust: we lead with what we already know (QB connected, BofA recommended) so customers feel understood, not interrogated. The add-new card is always last — discovery after recognition.</p>
+  </div>
+
+  <!-- ─── Institution Search ─── -->
+  <div class="sec">
+    <div class="sec-label">Institution search — add new account subflow</div>
+    <p class="hmw" style="margin-bottom:14px">Navigated into from the "Add financial account" card. Search bar filters the list. Popular institutions shown by default. Each row taps to initiate the connection flow.</p>
+    <div style="max-width:310px">
+      <div class="inst-search-wrap" style="margin-bottom:12px">
+        <div class="inst-search-icon">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="3.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 8l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <input class="inst-search" type="text" placeholder="Search banks, brokerages, platforms…">
+      </div>
+      <div style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);font-weight:600;margin-bottom:6px">Popular</div>
+      <div class="inst-row"><div class="inst-logo" style="background:#E8492A">ET</div><div class="inst-row-name">ETrade</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="inst-row"><div class="inst-logo" style="background:#538234">FID</div><div class="inst-row-name">Fidelity</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="inst-row"><div class="inst-logo" style="background:#00C805">RH</div><div class="inst-row-name">Robinhood</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="inst-row"><div class="inst-logo" style="background:#0057B8">TDA</div><div class="inst-row-name">TD Ameritrade</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="inst-row"><div class="inst-logo" style="background:#003087">PP</div><div class="inst-row-name">PayPal</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="inst-row"><div class="inst-logo" style="background:#FF9900">AMZ</div><div class="inst-row-name">Amazon Seller</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="inst-row"><div class="inst-logo" style="background:#E53238">EB</div><div class="inst-row-name">eBay</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="inst-row"><div class="inst-logo" style="background:#635BFF">STR</div><div class="inst-row-name">Stripe</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    </div>
   </div>
 
   <div class="divider"></div>
@@ -2363,7 +3006,7 @@ body {
     <div class="sec-label">Settings view — navigated into from widget header gear icon</div>
     <div class="two-col">
       <!-- Settings view matches #v-settings in prototype exactly -->
-      <div style="border:0.5px solid var(--border);border-radius:12px;overflow:hidden;width:280px">
+      <div style="border:0.5px solid var(--border);border-radius:12px;overflow:hidden;max-width:min(280px,100%)">
         <!-- Simulated widget header in settings state -->
         <div style="display:flex;align-items:center;padding:10px 14px;border-bottom:0.5px solid var(--border);background:#fff;gap:8px">
           <button style="background:none;border:none;cursor:pointer;padding:0;color:var(--text-secondary);display:flex;align-items:center">
@@ -2488,6 +3131,14 @@ function setWizard(btn, idx) {
   document.getElementById('wizbody').textContent = s.body;
   document.getElementById('wizcta').textContent = s.cta;
   document.getElementById('wizstepsdone').textContent = s.done;
+}
+
+/* ── Expert match item gallery demo ── */
+function gallerySelectEmi(card) {
+  document.querySelectorAll('#galleryEmiList .emi-card').forEach(function(c){ c.classList.remove('selected'); });
+  card.classList.add('selected');
+  var btn = document.getElementById('galleryEmiBtn');
+  if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
 }
 
 function setAI(btn, hovered) {

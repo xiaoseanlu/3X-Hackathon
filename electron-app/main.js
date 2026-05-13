@@ -10,7 +10,7 @@
  *   Cmd+Option+I    — open DevTools
  */
 
-const { app, BrowserWindow, Tray, Menu, nativeImage, screen, globalShortcut } = require('electron');
+const { app, BrowserWindow, Tray, Menu, nativeImage, screen, globalShortcut, ipcMain } = require('electron');
 const path = require('path');
 
 // Resolve prototype path for both dev and packaged builds
@@ -38,7 +38,7 @@ function createApp() {
   try {
     icon = nativeImage.createFromPath(iconPath);
     if (icon.isEmpty()) throw new Error('empty');
-    icon.setTemplateImage(true);   // tells macOS this is a template (inverts automatically)
+    icon.setTemplateImage(true);
   } catch {
     icon = nativeImage.createEmpty();
   }
@@ -83,9 +83,9 @@ function createApp() {
   // Load the self-contained prototype HTML
   win.loadFile(PROTOTYPE_PATH);
 
-  // Hide when focus is lost (click outside)
-  win.on('blur', () => {
-    if (!win.webContents.isDevToolsOpened()) win.hide();
+  // IPC: let the renderer hide the window (× button)
+  ipcMain.handle('hide-window', () => {
+    win.hide();
   });
 
   // Dev keyboard shortcuts

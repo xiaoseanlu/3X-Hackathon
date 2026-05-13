@@ -15,8 +15,10 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 // Example: expose a safe API surface to the renderer
 contextBridge.exposeInMainWorld('electronAPI', {
-  // Placeholder — extend as features are added
   platform: process.platform,
+
+  // Hide the Electron window (called by × close button in the widget)
+  hideWindow: () => ipcRenderer.invoke('hide-window'),
 
   // Future: real Claude API call
   // askClaude: (prompt) => ipcRenderer.invoke('ask-claude', prompt),

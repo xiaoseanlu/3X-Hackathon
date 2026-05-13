@@ -34,7 +34,14 @@ The widget opens in your browser. Click the TurboTax icon in the simulated menu 
 
 That's it. The first time you run it, it installs dependencies (~30 seconds). After that it launches instantly. A TurboTax icon appears in your actual macOS menu bar.
 
-> **First-run security prompt:** macOS may warn that the file is from an unidentified developer. Right-click → Open → Open to bypass it. You only see this once.
+> **⚠️ First-run security warning — you WILL see this:** macOS will show a popup saying it "cannot verify" the file. This is expected for any unsigned developer tool downloaded from the internet.
+>
+> **To bypass it (one-time only):**
+> 1. **Right-click** `Launch Widget.command` in Finder → click **Open**
+> 2. A new dialog appears with an **Open** button — click it
+> 3. The widget launches. You won't see this warning again.
+>
+> *(Do NOT double-click the first time — that triggers the block with no bypass option. Right-click → Open is the key.)*
 
 ---
 
