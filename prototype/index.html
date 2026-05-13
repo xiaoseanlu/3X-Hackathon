@@ -68,8 +68,8 @@
 /* ── Layout ── */
 body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-select: none; -webkit-font-smoothing: antialiased; }
 
-/* ── Desktop (official Figma wallpaper) ── */
-.desktop { position: fixed; inset: 0; background: url('https://www.figma.com/api/mcp/asset/461d7ab1-bafb-4d1a-858f-28b7150eeb68') center/cover no-repeat; }
+/* ── Desktop (macOS Sonoma-style gradient fallback — Figma CDN URLs expire) ── */
+.desktop { position: fixed; inset: 0; background: linear-gradient(160deg, #3a6186 0%, #89a4c7 40%, #c8d8e8 70%, #a8c4d8 100%); }
 
 /* ── Menu Bar ── */
 .menubar {
@@ -232,11 +232,11 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .views-host {
   position: relative; flex: 1; overflow: hidden; min-height: 0;
   margin: 4px 6px; border-radius: 10px;
-  background: #E8EDF3; /* minimal 1-stop tint — barely there */
+  background: #F4F6F9; /* minimal 1-stop tint — barely there */
 }
 .view {
   position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-  overflow-y: auto; overflow-x: hidden; background: #E8EDF3;
+  overflow-y: auto; overflow-x: hidden; background: #F4F6F9;
   transform: translateX(100%); transition: transform var(--dur-slow) var(--ease);
   scrollbar-width: none;
 }

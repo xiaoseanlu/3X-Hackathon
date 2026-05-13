@@ -1129,7 +1129,7 @@ All icons in the widget share a single visual language. Never mix styles or sour
 - Do not scale icons above 18px or below 10px
 
 ### Scroll area surface token
-The inset scroll zone uses `#E8EDF3` (cool gray-blue, step darker than `#F6F8FA`). This creates a visible but quiet distinction from the white sticky chrome above and below it. Do not lighten this back toward white — the separation is intentional.
+The inset scroll zone uses `#F4F6F9` (cool gray-blue, one subtle step darker than `#F6F8FA`). This creates a visible but quiet distinction from the white sticky chrome above and below it. Do not lighten this back toward white — the separation is intentional.
 
 ---
 
