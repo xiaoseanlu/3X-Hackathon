@@ -1,47 +1,89 @@
 # TurboTax Business Tax Assistant
-**Intuit x Anthropic Hackathon · May 2026 · Team Malumin**
+**Intuit × Anthropic Hackathon · May 2026 · Team Malumin**
 
-A macOS menu bar widget for TurboTax Business customers. Always-on access to tax strategy, a persistent CPA expert, document parsing, and AI-powered chat — right from your menu bar.
+A macOS menu bar widget that gives TurboTax Business customers always-on access to their tax situation — year-round strategy, a persistent CPA expert (Susan Larsen), and AI-powered chat. Right from the menu bar, without opening a browser or app.
 
 **Team**
 | Role | Person |
 |------|--------|
-| XD (Design) | Sean Lu |
-| Eng | Hailey |
+| XD | Sean Lu |
+| XD | Hailey |
+| PM | Armin Naghashzadeh |
 
 ---
 
-## Quick Start
+## Getting Started
 
-### Option A — Browser preview (fastest, no install)
+### Option A — Open in browser (fastest, zero setup)
+
 ```bash
-git clone https://github.intuit.com/xlu02/TurboTax-Assistant.git
-cd TurboTax-Assistant
-open prototype/index.html
+git clone <repo-url>
+open "prototype/index.html"
 ```
-That's it. The widget opens in your browser. Place `prototype/Susan.png` (already included) in the same folder for the expert photo.
+
+The widget opens in your browser. Click the TurboTax icon in the simulated menu bar at the top of the page to open the widget.
 
 ---
 
-### Option B — macOS menu bar app (Electron)
-**Prerequisites:** Node.js 18+ ([download](https://nodejs.org))
+### Option B — Double-click to launch as a menu bar app ⭐ Recommended
+
+**Prerequisite:** Node.js 18+ — [download here](https://nodejs.org) if you don't have it.
+
+1. Clone the repo
+2. Double-click **`Launch Widget.command`** in Finder
+
+That's it. The first time you run it, it installs dependencies (~30 seconds). After that it launches instantly. A TurboTax icon appears in your actual macOS menu bar.
+
+> **First-run security prompt:** macOS may warn that the file is from an unidentified developer. Right-click → Open → Open to bypass it. You only see this once.
+
+---
+
+### Option C — Run from terminal (developer mode)
 
 ```bash
-git clone https://github.intuit.com/xlu02/TurboTax-Assistant.git
-cd TurboTax-Assistant/electron-app
-npm install
+cd electron-app
+npm install          # first time only
 npm start
 ```
 
-A TurboTax icon appears in your menu bar. Click it to open the widget. Press `Cmd+Option+I` to open DevTools.
+---
 
-**To build a distributable `.dmg`:**
+### Option D — Build a distributable .dmg
+
 ```bash
+cd electron-app
 npm run build
 # Output: electron-app/dist/TurboTax Business Tax-0.1.0.dmg
 ```
 
-> **Icon note:** Place a 16×16 white PNG at `electron-app/assets/menubar-icon.png` before building. See `electron-app/assets/ICON_INSTRUCTIONS.txt` for details.
+Install the `.dmg` and the app lives in your Applications folder like any macOS app.
+
+---
+
+## Using the Widget
+
+### Opening and closing
+- **Click** the TurboTax icon in the menu bar → opens the widget
+- **Click outside** the widget → closes it (returns to main view on reopen)
+- **Right-click** the icon → context menu: **Open widget** or **Quit TurboTax widget**
+
+### Navigation
+- **Tap any action row** → drills into a detail view (layer 2)
+- **Back arrow** (top left) → returns to previous view
+- **Gear icon** (top right) → Settings
+- **Susan's footer card** → tap to open her full profile and book a meeting
+- **Ask input** (bottom bar) → AI chat from any view; switches to Susan chat when on her profile
+
+### Keyboard shortcuts (while widget is in focus)
+| Shortcut | Action |
+|----------|--------|
+| `Cmd+R` | **Reload the prototype** — picks up any edits you made to `prototype/index.html` instantly. Use this after every change. |
+| `Cmd+Option+I` | Open DevTools (inspect + debug) |
+
+### Quitting
+- Settings → **Quit widget** → removes the icon from the menu bar entirely
+- Right-click the icon → **Quit TurboTax widget** → same result
+- To reopen after quitting: run `Launch Widget.command` again (or `npm start`)
 
 ---
 
@@ -51,72 +93,123 @@ npm run build
 TurboTax-Assistant/
 │
 ├── README.md                        ← You are here
-├── AI_INSTRUCTIONS.md               ← Feed to Claude before any session
-├── CHANGELOG.md                     ← Full version history
-├── .gitignore
+├── AI_INSTRUCTIONS.md               ← Read this before starting a Claude session
+├── CHANGELOG.md                     ← Full version history (v1–v12+)
+├── Launch Widget.command            ← Double-click to run the menu bar app
 │
-├── prototype/                       ← Self-contained HTML widget
-│   ├── index.html                   ← Main prototype (open in browser or Electron)
-│   ├── Susan.png                    ← Expert photo
-│   └── design-system/               ← Design reference (read before changing anything)
-│       ├── Component Gallery.html   ← Live visual reference for all components
-│       ├── Component Inventory.md   ← Source of truth for design tokens + specs
+├── prototype/                       ← The widget (single self-contained HTML file)
+│   ├── index.html                   ← Everything: HTML + CSS + JS in one file
+│   ├── Susan.png                    ← Expert photo (place here for photo to appear)
+│   └── design-system/
+│       ├── Component Gallery.html   ← Visual reference for every component ← READ THIS
+│       ├── Component Inventory.md   ← Design token + spec source of truth
 │       └── Product Design Requirements.md
 │
-└── electron-app/                    ← macOS app wrapper
-    ├── main.js                      ← Electron main process (tray + window)
-    ├── preload.js                   ← API bridge (extend for Claude API, file parsing)
-    ├── package.json                 ← Dependencies + build config
+└── electron-app/                    ← macOS app wrapper (Electron)
+    ├── main.js                      ← Tray icon + window management
+    ├── preload.js                   ← API bridge (extend for Claude API calls)
+    ├── package.json
     └── assets/
-        ├── menubar-icon.png         ← Tray icon (add yours here)
-        └── app-icon.icns            ← App icon for .dmg (add yours here)
+        ├── menubar-icon.png         ← Menu bar tray icon
+        └── app-icon-1024.png        ← App icon
 ```
 
 ---
 
-## 2-Day Sprint Plan (May 12–14)
+## Contributing with Claude
 
-### Day 1 (May 12) — Foundation ✅ + Electron setup
-- [x] Prototype v7 — multi-view nav, Susan expert card, context-aware chat, booking, notification toast
-- [x] Electron scaffold — menu bar app wrapper
-- [ ] Demo financial data — QBO-style P&L and cash flow summary
-- [ ] Drag and drop document upload UI
+Every change to this project is made by talking to Claude in a Cowork session. Claude reads `AI_INSTRUCTIONS.md` at the start of each session to understand the project, the design system, and the rules it must follow.
 
-### Day 2 (May 13) — Intelligence
-- [ ] Real Claude API for chat (swap hardcoded responses for actual AI)
-- [ ] Document parsing — drop a PDF/image, Claude parses and returns a tax summary
-- [ ] Expert review workflow — "Pending Susan's review" → reviewed → customer approves
-- [ ] Wire `preload.js` API bridge for Claude calls from Electron
+### Starting a session
 
-### May 14 — Polish + Ship
-- [ ] Buffer, bug fixes
-- [ ] Package `.dmg` for both arm64 (Apple Silicon) and x64 (Intel)
-- [ ] Demo video recording
-- [ ] Hackathon submission
+Open the project folder in Cowork, then say something like:
+
+> *"Read AI_INSTRUCTIONS.md and let's work on [feature/fix]."*
+
+Claude will read the instructions and pick up exactly where you left off.
+
+### What Claude does automatically
+
+Claude follows the **design workflow** on every change without being asked:
+
+1. Reads the Component Gallery as the visual reference before writing any code
+2. Updates the Component Gallery when anything changes in the prototype
+3. Runs a **holistic audit** after every change — checks that nothing else in the system is now inconsistent
+4. Writes a CHANGELOG entry for every version
+
+You don't need to remind Claude of these rules every session — `AI_INSTRUCTIONS.md` covers them. But if something seems off, you can always say *"do a holistic audit"* and Claude will sweep the entire system.
+
+### Suggesting new features
+
+Just describe what you want in plain language. Examples:
+
+> *"Add a document upload zone to the main view where I can drop a PDF"*
+> *"The Q2 action row should show a progress bar when the payment is pending"*
+> *"Change Susan's availability to show a calendar week view instead of a date strip"*
+
+Claude will ask clarifying questions if needed, then build it following the design system — using the right tokens, matching the existing patterns, updating the Gallery, and logging the change.
+
+### Making design changes
+
+When reviewing a view or component, take a screenshot and share it:
+
+> *"Here's a screenshot of the expert view. The booking scheduler feels too cramped — can we give it more breathing room and make the confirm button more prominent?"*
+
+Claude will diagnose the issue, propose a fix, and implement it holistically.
+
+### After making changes
+
+After Claude makes a change, hit `Cmd+R` in the widget to reload and see your update immediately. No restart needed.
 
 ---
 
-## Design Workflow (for both contributors)
+## The Design System
 
-Every change follows this order — no exceptions:
+This project has a **single source of truth** for every visual decision. Before touching anything, understand the three layers:
 
-1. **Component Inventory** (`prototype/design-system/Component Inventory.md`) — update spec first
-2. **Component Gallery** (`prototype/design-system/Component Gallery.html`) — update visual reference
-3. **Prototype** (`prototype/index.html`) — apply the change
-4. **Audit** — check for design system inconsistencies
-5. **Fix cohesion** — update any related components that are now inconsistent
-6. **CHANGELOG.md** — document what changed and why
+| File | Role |
+|------|------|
+| `Component Inventory.md` | Defines every design token (colors, spacing, typography, radius) and component spec in text |
+| `Component Gallery.html` | The visual reference — open this in a browser to see every component rendered exactly as it appears in the widget |
+| `prototype/index.html` | The working prototype — must always match the Gallery |
 
-Read `AI_INSTRUCTIONS.md` for the full rules before starting any Claude session.
+**The Gallery and prototype are mirrors of each other.** If they disagree, the Gallery is the intended design and the prototype needs updating. Claude enforces this automatically.
+
+### Design principles in brief
+
+- **Flat widget doctrine:** No shadows inside the widget. No nested cards. Use background tints and hairline dividers instead.
+- **4px spacing grid:** Always use `--s1` through `--s8` tokens. Never hardcode pixel values.
+- **Color tokens:** Always use `var(--color-brand)`, `var(--color-text-primary)`, etc. Never hardcode hex.
+- **Typography:** Body text is 13px (`--text-sm`). Minimum 11px. Labels use uppercase + letter-spacing.
+- **Two-layer IA:** Layer 1 = summary action rows on the main view. Layer 2 = full detail views. Every layer-2 view ends with copy that leads to Susan's footer card.
 
 ---
 
-## Contributing
+## Sprint Plan
 
-1. Pull latest: `git pull origin main`
-2. Work on your changes
-3. Follow the design workflow above
-4. Commit with a descriptive message
-5. Push and open a PR: `git push origin your-branch-name`
+### ✅ Done (v1–v12)
+- Full widget prototype: multi-view navigation, all layer-2 views, Susan expert profile, booking scheduler, AI/Susan chat, 10-min meeting notification toast
+- Year-round calendar, tax law detail cards, 2026 tax return drill-down, settings view
+- Flat design system: tokens, Component Inventory, Component Gallery (fully synced)
+- Electron menu bar app with right-click quit, reload shortcut, click-outside dismiss
+- Launch script (`Launch Widget.command`) for one-double-click setup
 
-For questions on design decisions, ping Sean (XD). For Electron/API questions, ping Hailey.
+### 🔲 Day 2 (May 13) — Intelligence
+- **Real Claude API chat:** replace hardcoded AI responses with live `fetch()` calls to Anthropic API
+- **Document parsing:** drop a PDF → Claude parses → returns structured tax summary → "Pending Susan's review" state
+- **Expert review workflow:** Susan reviews → customer approves flow
+- **Wire `preload.js`** for Claude API calls when running in Electron
+
+### 🔲 May 14 — Polish + Ship
+- Bug fixes and presentation polish
+- Build `.dmg` for arm64 (Apple Silicon) + x64 (Intel)
+- Record demo video
+- Hackathon submission
+
+---
+
+## Questions?
+
+- **Design questions** → Sean or Hailey (both XD)
+- **Electron / API / engineering** → Sean or Hailey
+- **Product direction + submission** → Armin

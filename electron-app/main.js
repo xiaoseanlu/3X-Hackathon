@@ -10,7 +10,7 @@
  *   Cmd+Option+I    — open DevTools
  */
 
-const { app, BrowserWindow, Tray, nativeImage, screen, globalShortcut } = require('electron');
+const { app, BrowserWindow, Tray, Menu, nativeImage, screen, globalShortcut } = require('electron');
 const path = require('path');
 
 // Resolve prototype path for both dev and packaged builds
@@ -46,6 +46,21 @@ function createApp() {
   tray = new Tray(icon);
   tray.setToolTip('TurboTax Business Tax');
   tray.on('click', toggleWindow);
+
+  // ── Right-click context menu — native macOS tray menu ────────────────────
+  const contextMenu = Menu.buildFromTemplate([
+    {
+      label: 'Open widget',
+      click: () => { if (!win.isVisible()) { positionWindow(); win.show(); win.focus(); } }
+    },
+    { type: 'separator' },
+    {
+      label: 'Quit TurboTax widget',
+      accelerator: 'Cmd+Q',
+      click: () => app.quit()
+    }
+  ]);
+  tray.on('right-click', () => tray.popUpContextMenu(contextMenu));
 
   // ── Widget window ─────────────────────────────────────────────────────────
   win = new BrowserWindow({

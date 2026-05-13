@@ -19,14 +19,14 @@
   --danger:          #DE350B;
   --danger-soft:     #F87171;
   --bg:              #FFFFFF;
-  --bg-surface:      #F9FAFB;
+  --bg-surface:      #F6F8FA;
   --bg-card:         #FFFFFF;
   --bg-elevated:     #FFFFFF;
-  --text-primary:    #0D1117;
-  --text-secondary:  #4B5563;
-  --text-tertiary:   #9CA3AF;
-  --border:          rgba(0,0,0,.08);
-  --border-strong:   rgba(0,0,0,.14);
+  --text-primary:    #0A2540;
+  --text-secondary:  #425466;
+  --text-tertiary:   #8792A2;
+  --border:          #E3E8EF;
+  --border-strong:   #C1C9D2;
 }
 
 [data-theme="dark"] {
@@ -189,7 +189,7 @@ body {
 
 .sb-icon:hover { background: var(--bg-surface); }
 
-.sb-icon svg { width: 20px; height: 20px; color: #1B4F8A; }
+.sb-icon svg { width: 20px; height: 20px; color: #D52B1E; }
 [data-theme="dark"] .sb-icon svg { color: #F2F3F5; }
 
 .sb-badge {
@@ -824,10 +824,10 @@ body {
 }
 .seg-btn.on { background: var(--brand); color: #fff; }
 
-/* ─── Expert connection sheet ─── */
+/* ─── Expert booking sheet ─── */
 .sheet-wrap { border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden; }
 .sheet-header {
-  padding: 16px;
+  padding: 14px 16px;
   border-bottom: 0.5px solid var(--border);
   display: flex;
   gap: 12px;
@@ -838,13 +838,13 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--brand-subtle);
+  background: linear-gradient(135deg,#1B4F8A,#2D6BC4);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
-  font-weight: 600;
-  color: var(--brand);
+  font-weight: 700;
+  color: #fff;
   position: relative;
   flex-shrink: 0;
 }
@@ -858,39 +858,29 @@ body {
   background: var(--success);
   border: 2px solid var(--bg-surface);
 }
-.ch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
-.ch-opt {
-  padding: 14px 8px;
+/* Booking layer — expands below Book a Meeting button */
+.bl-body { padding: 12px 16px 4px; }
+.bl-avail {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 12px; border-radius: 8px;
+  background: rgba(0,135,90,.07); margin-bottom: 12px;
+  font-size: 12px; color: var(--text-secondary);
+}
+.bl-avail-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
+.bl-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
+.bl-type {
+  padding: 12px 10px;
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
   background: var(--bg-card);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  transition: background 80ms;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer; transition: all 80ms;
 }
-.ch-opt:hover { background: var(--bg-surface); }
-.ch-opt.sel { outline: 1.5px solid var(--brand); outline-offset: -1px; background: var(--brand-subtle); }
-.ch-icon { font-size: 20px; }
-.ch-label { font-size: 12px; font-weight: 500; color: var(--text-primary); }
-.ch-sub { font-size: 10px; color: var(--text-tertiary); text-align: center; line-height: 1.3; }
-.sheet-ctx { padding: 10px 16px; font-size: 11px; color: var(--text-tertiary); border-top: 0.5px solid var(--border); }
-.sheet-cta {
-  display: block;
-  width: calc(100% - 32px);
-  margin: 12px 16px;
-  height: 38px;
-  background: var(--brand);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: background 80ms;
-}
-.sheet-cta:hover { background: var(--brand-hover); }
+.bl-type:hover { background: var(--bg-surface); border-color: var(--border-strong); }
+.bl-type.sel { background: var(--brand-subtle); border-color: var(--brand); }
+.bl-type-icon { color: var(--text-secondary); }
+.bl-type.sel .bl-type-icon { color: var(--brand); }
+.bl-type-label { font-size: 12px; font-weight: 500; color: var(--text-primary); text-align: center; line-height: 1.35; }
 
 /* ─── Expert profile card ─── */
 .ep-card { border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -926,10 +916,27 @@ body {
   border: 0.5px solid var(--border-strong);
   background: var(--bg-surface);
 }
-.ep-avail { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; }
+/* Hero action row */
+.ep-hero-action { display:flex;align-items:center;gap:10px;margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border);text-align:left; }
+.ep-avail { display: flex; align-items: center; gap: 6px; flex: 1; }
 .ep-avail-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.ep-avail-text { font-size: 13px; color: var(--text-primary); font-weight: 500; flex: 1; }
+.ep-avail-text { font-size: 13px; color: var(--text-primary); font-weight: 500; }
 .ep-avail-sched { font-size: 11px; color: var(--text-tertiary); }
+.ep-book-btn-compact { flex-shrink:0;height:32px;padding:0 14px;background:var(--brand);color:#fff;border:none;border-radius:99px;font-size:11px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap; }
+.ep-book-btn-compact.open { background:var(--brand-subtle);color:var(--brand);border:0.5px solid var(--brand); }
+/* Activity timeline */
+.ep-activity { padding:14px 16px;border-top:1px solid var(--border);background:var(--bg-card); }
+.ep-activity-label { font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:10px; }
+.ep-tl-item { display:flex;gap:10px;padding-bottom:10px; }
+.ep-tl-item:last-child { padding-bottom:0; }
+.ep-tl-dot-col { display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:12px;padding-top:3px; }
+.ep-tl-dot { width:8px;height:8px;border-radius:50%;flex-shrink:0; }
+.ep-tl-line { width:1px;flex:1;background:var(--border);margin-top:5px;min-height:16px; }
+.ep-tl-content { flex:1;min-width:0;padding-bottom:10px;border-bottom:0.5px solid var(--border); }
+.ep-tl-item:last-child .ep-tl-content { border-bottom:none;padding-bottom:0; }
+.ep-tl-date { font-size:10px;color:var(--text-tertiary);margin-bottom:3px; }
+.ep-tl-title { font-size:13px;font-weight:500;color:var(--text-primary);line-height:1.35;margin-bottom:3px; }
+.ep-tl-desc { font-size:11px;color:var(--text-secondary);line-height:1.5; }
 .ep-bio { font-size: 13px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 14px; }
 .ep-book-btn {
   width: 100%; height: 38px; background: transparent; color: var(--brand);
@@ -1135,8 +1142,8 @@ body {
 /* ─── Action Row v2.3 (full-row hover, no inline CTA) ─── */
 .action-list-v2 { border-radius: 12px; overflow: hidden; border: 0.5px solid var(--border); }
 .action-row {
-  display: flex; align-items: center; gap: 14px;
-  padding: 14px 16px; background: var(--bg-card);
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; background: var(--bg-card);
   transition: background 80ms; cursor: pointer;
 }
 .action-row + .action-row { border-top: 0.5px solid var(--border); }
@@ -1154,6 +1161,8 @@ body {
 
 /* ─── Expert Footer Card 3.9b ─── */
 .efc-demo { border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+/* Top border separates sticky footer from scroll area */
+.efc-demo .expert-footer-card { border-top: 1px solid var(--border); }
 .expert-footer-card {
   display: flex; align-items: center; gap: 12px;
   padding: 12px 16px;
@@ -1259,7 +1268,7 @@ body {
 <div class="sticky-bar">
   <div>
     <div class="sticky-title">Tax Assistant — Component Gallery</div>
-    <div class="sticky-sub">v3.3 · Team Malumin · May 2026 · synced with prototype v6</div>
+    <div class="sticky-sub">v4.0 · Team Malumin · May 2026 · synced with prototype v7</div>
   </div>
   <div class="mode-seg">
     <button class="mode-btn active" onclick="setMode('light',this)">☀ Light</button>
@@ -1303,7 +1312,7 @@ body {
       <div class="icon-demo">
         <div class="sb-icon">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
-          <div class="sb-pulse" style="background:#1B4F8A"></div>
+          <div class="sb-pulse" style="background:#D52B1E"></div>
         </div>
         <div class="icon-label">Expert message<br>Someone waiting</div>
       </div>
@@ -1349,10 +1358,10 @@ body {
         <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">chevron-left</div><div style="font-size:10px;color:var(--text-tertiary)">12×12 · 1.4</div></div>
       </div>
 
-      <!-- settings-gear -->
+      <!-- settings-gear (Lucide) -->
       <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;background:var(--bg-surface);border-radius:8px;border:0.5px solid var(--border)">
-        <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px;color:var(--text-primary)"><path d="M6.2 1.5l-.4 1a4.3 4.3 0 0 0-.9.5l-1-.3L2.5 4.5l.7.7a4.3 4.3 0 0 0 0 1.6l-.7.7 1.4 2.5 1-.3c.3.2.6.4.9.5l.4 1H9.8l.4-1c.3-.1.6-.3.9-.5l1 .3 1.4-2.5-.7-.7a4.3 4.3 0 0 0 0-1.6l.7-.7-1.4-2.5-1 .3a4.3 4.3 0 0 0-.9-.5l-.4-1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="8" cy="8" r="2.1" stroke="currentColor" stroke-width="1.2"/></svg>
-        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">settings-gear</div><div style="font-size:10px;color:var(--text-tertiary)">16×16 · 1.2</div></div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--text-primary)"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">settings-gear</div><div style="font-size:10px;color:var(--text-tertiary)">Lucide · 24×24</div></div>
       </div>
 
       <!-- external-link -->
@@ -1495,64 +1504,121 @@ body {
 
   <!-- ─── Year-Round Calendar ─── -->
   <div class="sec">
-    <div class="sec-label">Year-round calendar — coming up, what to prepare</div>
-    <div style="border:0.5px solid var(--border);border-radius:12px;padding:16px;background:var(--bg)">
-      <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:14px">coming up</div>
-      <div class="calendar-list">
-        <div class="cal-item">
-          <div class="cal-dot-col"><div class="cal-dot" style="background:#FF8B00"></div><div class="cal-connector"></div></div>
-          <div class="cal-content"><div class="cal-title">Q2 Estimated Tax</div><div class="cal-date">June 15, 2026</div></div>
-          <div class="cal-days" style="color:#FF8B00">35 days</div>
-        </div>
-        <div class="cal-item">
-          <div class="cal-dot-col"><div class="cal-dot" style="background:var(--text-tertiary)"></div><div class="cal-connector"></div></div>
-          <div class="cal-content"><div class="cal-title">K-1 from Vanguard expected</div><div class="cal-date">June 30, 2026</div></div>
-          <div class="cal-days" style="color:var(--text-tertiary)">50 days</div>
-        </div>
-        <div class="cal-item">
-          <div class="cal-dot-col"><div class="cal-dot" style="background:var(--brand)"></div><div class="cal-connector"></div></div>
-          <div class="cal-content"><div class="cal-title">Expert check-in recommended</div><div class="cal-date">August 1, 2026</div></div>
-          <div class="cal-days" style="color:var(--text-tertiary)">82 days</div>
-        </div>
-        <div class="cal-item" style="border:none">
-          <div class="cal-dot-col"><div class="cal-dot" style="background:var(--danger)"></div></div>
-          <div class="cal-content"><div class="cal-title">Q3 Estimated Tax + S Corp extension</div><div class="cal-date">September 15, 2026</div></div>
-          <div class="cal-days" style="color:var(--text-tertiary)">127 days</div>
+    <div class="sec-label">Year-round calendar — Coming up (layer 1) → Full tax calendar (layer 2)</div>
+    <p class="hmw" style="margin-bottom:16px">HMW — proactivity: the "Coming up" strip on the main view surfaces the 4 nearest deadlines. Tapping any item navigates to layer 2 (v-calendar) showing the complete year, quarter by quarter, ending with 13px leading copy that guides users toward Susan's sticky footer card — no redundant buttons.</p>
+    <div class="two-col">
+      <div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Layer 1 — main view strip (4 nearest events)</div>
+        <div style="border:0.5px solid var(--border);border-radius:12px;padding:16px;background:var(--bg)">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:14px">Coming up</div>
+          <div class="calendar-list">
+            <div class="cal-item">
+              <div class="cal-dot-col"><div class="cal-dot" style="background:#FF8B00"></div><div class="cal-connector"></div></div>
+              <div class="cal-content"><div class="cal-title">Q2 Estimated Tax</div><div class="cal-date">June 15, 2026</div></div>
+              <div class="cal-days" style="color:#FF8B00">35 days</div>
+            </div>
+            <div class="cal-item">
+              <div class="cal-dot-col"><div class="cal-dot" style="background:var(--text-tertiary)"></div><div class="cal-connector"></div></div>
+              <div class="cal-content"><div class="cal-title">K-1 from Vanguard expected</div><div class="cal-date">June 30, 2026</div></div>
+              <div class="cal-days" style="color:var(--text-tertiary)">50 days</div>
+            </div>
+            <div class="cal-item">
+              <div class="cal-dot-col"><div class="cal-dot" style="background:var(--brand)"></div><div class="cal-connector"></div></div>
+              <div class="cal-content"><div class="cal-title">Expert check-in recommended</div><div class="cal-date">August 1, 2026</div></div>
+              <div class="cal-days" style="color:var(--text-tertiary)">82 days</div>
+            </div>
+            <div class="cal-item" style="border:none">
+              <div class="cal-dot-col"><div class="cal-dot" style="background:var(--danger)"></div></div>
+              <div class="cal-content"><div class="cal-title">Q3 Estimated Tax + S Corp extension</div><div class="cal-date">September 15, 2026</div></div>
+              <div class="cal-days" style="color:var(--text-tertiary)">127 days</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;border-top:0.5px solid var(--border);padding-top:12px;display:flex;align-items:center;gap:5px">
+            <span style="font-size:12px;color:var(--brand);cursor:pointer;font-weight:500">View full tax calendar</span>
+            <svg viewBox="0 0 12 12" fill="none" style="width:10px;height:10px;color:var(--brand)"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
         </div>
       </div>
-      <div style="margin-top:14px;border-top:0.5px solid var(--border);padding-top:12px">
-        <div style="font-size:12px;color:var(--brand);cursor:pointer;font-weight:500">View full tax calendar →</div>
+      <div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Layer 2 — full calendar view (v-calendar), quarter by quarter</div>
+        <div style="border:0.5px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg)">
+          <div style="padding:12px 16px;border-bottom:0.5px solid var(--border)">
+            <div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:10px">Q2 · 2026</div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:8px 0;border-bottom:0.5px solid var(--border)">
+              <div style="width:8px;height:8px;border-radius:50%;background:#FF8B00;margin-top:4px;flex-shrink:0"></div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Q2 Estimated Tax</div><div style="font-size:11px;color:var(--text-tertiary)">June 15 · Federal $3,840 + CA $960</div></div>
+              <div style="font-size:11px;font-weight:600;color:#FF8B00;white-space:nowrap">35d</div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:8px 0">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--text-tertiary);margin-top:4px;flex-shrink:0"></div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">K-1 from Vanguard expected</div><div style="font-size:11px;color:var(--text-tertiary)">June 30</div></div>
+              <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);white-space:nowrap">50d</div>
+            </div>
+          </div>
+          <div style="padding:12px 16px">
+            <div style="font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:10px">Q3 · 2026</div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:8px 0;border-bottom:0.5px solid var(--border)">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--brand);margin-top:4px;flex-shrink:0"></div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Expert mid-year check-in</div><div style="font-size:11px;color:var(--text-tertiary)">August 1 · Recommended strategy review</div></div>
+              <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);white-space:nowrap">82d</div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:8px 0">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--danger);margin-top:4px;flex-shrink:0"></div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Q3 Estimated Tax + S Corp extension</div><div style="font-size:11px;color:var(--text-tertiary)">September 15</div></div>
+              <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);white-space:nowrap">127d</div>
+            </div>
+          </div>
+          <!-- Susan CTA at bottom of every layer-2 view — leading copy only, no buttons -->
+          <!-- Buttons removed: Susan's sticky footer card + ask bar are the actual CTAs -->
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.6">Want Susan to walk through your calendar and help you prepare for each deadline?</div>
+          </div>
+        </div>
       </div>
     </div>
-    <p class="hmw">HMW — proactivity: surfaces obligations and preparation milestones year-round, not just at filing time.</p>
   </div>
 
   <div class="divider"></div>
 
-  <!-- ─── Tax Law Update Cards ─── -->
+  <!-- ─── Tax Law Detail Cards (layer 2 — v-action-laws) ─── -->
   <div class="sec">
-    <div class="sec-label">Tax law update cards — expert-reviewed before surfacing</div>
-    <div class="law-card">
-      <div class="law-type">Tax Law · S Corp</div>
-      <div class="law-headline">Home office safe harbor increased to $7 per sq ft for 2025</div>
-      <div class="law-reviewed">✓ Reviewed by Kelly Larsen</div>
-      <div class="law-body">IRS updated the simplified method for home office deductions. If you use the standard method, no action needed. Your expert has reviewed impact on your Schedule C.</div>
-      <div class="law-actions">
-        <div class="law-action">See what changed →</div>
-        <div class="law-action">Ask Kelly</div>
+    <div class="sec-label">Tax law detail cards — layer 2, accessed from "3 new tax laws" action row</div>
+    <p class="hmw" style="margin-bottom:16px">HMW — trust: law cards only appear in layer 2 (v-action-laws), not surfaced on the main view. Each card shows the expert-reviewed badge and a linked IRS source. The view ends with 13px leading copy — no buttons — naturally directing users to Susan's sticky footer card or the ask input.</p>
+    <div class="two-col">
+      <div>
+        <div style="border:0.5px solid var(--border);border-left:3px solid var(--warning);border-radius:8px;padding:14px 16px;background:var(--bg);margin-bottom:10px">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--warning);margin-bottom:4px">Tax Law · Home Office</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:4px;line-height:1.4">Home Office Deduction — Simplified Method Update</div>
+          <div style="font-size:10px;color:var(--success);font-weight:500;margin-bottom:8px">✓ Reviewed by Susan Larsen</div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.55;margin-bottom:10px">IRS increased the simplified method rate to $7/sq ft. Based on your 180 sq ft workspace, this could raise your deduction from $900 to $1,260.</div>
+          <a href="#" style="font-size:11px;font-weight:500;color:var(--brand);text-decoration:none;display:inline-flex;align-items:center;gap:3px">IRS Rev. Proc. 2026-14 →</a>
+        </div>
+        <div style="border:0.5px solid var(--border);border-left:3px solid var(--warning);border-radius:8px;padding:14px 16px;background:var(--bg)">
+          <div style="font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--warning);margin-bottom:4px">Tax Law · S Corp</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:4px;line-height:1.4">S Corp Reasonable Salary — Safe Harbor Clarified</div>
+          <div style="font-size:10px;color:var(--success);font-weight:500;margin-bottom:8px">✓ Reviewed by Susan Larsen</div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.55;margin-bottom:10px">IRS memo clarified the 60/40 split. Your structure is compliant, but Susan recommends a mid-year review given 22% YTD revenue growth.</div>
+          <a href="#" style="font-size:11px;font-weight:500;color:var(--brand);text-decoration:none">IRS AM 2026-003 →</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Susan CTA — bottom of every detail view (leading copy only)</div>
+        <!-- Buttons removed: Susan's sticky footer card + ask bar are the actual CTAs; button rows were redundant -->
+        <div style="border:0.5px solid var(--border);border-radius:8px;padding:14px;background:var(--bg-surface)">
+          <div style="margin-top:0;padding-top:0;border-top:none">
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.6">Susan reviewed these laws against your business. Want to talk through how they affect your 2027 strategy?</div>
+          </div>
+          <div style="margin-top:10px;padding:8px 10px;border-radius:6px;background:rgba(27,79,138,.05);border:0.5px solid var(--border)">
+            <div style="font-size:10px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">Pattern rule</div>
+            <div style="font-size:11px;color:var(--text-secondary);line-height:1.5">13px <code style="font-size:10px;background:rgba(0,0,0,.06);padding:1px 4px;border-radius:3px">var(--text-sm)</code> body text + <code style="font-size:10px;background:rgba(0,0,0,.06);padding:1px 4px;border-radius:3px">border-top: 1px solid var(--border)</code> separator. No buttons — the sticky ExpertFooterCard and ask input are the permanent CTAs.</div>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding:12px;border:0.5px solid var(--border);border-radius:8px;background:var(--bg-surface)">
+          <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:4px">IA rule</div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.5">Law cards live in <strong>layer 2 only</strong>. Layer 1 shows the action row "3 new tax laws may affect you" → tapping navigates to v-action-laws. Never surface full law cards on the main view.</div>
+        </div>
       </div>
     </div>
-    <div class="law-card">
-      <div class="law-type">Reminder · Estimated Tax</div>
-      <div class="law-headline">New safe harbor rules for S Corp owners with variable income</div>
-      <div class="law-reviewed">✓ Reviewed by Kelly Larsen</div>
-      <div class="law-body">If your income varies significantly quarter-to-quarter, the annualized income method may reduce your Q3 estimated payment. Expert can recalculate on request.</div>
-      <div class="law-actions">
-        <div class="law-action">See what changed →</div>
-        <div class="law-action">Recalculate</div>
-      </div>
-    </div>
-    <p class="hmw">HMW — trust: customers never need to track tax law changes. Expert-reviewed cards mean the relationship is always working in the background.</p>
   </div>
 
   <div class="divider"></div>
@@ -1593,23 +1659,23 @@ body {
       <div>
         <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Expert matched</div>
         <div class="expert-match">
-          <div class="match-av">KL<div class="match-av-dot"></div></div>
-          <div class="match-name">Kelly Larsen</div>
+          <div class="match-av" style="background:linear-gradient(135deg,#1B4F8A,#2D6BC4);color:#fff;font-size:16px">SL<div class="match-av-dot"></div></div>
+          <div class="match-name">Susan Larsen</div>
           <div class="match-role">Business Tax · S Corp</div>
           <div class="match-reason">Matched for S Corp experience in California</div>
-          <div class="match-trust">237 clients · 4.9★ · 8 yrs</div>
-          <button class="match-cta">Message Kelly</button>
+          <div class="match-trust">372 clients · 4.9★ · 19 yrs</div>
+          <button class="match-cta">Message Susan</button>
         </div>
       </div>
       <div>
         <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Expert working</div>
         <div class="expert-working">
-          <div class="ew-av">KL<div class="ew-dot" style="background:var(--success)"></div></div>
+          <div class="ew-av" style="background:linear-gradient(135deg,#1B4F8A,#2D6BC4);color:#fff">SL<div class="ew-dot" style="background:var(--success)"></div></div>
           <div class="ew-body">
-            <div class="ew-status">Kelly is working on your return</div>
+            <div class="ew-status">Susan is working on your return</div>
             <div class="ew-detail">Currently: Schedule C</div>
             <div class="ew-time">Last update · 2 hrs ago</div>
-            <div class="ew-cta">Ask Kelly a question</div>
+            <div class="ew-cta">Ask Susan a question</div>
           </div>
         </div>
       </div>
@@ -1618,13 +1684,13 @@ body {
         <div class="review-card">
           <div class="review-icon">✓</div>
           <div class="review-headline">Your return is ready</div>
-          <div class="review-sub">Kelly has completed your return. Please review and approve.</div>
+          <div class="review-sub">Susan has completed your return. Please review and approve.</div>
           <div class="review-nums">
             <div class="review-num-cell"><div class="review-num-label">Federal refund</div><div class="review-num-val" style="color:#00875A">$2,840</div></div>
             <div class="review-num-cell"><div class="review-num-label">State owed</div><div class="review-num-val" style="color:#DE350B">$320</div></div>
           </div>
           <button class="review-cta-primary">Review Return</button>
-          <button class="review-cta-ghost">Ask Kelly first</button>
+          <button class="review-cta-ghost">Ask Susan first</button>
         </div>
       </div>
     </div>
@@ -1653,6 +1719,17 @@ body {
               <span class="ep-badge">EA</span>
               <span class="ep-badge">S Corp</span>
             </div>
+            <!-- Availability + Book a Meeting in ep-hero for immediate engagement -->
+            <div class="ep-hero-action">
+              <div class="ep-avail">
+                <div class="ep-avail-dot" style="background:var(--success)"></div>
+                <div>
+                  <div class="ep-avail-text">Available now</div>
+                  <div class="ep-avail-sched">Mon–Fri · 9am–6pm PT</div>
+                </div>
+              </div>
+              <button class="ep-book-btn-compact" id="epbookbtn1" onclick="toggleScheduler(this,'ep-sched-1')">Book a Meeting</button>
+            </div>
           </div>
           <div class="ep-stats">
             <div class="ep-stat">
@@ -1664,28 +1741,66 @@ body {
                 <span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span>
               </div>
               <div style="font-size:13px;font-weight:700;color:var(--text-primary);line-height:1.1">4.9</div>
-              <div class="ep-stat-label">312 reviews</div>
+              <div class="ep-stat-label">372 reviews</div>
             </div>
             <div class="ep-stat">
               <div class="ep-stat-val">847</div>
               <div class="ep-stat-label">returns filed</div>
             </div>
           </div>
-          <div class="ep-body">
+          <div class="ep-body" style="padding-bottom:10px">
             <div class="ep-tags">
               <span class="ep-tag">S Corp</span>
-              <span class="ep-tag">Sole Proprietor</span>
-              <span class="ep-tag">Real Estate</span>
+              <span class="ep-tag">Sole Prop</span>
+              <span class="ep-tag">Small Business</span>
               <span class="ep-tag">California</span>
-              <span class="ep-tag">Crypto</span>
+              <span class="ep-tag">English</span>
+              <span class="ep-tag">Spanish</span>
             </div>
-            <div class="ep-avail">
-              <div class="ep-avail-dot" style="background:var(--success)"></div>
-              <div class="ep-avail-text">Available now</div>
-              <div class="ep-avail-sched">Mon–Fri · 9am–6pm PT</div>
+          </div>
+          <!-- Activity timeline — history of Susan's work with this business -->
+          <div class="ep-activity">
+            <div class="ep-activity-label">With your business</div>
+            <div class="ep-tl-item">
+              <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--brand)"></div><div class="ep-tl-line"></div></div>
+              <div class="ep-tl-content">
+                <div class="ep-tl-date">May 12, 2026 · 3 days ago</div>
+                <div class="ep-tl-title">Reviewed Q1 books</div>
+                <div class="ep-tl-desc">Flagged a missed home office deduction — estimated $1,200 in additional savings for 2027.</div>
+              </div>
             </div>
-            <div class="ep-bio">S Corp and partnership specialist with 19 years in California business tax. Previously at Deloitte. Fluent in Mandarin.</div>
-            <button class="ep-book-btn" id="epbookbtn1" onclick="toggleScheduler(this,'ep-sched-1')">Book a Meeting</button>
+            <div class="ep-tl-item">
+              <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--success)"></div><div class="ep-tl-line"></div></div>
+              <div class="ep-tl-content">
+                <div class="ep-tl-date">Apr 13, 2026</div>
+                <div class="ep-tl-title">2025 return accepted by IRS</div>
+                <div class="ep-tl-desc">Federal + CA filed. Total taxes owed: $4,187. Refund of $1,240 applied to 2026 estimates.</div>
+              </div>
+            </div>
+            <div class="ep-tl-item">
+              <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--success)"></div><div class="ep-tl-line"></div></div>
+              <div class="ep-tl-content">
+                <div class="ep-tl-date">Mar 15, 2026</div>
+                <div class="ep-tl-title">Q1 estimated payment confirmed</div>
+                <div class="ep-tl-desc">$3,840 Federal · $960 CA. Susan verified amounts match YTD income.</div>
+              </div>
+            </div>
+            <div class="ep-tl-item">
+              <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--brand)"></div><div class="ep-tl-line"></div></div>
+              <div class="ep-tl-content">
+                <div class="ep-tl-date">Feb 3, 2026</div>
+                <div class="ep-tl-title">S Corp salary structure reviewed</div>
+                <div class="ep-tl-desc">Aligned W-2 salary to IRS safe harbor (60/40 rule). Updated distribution schedule to reduce self-employment tax exposure.</div>
+              </div>
+            </div>
+            <div class="ep-tl-item">
+              <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--brand)"></div></div>
+              <div class="ep-tl-content">
+                <div class="ep-tl-date">Jan 8, 2026</div>
+                <div class="ep-tl-title">Year-end planning session</div>
+                <div class="ep-tl-desc">Identified $4,320 in additional deductions. Recommended Section 179 timing for equipment purchases before Dec 31.</div>
+              </div>
+            </div>
           </div>
           <div class="ep-scheduler" id="ep-sched-1">
             <div class="ep-sched-label">Select a date</div>
@@ -1713,7 +1828,7 @@ body {
             <div class="ep-sched-icon">✓</div>
             <div style="flex:1">
               <div style="font-size:13px;font-weight:500;color:var(--text-primary)">Meeting scheduled</div>
-              <div style="font-size:11px;color:var(--text-tertiary);margin-top:2px" id="ep-booked-detail-1">Tue, May 12 · 9:00 AM with Kelly</div>
+              <div style="font-size:11px;color:var(--text-tertiary);margin-top:2px" id="ep-booked-detail-1">Tue, May 12 · 9:00 AM with Susan</div>
             </div>
             <div style="font-size:12px;color:var(--brand);cursor:pointer">Reschedule</div>
           </div>
@@ -1730,6 +1845,17 @@ body {
             <div class="ep-creds">
               <span class="ep-badge">CPA</span>
               <span class="ep-badge">JD</span>
+            </div>
+            <!-- Availability + Book a Meeting in ep-hero — same pattern as Susan, warning state -->
+            <div class="ep-hero-action">
+              <div class="ep-avail">
+                <div class="ep-avail-dot" style="background:var(--warning)"></div>
+                <div>
+                  <div class="ep-avail-text">Responds within 2 hours</div>
+                  <div class="ep-avail-sched">Back Mon, 9 AM</div>
+                </div>
+              </div>
+              <button class="ep-book-btn-compact" id="epbookbtn2" onclick="toggleScheduler(this,'ep-sched-2')">Book a Meeting</button>
             </div>
           </div>
           <div class="ep-stats">
@@ -1749,20 +1875,13 @@ body {
               <div class="ep-stat-label">returns filed</div>
             </div>
           </div>
-          <div class="ep-body">
+          <div class="ep-body" style="padding-bottom:10px">
             <div class="ep-tags">
               <span class="ep-tag">Partnership</span>
               <span class="ep-tag">Multi-State</span>
               <span class="ep-tag">Tax Litigation</span>
               <span class="ep-tag">New York</span>
             </div>
-            <div class="ep-avail">
-              <div class="ep-avail-dot" style="background:var(--warning)"></div>
-              <div class="ep-avail-text">Responds within 2 hours</div>
-              <div class="ep-avail-sched">Back Mon, 9 AM</div>
-            </div>
-            <div class="ep-bio">Multi-state partnership specialist and tax attorney. Handles complex multi-entity structures and tax litigation. 18 years of corporate and individual tax experience.</div>
-            <button class="ep-book-btn" id="epbookbtn2" onclick="toggleScheduler(this,'ep-sched-2')">Book a Meeting</button>
           </div>
           <div class="ep-scheduler" id="ep-sched-2">
             <div class="ep-sched-label">Select a date</div>
@@ -1840,7 +1959,7 @@ body {
           <div class="ar-title">Q2 estimated tax due in 16 days</div>
           <div class="ar-sub">$3,840 due Jun 15 · Expert confirmed amount</div>
         </div>
-        <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
       <div class="action-row">
         <div class="ar-icon info">
@@ -1850,7 +1969,7 @@ body {
           <div class="ar-title">2025 home office rules updated</div>
           <div class="ar-sub">Susan reviewed · may affect your deduction</div>
         </div>
-        <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
       <div class="action-row">
         <div class="ar-icon info">
@@ -1860,7 +1979,7 @@ body {
           <div class="ar-title">Any business structure changes this year?</div>
           <div class="ar-sub">Susan wants to confirm before filing</div>
         </div>
-        <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
       <div class="action-row">
         <div class="ar-icon neutral">
@@ -1870,7 +1989,7 @@ body {
           <div class="ar-title">Upload Schedule K-1</div>
           <div class="ar-sub">Expected from Vanguard</div>
         </div>
-        <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </div>
   </div>
@@ -1887,39 +2006,102 @@ body {
 
   <div class="divider"></div>
 
-  <!-- ─── Expert Connection Sheet ─── -->
+  <!-- ─── Expert Booking Sheet ─── -->
   <div class="sec">
-    <div class="sec-label">Expert connection sheet — context travels automatically</div>
+    <div class="sec-label">Expert booking sheet — Book a Meeting opens a layer with Call or Video options</div>
+    <p class="hmw" style="margin-bottom:16px">HMW — scheduling: tapping "Book a Meeting" expands a layer inline showing Susan's live availability first, then two booking paths (Call / Video Chat). No modals — stays inside the widget panel. Date and time selection follow after choosing a meeting type.</p>
     <div class="two-col">
-      <div class="sheet-wrap">
-        <div class="sheet-header">
-          <div class="sheet-av">KL<div class="sheet-av-dot"></div></div>
-          <div><div style="font-size:14px;font-weight:600;color:var(--text-primary)">Kelly Larsen</div><div style="font-size:12px;color:var(--text-tertiary);margin-top:2px">Business Tax · S Corp · Available</div></div>
-        </div>
-        <div class="ch-grid" id="chgrid">
-          <div class="ch-opt sel" onclick="selCh(this,0)"><div class="ch-icon">💬</div><div class="ch-label">Chat</div><div class="ch-sub">~2 hr reply</div></div>
-          <div class="ch-opt" onclick="selCh(this,1)"><div class="ch-icon">📞</div><div class="ch-label">Call</div><div class="ch-sub">Available now</div></div>
-          <div class="ch-opt" onclick="selCh(this,2)"><div class="ch-icon">🎥</div><div class="ch-label">Video</div><div class="ch-sub">+ screen share</div></div>
-        </div>
-        <div class="sheet-ctx">🕐 Last shared: Chase Business connected · 3 days ago</div>
-        <button class="sheet-cta" id="sheetcta">Start Chat</button>
-      </div>
+
+      <!-- State 1: Default — button not yet tapped -->
       <div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Bottom bar — always visible</div>
-        <div class="bottom-bar">
-          <input class="ask-input" id="bbinput" placeholder="Ask a tax question…" readonly>
-          <button class="connect-btn">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Connect
-          </button>
-        </div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin:16px 0 10px">Account connection items</div>
-        <div class="account-list">
-          <div class="account-item"><div class="acct-logo" style="background:var(--bg-surface)">CH</div><div class="acct-info"><div class="acct-name">Chase Business</div><div class="acct-sub">Checking · ····4821</div></div><div class="acct-status"><div class="status-dot" style="background:var(--success)"></div><span style="color:var(--success);font-weight:500">Connected</span></div></div>
-          <div class="account-item"><div class="acct-logo" style="background:#EEF2FF;color:#4338CA">VG</div><div class="acct-info"><div class="acct-name">Vanguard</div><div class="acct-sub">Investment · Recommended</div></div><button class="acct-btn" style="color:var(--brand)">Connect</button></div>
-          <div class="account-item"><div class="acct-logo" style="background:#FFF4E5;color:#FF8B00">AM</div><div class="acct-info"><div class="acct-name">American Express</div><div class="acct-sub">Session expired</div></div><button class="acct-btn" style="color:var(--danger)">Reconnect</button></div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">State 1 — before booking</div>
+        <div class="sheet-wrap">
+          <div class="sheet-header">
+            <div class="sheet-av">SL<div class="sheet-av-dot"></div></div>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--text-primary)">Susan Larsen</div>
+              <div style="font-size:12px;color:var(--text-tertiary);margin-top:2px">CPA · EA · S Corp · Available</div>
+            </div>
+          </div>
+          <div class="bl-body" style="padding-bottom:12px">
+            <button class="ep-book-btn" onclick="toggleBookingGallery(this,'bl-demo-1')">Book a Meeting</button>
+          </div>
+          <div id="bl-demo-1" style="display:none;border-top:0.5px solid var(--border)">
+            <div class="bl-body">
+              <div class="bl-avail">
+                <span class="bl-avail-dot"></span>
+                Available now · Mon–Fri · 9am–6pm PT
+              </div>
+              <div class="bl-type-grid">
+                <div class="bl-type" onclick="selBlType(this,'bl-demo-1')">
+                  <svg class="bl-type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.64 3.35 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <div class="bl-type-label">Schedule a Call</div>
+                </div>
+                <div class="bl-type" onclick="selBlType(this,'bl-demo-1')">
+                  <svg class="bl-type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                  <div class="bl-type-label">Schedule a Video Chat</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- State 2: Open — type selected, date/time visible -->
+      <div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">State 2 — booking layer open, type selected</div>
+        <div class="sheet-wrap">
+          <div class="sheet-header">
+            <div class="sheet-av">SL<div class="sheet-av-dot"></div></div>
+            <div>
+              <div style="font-size:14px;font-weight:600;color:var(--text-primary)">Susan Larsen</div>
+              <div style="font-size:12px;color:var(--text-tertiary);margin-top:2px">CPA · EA · S Corp · Available</div>
+            </div>
+          </div>
+          <div class="bl-body" style="padding-bottom:12px">
+            <button class="ep-book-btn open">Book a Meeting</button>
+          </div>
+          <div style="border-top:0.5px solid var(--border)">
+            <div class="bl-body">
+              <div class="bl-avail">
+                <span class="bl-avail-dot"></span>
+                Available now · Mon–Fri · 9am–6pm PT
+              </div>
+              <div class="bl-type-grid" style="margin-bottom:12px">
+                <div class="bl-type sel">
+                  <svg class="bl-type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.64 3.35 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <div class="bl-type-label">Schedule a Call</div>
+                </div>
+                <div class="bl-type">
+                  <svg class="bl-type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                  <div class="bl-type-label">Schedule a Video Chat</div>
+                </div>
+              </div>
+              <!-- Date strip -->
+              <div class="ep-sched-label">Select a date</div>
+              <div class="ep-date-strip" style="margin-bottom:10px">
+                <div class="ep-day today sel" style="cursor:default"><span class="ep-day-dow">TUE</span><span class="ep-day-num">12</span></div>
+                <div class="ep-day"><span class="ep-day-dow">WED</span><span class="ep-day-num">13</span></div>
+                <div class="ep-day"><span class="ep-day-dow">THU</span><span class="ep-day-num">14</span></div>
+                <div class="ep-day unavail"><span class="ep-day-dow">FRI</span><span class="ep-day-num">15</span></div>
+                <div class="ep-day"><span class="ep-day-dow">MON</span><span class="ep-day-num">18</span></div>
+              </div>
+              <!-- Time slots -->
+              <div class="ep-sched-label" style="margin-bottom:6px">Select a time</div>
+              <div class="ep-slots" style="margin-bottom:12px">
+                <button class="ep-slot sel">9:00 AM</button>
+                <button class="ep-slot booked">9:30 AM</button>
+                <button class="ep-slot">10:00 AM</button>
+                <button class="ep-slot booked">10:30 AM</button>
+                <button class="ep-slot">2:00 PM</button>
+                <button class="ep-slot">3:30 PM</button>
+              </div>
+              <button class="ep-confirm-btn">Confirm Call · Tue, May 12 · 9:00 AM</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1955,7 +2137,7 @@ body {
               </div>
             </div>
             <div class="efc-chev">
-              <svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
           </div>
           <div class="bottom-bar-demo">
@@ -1994,7 +2176,7 @@ body {
               </div>
             </div>
             <div class="efc-chev">
-              <svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
           </div>
           <div class="bottom-bar-demo">
@@ -2009,6 +2191,81 @@ body {
         </div>
         <p style="font-size:11px;color:var(--text-tertiary);margin-top:10px;line-height:1.5">Avatar: 56px layered (gradient+initials z:0, photo z:1). Height: ~80px auto via padding 12px 16px. Hides when expert or chat view is active. Always <code style="font-size:10px;background:var(--bg-surface);padding:1px 4px;border-radius:3px">flex-shrink:0</code>.</p>
       </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Chat View ─── -->
+  <div class="sec">
+    <div class="sec-label">Chat view — single global input, context-aware AI or Susan mode</div>
+    <p class="hmw" style="margin-bottom:16px">HMW — reachability: there is ONE input field in the entire widget (#askInput in the bottom bar). Typing from main/action views opens AI mode. Typing from Susan's expert profile opens Susan mode. No second input ever.</p>
+    <div class="two-col">
+      <!-- AI mode -->
+      <div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">AI mode — triggered from main or action views</div>
+        <div style="border:0.5px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg-card)">
+          <!-- Chat header -->
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--border);background:#F6F8FA">
+            <div style="width:28px;height:28px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">TT</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text-primary)">Ask anything</div><div style="font-size:11px;color:var(--text-tertiary)">TurboTax Assistant · instant</div></div>
+          </div>
+          <!-- Messages -->
+          <div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px;min-height:160px;background:#F6F8FA">
+            <!-- User message -->
+            <div style="display:flex;justify-content:flex-end">
+              <div style="background:var(--brand);color:#fff;border-radius:12px 12px 3px 12px;padding:8px 12px;max-width:80%;font-size:13px;line-height:1.45">What's my estimated Q2 payment?</div>
+            </div>
+            <!-- AI response -->
+            <div style="display:flex;gap:8px;align-items:flex-start">
+              <div style="width:24px;height:24px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px">TT</div>
+              <div style="background:var(--bg-card);border:0.5px solid var(--border);border-radius:3px 12px 12px 12px;padding:8px 12px;max-width:82%;font-size:13px;color:var(--text-primary);line-height:1.45">Based on your Q1 data, your Q2 estimated payment is <strong>$3,840</strong> — due June 15. Your effective rate is tracking at 18.4%. Susan confirmed this amount last week.</div>
+            </div>
+          </div>
+          <!-- Bottom bar in AI mode -->
+          <div style="display:flex;gap:8px;padding:8px 12px;border-top:0.5px solid var(--border);background:var(--bg-card)">
+            <input style="flex:1;height:34px;padding:0 10px;border:0.5px solid var(--border-strong);border-radius:7px;font-size:13px;font-family:inherit;color:var(--text-primary);background:var(--bg-card);outline:none" placeholder="Ask anything…" readonly>
+            <button style="width:34px;height:34px;background:var(--brand);border:none;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;flex-shrink:0">
+              <svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Susan mode -->
+      <div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Susan mode — triggered from expert profile view</div>
+        <div style="border:0.5px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg-card)">
+          <!-- Chat header -->
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--border);background:#F6F8FA">
+            <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#1B4F8A,#2D6BC4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">SL</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text-primary)">Ask Susan</div><div style="font-size:11px;color:var(--text-tertiary)">Susan Larsen · async</div></div>
+          </div>
+          <!-- Messages -->
+          <div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px;min-height:160px;background:#F6F8FA">
+            <!-- User message -->
+            <div style="display:flex;justify-content:flex-end">
+              <div style="background:var(--brand);color:#fff;border-radius:12px 12px 3px 12px;padding:8px 12px;max-width:80%;font-size:13px;line-height:1.45">Should I make the PTET election?</div>
+            </div>
+            <!-- Susan response -->
+            <div style="display:flex;gap:8px;align-items:flex-start">
+              <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#1B4F8A,#2D6BC4);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0;margin-top:2px">SL</div>
+              <div style="background:var(--bg-card);border:0.5px solid var(--border);border-radius:3px 12px 12px 12px;padding:8px 12px;max-width:82%;font-size:13px;color:var(--text-primary);line-height:1.45">Yes — at your income level the California PTET election saves roughly <strong>$4,200</strong>. Deadline is September 15. I'll prep the paperwork if you confirm by August.</div>
+            </div>
+          </div>
+          <!-- Bottom bar in Susan mode -->
+          <div style="display:flex;gap:8px;padding:8px 12px;border-top:0.5px solid var(--border);background:var(--bg-card)">
+            <input style="flex:1;height:34px;padding:0 10px;border:0.5px solid var(--border-strong);border-radius:7px;font-size:13px;font-family:inherit;color:var(--text-primary);background:var(--bg-card);outline:none" placeholder="Ask Susan…" readonly>
+            <button style="width:34px;height:34px;background:var(--brand);border:none;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;flex-shrink:0">
+              <svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <!-- Async note -->
+          <div style="padding:6px 14px 10px;font-size:10px;color:var(--text-tertiary);text-align:center">Messages go to Susan · typically replies within 2 hours</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:12px;padding:10px 14px;background:var(--bg-surface);border-radius:8px;border:0.5px solid var(--border);font-size:11px;color:var(--text-secondary);line-height:1.5">
+      <strong>Implementation note:</strong> <code style="font-size:10px;background:var(--bg-elevated);padding:1px 4px;border-radius:3px">chatMode</code> global var (<code style="font-size:10px;background:var(--bg-elevated);padding:1px 4px;border-radius:3px">'ai'</code> | <code style="font-size:10px;background:var(--bg-elevated);padding:1px 4px;border-radius:3px">'susan'</code>) set in <code style="font-size:10px;background:var(--bg-elevated);padding:1px 4px;border-radius:3px">sendAsk()</code>. Chat header avatar, title, and async note switch based on this value. Only one chat view (#v-chat) — no duplicate. Send button uses arrow-right icon (14px, stroke 1.4).
     </div>
   </div>
 
@@ -2035,14 +2292,14 @@ body {
                     <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="7" cy="10" r=".7" fill="currentColor"/></svg>
                   </div>
                   <div class="ar-body"><div class="ar-title">Q2 estimated tax</div><div class="ar-sub">$3,840 · Jun 15</div></div>
-                  <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 </div>
                 <div class="action-row" onclick="ndPush('ndv-laws')">
                   <div class="ar-icon info">
                     <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 7h5M4.5 4.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
                   </div>
                   <div class="ar-body"><div class="ar-title">New tax laws</div><div class="ar-sub">3 changes may affect you</div></div>
-                  <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
                 </div>
               </div>
             </div>
@@ -2081,12 +2338,19 @@ body {
         <div style="background:var(--bg-surface);border:0.5px solid var(--border);border-radius:10px;padding:14px 16px;font-size:12px;color:var(--text-secondary);line-height:1.7">
           <div style="font-weight:600;color:var(--text-primary);margin-bottom:8px">Motion tokens</div>
           <code style="display:block;font-size:11px;background:var(--bg-elevated);border:0.5px solid var(--border);padding:8px 10px;border-radius:6px;margin-bottom:10px;color:var(--text-primary)">transform: translateX(100%)  → 0  (push in)<br>transform: translateX(0)  → −28%  (push behind)<br>transition: 260ms cubic-bezier(0.4,0,0.2,1)</code>
+          <div style="font-weight:600;color:var(--text-primary);margin-bottom:6px">View IDs</div>
+          <code style="display:block;font-size:11px;background:var(--bg-elevated);border:0.5px solid var(--border);padding:8px 10px;border-radius:6px;margin-bottom:10px;color:var(--text-primary)">main · expert · chat · settings<br>action-q2 · action-laws · action-biz · calendar · tax-2026</code>
           <div style="font-weight:600;color:var(--text-primary);margin-bottom:6px">Rules</div>
           <div>• View stack: JS array, push on navigate, pop on back</div>
-          <div>• ExpertFooterCard hides when stack depth &gt; 0 to expert view</div>
+          <div>• ExpertFooterCard hides in <code style="font-size:10px">expert</code> and <code style="font-size:10px">chat</code> views</div>
           <div>• Back button appears in header when stack depth &gt; 1</div>
           <div>• All views are absolutely positioned inside a relative container</div>
           <div>• Each view handles its own scroll independently</div>
+          <div>• Every layer-2 detail view ends with the Susan CTA block</div>
+          <div style="margin-top:10px;font-weight:600;color:var(--text-primary);margin-bottom:6px">Scroll area</div>
+          <div>• <code style="font-size:10px">.views-host</code>: flat edges, no border-radius, no margin</div>
+          <div>• Bottom 48px fade: <code style="font-size:10px">::after</code> gradient rgba(244,246,249,0) → #F4F6F9</div>
+          <div>• Visually dissolves content into the expert footer — no hard edge</div>
         </div>
       </div>
     </div>
@@ -2107,15 +2371,23 @@ body {
           </button>
           <span style="font-size:13px;font-weight:600;color:var(--text-primary)">Settings</span>
         </div>
-        <!-- Settings content — Business -->
+        <!-- Settings content — Company Info -->
         <div class="settings-section">
-          <div class="settings-section-label">Business</div>
-          <div style="margin-bottom:8px"><div style="font-size:13px;font-weight:600;color:var(--text-primary)">Acme Design Co.</div><div style="font-size:11px;color:var(--text-tertiary)">S Corp · California</div></div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">
-            <div style="padding:8px 10px;background:#F6F8FA;border-radius:6px"><div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">Revenue</div><div style="font-size:14px;font-weight:700;color:var(--text-primary)">$284k</div></div>
-            <div style="padding:8px 10px;background:#F6F8FA;border-radius:6px"><div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">Deductions</div><div style="font-size:14px;font-weight:700;color:var(--text-primary)">$14.8k</div></div>
-            <div style="padding:8px 10px;background:#F6F8FA;border-radius:6px"><div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">Eff. Rate</div><div style="font-size:14px;font-weight:700;color:var(--text-primary)">18.4%</div></div>
-            <div style="padding:8px 10px;background:#F6F8FA;border-radius:6px"><div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">With TT</div><div style="font-size:14px;font-weight:700;color:var(--text-primary)">6 yrs</div></div>
+          <div class="settings-section-label">Company Info</div>
+          <div style="margin-bottom:10px">
+            <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:2px">Acme Design Co.</div>
+            <div style="font-size:11px;color:var(--text-tertiary)">S Corp · California · Est. 2018</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:11px;color:var(--text-tertiary)">Owner</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">Sean Lu</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:11px;color:var(--text-tertiary)">Size</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">1–5 employees</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:11px;color:var(--text-tertiary)">Type</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">S Corp</span></div>
+          <div style="padding:6px 0 8px;border-bottom:0.5px solid var(--border)"><span style="font-size:11px;color:var(--text-tertiary);display:block;margin-bottom:3px">About</span><span style="font-size:11px;color:var(--text-secondary);line-height:1.5">Brand identity, product design, and UX consulting for tech startups.</span></div>
+          <div style="padding-top:8px">
+            <button style="display:inline-flex;align-items:center;gap:5px;background:none;border:0.5px solid var(--border);border-radius:5px;padding:4px 8px;cursor:pointer;color:var(--brand);font-size:11px;font-weight:500;font-family:inherit">
+              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M9 2l3 3L4 13H1v-3L9 2z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Update company info
+            </button>
+            <div style="font-size:10px;color:var(--text-tertiary);margin-top:5px">Opens TurboTax login in browser</div>
           </div>
         </div>
         <!-- Past Returns -->
@@ -2123,33 +2395,44 @@ body {
           <div class="settings-section-label">Past Returns</div>
           <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2025</span><span style="font-size:11px;color:var(--text-tertiary)">Federal + CA</span><span style="font-size:12px;font-weight:600;color:var(--danger)">−$4,187</span></div>
           <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2024</span><span style="font-size:11px;color:var(--text-tertiary)">Federal + CA</span><span style="font-size:12px;font-weight:600;color:var(--success)">+$1,240</span></div>
-          <div style="display:flex;justify-content:space-between;padding:5px 0"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2023</span><span style="font-size:11px;color:var(--text-tertiary)">Federal + CA</span><span style="font-size:12px;font-weight:600;color:var(--danger)">−$2,950</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2023</span><span style="font-size:11px;color:var(--text-tertiary)">Federal + CA</span><span style="font-size:12px;font-weight:600;color:var(--danger)">−$2,950</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2022</span><span style="font-size:11px;color:var(--text-tertiary)">Federal only</span><span style="font-size:12px;font-weight:600;color:var(--success)">+$3,820</span></div>
         </div>
         <!-- Account -->
         <div class="settings-section">
           <div class="settings-section-label">Account</div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Name</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">Sean Xiao</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Name</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">Sean Lu</span></div>
           <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Email</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">xiao_lu@intuit.com</span></div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Plan</span><span style="font-size:11px;font-weight:500;color:var(--brand)">TT Live Full Service</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Plan</span><span style="font-size:11px;font-weight:500;color:var(--brand)">TurboTax Business Tax Full Service</span></div>
         </div>
         <!-- Notifications -->
-        <div class="settings-section" style="border-bottom:none">
+        <div class="settings-section">
           <div class="settings-section-label">Notifications</div>
           <div class="settings-row"><span class="settings-row-label">Expert messages</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
           <div class="settings-row"><span class="settings-row-label">Tax deadlines</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
           <div class="settings-row"><span class="settings-row-label">Tax law updates</span><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
           <div class="settings-row" style="border:none"><span class="settings-row-label">Document requests</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
         </div>
+        <!-- Log out + Quit -->
+        <div class="settings-section" style="border-bottom:none;display:flex;flex-direction:column;gap:2px;padding-top:10px;padding-bottom:10px">
+          <button style="background:none;border:none;width:100%;text-align:left;padding:6px 0;font-size:12px;color:#425466;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;border-bottom:0.5px solid var(--border)">
+            <svg viewBox="0 0 14 14" fill="none" style="width:12px;height:12px"><path d="M5 2H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M9 10l3-3-3-3M12 7H5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Log out
+          </button>
+          <button style="background:none;border:none;width:100%;text-align:left;padding:6px 0;font-size:12px;color:#DE350B;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px">
+            <svg viewBox="0 0 14 14" fill="none" style="width:12px;height:12px"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            Quit widget
+          </button>
+        </div>
       </div>
       <div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Widget panel — full preview</div>
-        <div class="widget-wrap">
+        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">⚠ Deprecated — tabs UI superseded by multi-view nav</div>
+        <div class="widget-wrap" style="opacity:.45;pointer-events:none">
           <div class="mini-widget">
             <div class="mw-header">
-              <div class="mw-av">KL<div class="mw-av-dot"></div></div>
-              <div style="flex:1"><div style="font-size:9px;color:var(--text-tertiary)">Your Expert</div><div style="font-size:12px;font-weight:600;color:var(--text-primary)">Kelly Larsen</div></div>
+              <div class="mw-av" style="background:linear-gradient(135deg,#1B4F8A,#2D6BC4);color:#fff;font-size:10px">SL<div class="mw-av-dot"></div></div>
+              <div style="flex:1"><div style="font-size:9px;color:var(--text-tertiary)">Your Expert</div><div style="font-size:12px;font-weight:600;color:var(--text-primary)">Susan Larsen</div></div>
               <div style="font-size:11px;color:var(--brand);background:var(--brand-subtle);padding:2px 7px;border-radius:4px;font-weight:500">In Review</div>
-              <div class="gear-icon">⚙</div>
             </div>
             <div class="mw-tabs">
               <button class="mw-tab active">Overview</button>
@@ -2164,7 +2447,7 @@ body {
               <div class="mw-sec-label">needs attention</div>
               <div class="mw-items">
                 <div class="mw-item"><div class="mw-dot" style="background:var(--brand)"></div><div class="mw-item-info"><div class="mw-item-title">Upload Schedule K-1</div><div class="mw-item-sub">From Vanguard</div></div><div class="mw-item-cta">Upload</div></div>
-                <div class="mw-item"><div class="mw-dot" style="background:var(--success)"></div><div class="mw-item-info"><div class="mw-item-title">Expert has a question</div><div class="mw-item-sub">Kelly · 2 hrs ago</div></div><div class="mw-item-cta">Connect</div></div>
+                <div class="mw-item"><div class="mw-dot" style="background:var(--success)"></div><div class="mw-item-info"><div class="mw-item-title">Expert has a question</div><div class="mw-item-sub">Susan · 2 hrs ago</div></div><div class="mw-item-cta">Connect</div></div>
               </div>
             </div>
             <div class="mw-bar">
@@ -2181,7 +2464,7 @@ body {
   </div>
 
   <div style="text-align:center;padding:32px 0 0;font-size:11px;color:var(--text-tertiary)">
-    Tax Assistant Component Gallery · Team Malumin · v3.0 · May 2026
+    Tax Assistant Component Gallery · Team Malumin · v4.0 · May 2026
   </div>
 
 </div>
@@ -2191,7 +2474,7 @@ var wizardSteps = [
   { pct:'25%', label:'Step 1 of 4 · Connect your first account', icon:'🏦', title:'Connect your business bank', body:'Let\'s start by linking your Chase or Bank of America business account. We\'ll import 12 months of transactions and flag deductions automatically.', cta:'Connect Bank Account', done:'' },
   { pct:'50%', label:'Step 2 of 4 · Add more accounts', icon:'💳', title:'One account connected', body:'Chase Business is linked. Add your investment or credit accounts for a complete picture. Vanguard usually has K-1s — connecting it now saves a step at filing.', cta:'Connect Vanguard', done:'✓ Chase Business connected' },
   { pct:'75%', label:'Step 3 of 4 · Upload documents', icon:'📄', title:'Upload what you\'ve received', body:'2 accounts connected. Drag in any W-2s, 1099s, or K-1s you\'ve already received. Your expert will categorize them automatically.', cta:'Upload Documents', done:'✓ Chase Business · ✓ Vanguard connected' },
-  { pct:'100%', label:'Step 4 of 4 · Meet your expert', icon:'👤', title:'Ready to meet Kelly', body:'All your accounts and documents are in. We matched you with Kelly Larsen, an S Corp specialist in California. She\'s ready to start your return.', cta:'Message Kelly', done:'✓ 2 accounts · ✓ 3 documents received' }
+  { pct:'100%', label:'Step 4 of 4 · Meet your expert', icon:'👤', title:'Ready to meet Susan', body:'All your accounts and documents are in. We matched you with Susan Larsen, an S Corp specialist in California. She\'s ready to start your return.', cta:'Message Susan', done:'✓ 2 accounts · ✓ 3 documents received' }
 ];
 
 function setWizard(btn, idx) {
@@ -2232,6 +2515,21 @@ function ndPop() {
   document.getElementById(prev).classList.add('nv-active');
 }
 
+/* ── Expert booking sheet interactions ── */
+function toggleBookingGallery(btn, layerId) {
+  var layer = document.getElementById(layerId);
+  var isOpen = layer.style.display !== 'none' && layer.style.display !== '';
+  layer.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+  btn.textContent = isOpen ? 'Book a Meeting' : 'Book a Meeting';
+}
+
+function selBlType(el, layerId) {
+  el.closest('.bl-type-grid').querySelectorAll('.bl-type').forEach(t => t.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+/* ── (Legacy — kept for reference, no longer rendered) ── */
 function selCh(el, idx) {
   document.querySelectorAll('#chgrid .ch-opt').forEach(o => o.classList.remove('sel'));
   el.classList.add('sel');
