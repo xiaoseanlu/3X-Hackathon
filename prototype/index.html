@@ -1279,10 +1279,9 @@ document.getElementById('askSendBtn').addEventListener('click', sendAsk);
   document.body.style.background = 'transparent';
   document.body.style.overflow   = 'hidden';
 
-  /* Reposition widget to sit flush in the BrowserWindow (360×580)
-     Widget is 340×532 — 10px inset each side, ~8px from top */
+  /* BrowserWindow is exactly 340×532 — fill it completely, no offset */
   var anchor = document.querySelector('.widget-anchor');
-  if (anchor) { anchor.style.top = '8px'; anchor.style.right = '10px'; }
+  if (anchor) { anchor.style.top = '0'; anchor.style.right = '0'; anchor.style.left = '0'; }
 
   /* Show widget immediately — Electron handles BW visibility, not JS */
   var widget = document.getElementById('widget');

@@ -15,7 +15,7 @@
 |------|--------|------|
 | XD (Design) | Sean Lu | Component Inventory, Component Gallery, prototype visual design, all design decisions |
 | XD (Design) | Hailey | Design contributions, interaction features, prototype updates |
-| PM | TBD | Product direction, sprint goals, submission |
+| PM | Armin Naghashzadeh | Product direction, sprint goals, submission |
 
 Both designers push to `main`. All design changes go through Sean and Hailey. For any Electron/API/infra work, either designer can lead or delegate.
 

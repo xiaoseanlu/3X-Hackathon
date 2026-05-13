@@ -21,8 +21,8 @@ const PROTOTYPE_PATH = app.isPackaged
 let tray   = null;
 let win    = null;
 
-const WIDGET_W = 360;
-const WIDGET_H = 580;
+const WIDGET_W = 340;   // exact widget width
+const WIDGET_H = 532;   // exact widget height
 
 app.whenReady().then(createApp);
 
