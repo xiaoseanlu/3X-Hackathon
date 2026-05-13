@@ -232,11 +232,11 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .views-host {
   position: relative; flex: 1; overflow: hidden; min-height: 0;
   margin: 4px 6px; border-radius: 10px;
-  background: #FAFBFC; /* minimal 1-stop tint — barely there */
+  background: #E8EDF3; /* minimal 1-stop tint — barely there */
 }
 .view {
   position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-  overflow-y: auto; overflow-x: hidden; background: #FAFBFC;
+  overflow-y: auto; overflow-x: hidden; background: #E8EDF3;
   transform: translateX(100%); transition: transform var(--dur-slow) var(--ease);
   scrollbar-width: none;
 }
@@ -573,21 +573,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 }
 /* chat-input-bar removed — global bottom bar handles all input */
 
-/* ── Settings Panel ── */
-.settings-panel {
-  position: absolute; top: 0; right: 344px; width: 276px;
-  background: var(--color-bg); border-radius: var(--r-xl);
-  box-shadow: var(--shadow-panel); border: 1px solid var(--color-border); overflow: hidden;
-  transform-origin: top right;
-  transition: transform var(--dur-slow) var(--ease-spring), opacity var(--dur-base) var(--ease);
-}
-.settings-panel.hidden { transform: scale(0.93) translateX(8px); opacity: 0; pointer-events: none; }
-.s-header { display: flex; align-items: center; justify-content: space-between; padding: var(--s3) var(--s4); border-bottom: 1px solid var(--color-border); }
-.s-title  { font-size: var(--text-sm); font-weight: var(--fw-semibold); color: var(--color-text-primary); }
-.s-close  { width: 22px; height: 22px; border-radius: var(--r-full); background: #F6F8FA; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background var(--dur-fast); color: var(--color-text-secondary); }
-.s-close:hover { background: var(--color-border); }
-.s-close svg { width: 10px; height: 10px; }
-.s-body   { overflow-y: auto; max-height: 540px; scrollbar-width: none; }
+/* ── Settings View (lives inside views-host as a proper nav layer) ── */
+.s-body   { overflow-y: auto; height: 100%; scrollbar-width: none; padding-bottom: var(--s4); }
 .s-body::-webkit-scrollbar { display: none; }
 .s-sec    { padding: var(--s3) var(--s4); border-bottom: 1px solid var(--color-border); }
 .s-sec:last-child { border-bottom: none; }
@@ -691,46 +678,6 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 <div class="widget-anchor">
   <div class="widget-notch" id="widgetNotch"></div>
 
-  <!-- Settings Panel -->
-  <div class="settings-panel hidden" id="settingsPanel">
-    <div class="s-header">
-      <span class="s-title">Account &amp; Settings</span>
-      <button class="s-close" onclick="toggleSettings()"><svg viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
-    </div>
-    <div class="s-body">
-      <div class="s-sec">
-        <div class="s-sec-label">Business</div>
-        <div style="margin-bottom:8px"><div style="font-size:13px;font-weight:600;color:var(--color-text-primary)">Acme Design Co.</div><div style="font-size:11px;color:var(--color-text-tertiary)">S Corp · California</div></div>
-        <div class="biz-grid">
-          <div class="biz-stat"><div class="biz-stat-lbl">Revenue</div><div class="biz-stat-val">$284k</div></div>
-          <div class="biz-stat"><div class="biz-stat-lbl">Deductions</div><div class="biz-stat-val">$14.8k</div></div>
-          <div class="biz-stat"><div class="biz-stat-lbl">Eff. Rate</div><div class="biz-stat-val">18.4%</div></div>
-          <div class="biz-stat"><div class="biz-stat-lbl">With TT</div><div class="biz-stat-val">6 yrs</div></div>
-        </div>
-      </div>
-      <div class="s-sec">
-        <div class="s-sec-label">Past Returns</div>
-        <div class="ret-row"><span class="ret-yr">2025</span><span class="ret-type">Federal + CA</span><span class="ret-amt neg">−$4,187</span></div>
-        <div class="ret-row"><span class="ret-yr">2024</span><span class="ret-type">Federal + CA</span><span class="ret-amt pos">+$1,240</span></div>
-        <div class="ret-row"><span class="ret-yr">2023</span><span class="ret-type">Federal + CA</span><span class="ret-amt neg">−$2,950</span></div>
-        <div class="ret-row" style="border-bottom:none"><span class="ret-yr">2022</span><span class="ret-type">Federal only</span><span class="ret-amt pos">+$3,820</span></div>
-      </div>
-      <div class="s-sec">
-        <div class="s-sec-label">Account</div>
-        <div class="acct-row"><span class="acct-lbl">Name</span><span class="acct-val">Sean Xiao</span></div>
-        <div class="acct-row"><span class="acct-lbl">Email</span><span class="acct-val">xiao_lu@intuit.com</span></div>
-        <div class="acct-row"><span class="acct-lbl">Plan</span><span class="acct-val" style="color:var(--color-brand)">TT Live Full Service</span></div>
-      </div>
-      <div class="s-sec">
-        <div class="s-sec-label">Notifications</div>
-        <div class="notif-row"><span class="notif-lbl">Expert messages</span><button class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
-        <div class="notif-row"><span class="notif-lbl">Tax deadlines</span><button class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
-        <div class="notif-row"><span class="notif-lbl">Tax law updates</span><button class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
-        <div class="notif-row"><span class="notif-lbl">Document requests</span><button class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
-      </div>
-    </div>
-  </div>
-
   <!-- ── Main Widget ── -->
   <div class="widget hidden" id="widget">
 
@@ -750,8 +697,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
         </div>
         <span class="wh-title" id="whTitle"></span>
       </div>
-      <button class="wh-gear" onclick="toggleSettings()">
-        <svg viewBox="0 0 16 16" fill="none"><path d="M6.5 2.3l-.38 1.06a4.5 4.5 0 0 0-.88.51L4.14 3.6 3.1 5.4l.77.78a4.4 4.4 0 0 0 0 1.64l-.77.78 1.04 1.8 1.1-.27c.27.2.57.37.88.51l.38 1.06h2.1l.38-1.06c.3-.14.6-.31.88-.51l1.1.27 1.04-1.8-.77-.78a4.4 4.4 0 0 0 0-1.64l.77-.78L12.9 3.6l-1.1.27a4.5 4.5 0 0 0-.88-.51L10.5 2.3H6.5z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="7.5" cy="7.2" r="1.7" stroke="currentColor" stroke-width="1.2"/></svg>
+      <button class="wh-gear" onclick="navigate('settings')" id="gearBtn">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M6.2 1.5l-.4 1a4.3 4.3 0 0 0-.9.5l-1-.3L2.5 4.5l.7.7a4.3 4.3 0 0 0 0 1.6l-.7.7 1.4 2.5 1-.3c.3.2.6.4.9.5l.4 1H9.8l.4-1c.3-.1.6-.3.9-.5l1 .3 1.4-2.5-.7-.7a4.3 4.3 0 0 0 0-1.6l.7-.7-1.4-2.5-1 .3a4.3 4.3 0 0 0-.9-.5l-.4-1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="8" cy="8" r="2.1" stroke="currentColor" stroke-width="1.2"/></svg>
       </button>
     </div>
 
@@ -932,6 +879,42 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
         </div>
       </div>
 
+      <!-- Settings view — navigated into via gear icon, back button pops to previous -->
+      <div class="view" id="v-settings">
+        <div class="s-body">
+          <div class="s-sec">
+            <div class="s-sec-label">Business</div>
+            <div style="margin-bottom:8px"><div style="font-size:13px;font-weight:600;color:var(--color-text-primary)">Acme Design Co.</div><div style="font-size:11px;color:var(--color-text-tertiary)">S Corp · California</div></div>
+            <div class="biz-grid">
+              <div class="biz-stat"><div class="biz-stat-lbl">Revenue</div><div class="biz-stat-val">$284k</div></div>
+              <div class="biz-stat"><div class="biz-stat-lbl">Deductions</div><div class="biz-stat-val">$14.8k</div></div>
+              <div class="biz-stat"><div class="biz-stat-lbl">Eff. Rate</div><div class="biz-stat-val">18.4%</div></div>
+              <div class="biz-stat"><div class="biz-stat-lbl">With TT</div><div class="biz-stat-val">6 yrs</div></div>
+            </div>
+          </div>
+          <div class="s-sec">
+            <div class="s-sec-label">Past Returns</div>
+            <div class="ret-row"><span class="ret-yr">2025</span><span class="ret-type">Federal + CA</span><span class="ret-amt neg">−$4,187</span></div>
+            <div class="ret-row"><span class="ret-yr">2024</span><span class="ret-type">Federal + CA</span><span class="ret-amt pos">+$1,240</span></div>
+            <div class="ret-row"><span class="ret-yr">2023</span><span class="ret-type">Federal + CA</span><span class="ret-amt neg">−$2,950</span></div>
+            <div class="ret-row" style="border-bottom:none"><span class="ret-yr">2022</span><span class="ret-type">Federal only</span><span class="ret-amt pos">+$3,820</span></div>
+          </div>
+          <div class="s-sec">
+            <div class="s-sec-label">Account</div>
+            <div class="acct-row"><span class="acct-lbl">Name</span><span class="acct-val">Sean Xiao</span></div>
+            <div class="acct-row"><span class="acct-lbl">Email</span><span class="acct-val">xiao_lu@intuit.com</span></div>
+            <div class="acct-row"><span class="acct-lbl">Plan</span><span class="acct-val" style="color:var(--color-brand)">TT Live Full Service</span></div>
+          </div>
+          <div class="s-sec">
+            <div class="s-sec-label">Notifications</div>
+            <div class="notif-row"><span class="notif-lbl">Expert messages</span><button class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
+            <div class="notif-row"><span class="notif-lbl">Tax deadlines</span><button class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
+            <div class="notif-row"><span class="notif-lbl">Tax law updates</span><button class="toggle off" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
+            <div class="notif-row"><span class="notif-lbl">Document requests</span><button class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button></div>
+          </div>
+        </div>
+      </div>
+
     </div><!-- /views-host -->
 
     <!-- ── Widget Footer — pinned (ExpertFooterCard 3.9a + BottomBar) ── -->
@@ -986,10 +969,10 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 </div>
 
 <script>
-var widgetOpen = false, settingsOpen = false;
+var widgetOpen = false;
 var viewStack = ['main'];
 var chatMode = 'ai'; /* 'ai' = TurboTax Assistant | 'susan' = Susan Larsen */
-var viewTitles = { main:'', expert:'Susan Larsen', 'action-q2':'Q2 Estimated Tax', 'action-laws':'New Tax Laws', 'action-biz':'Business Changes', chat:'Ask anything' };
+var viewTitles = { main:'', expert:'Susan Larsen', 'action-q2':'Q2 Estimated Tax', 'action-laws':'New Tax Laws', 'action-biz':'Business Changes', chat:'Ask anything', settings:'Settings' };
 var epDate = {}, epSlot = {};
 
 /* ── Ask input context ── */
@@ -1035,19 +1018,13 @@ function chatAvHTML() {
 
 /* ── Widget open/close ── */
 function toggleWidget() {
-  if (settingsOpen) { settingsOpen = false; document.getElementById('settingsPanel').classList.add('hidden'); }
   widgetOpen = !widgetOpen;
   document.getElementById('widget').classList.toggle('hidden', !widgetOpen);
   document.getElementById('ttIcon').classList.toggle('active', widgetOpen);
 }
-function toggleSettings() {
-  settingsOpen = !settingsOpen;
-  document.getElementById('settingsPanel').classList.toggle('hidden', !settingsOpen);
-}
 function closeAll() {
-  widgetOpen = false; settingsOpen = false;
+  widgetOpen = false;
   document.getElementById('widget').classList.add('hidden');
-  document.getElementById('settingsPanel').classList.add('hidden');
   document.getElementById('ttIcon').classList.remove('active');
 }
 
@@ -1060,7 +1037,7 @@ function navigate(viewId) {
   document.getElementById('v-' + viewId).classList.add('v-active');
   viewStack.push(viewId);
   updateHeader();
-  var hideFooter = viewId === 'expert' || viewId === 'chat';
+  var hideFooter = viewId === 'expert' || viewId === 'chat' || viewId === 'settings';
   document.getElementById('expertFooterCard').style.display = hideFooter ? 'none' : 'flex';
   updateAskContext(viewId);
 }
@@ -1085,13 +1062,15 @@ function updateHeader() {
   document.getElementById('whBrand').style.display = isMain ? 'flex' : 'none';
   document.getElementById('whTitle').style.display = isMain ? 'none' : 'block';
   document.getElementById('whTitle').textContent = viewTitles[id] || '';
+  /* Hide gear when already in settings */
+  document.getElementById('gearBtn').style.visibility = (id === 'settings') ? 'hidden' : 'visible';
 }
 
 /* ── Click outside ── */
 document.addEventListener('mousedown', function(e) {
-  if (!widgetOpen && !settingsOpen) return;
-  var w = document.getElementById('widget'), s = document.getElementById('settingsPanel'), icon = document.getElementById('ttIcon');
-  if (!w.contains(e.target) && !s.contains(e.target) && !icon.contains(e.target)) {
+  if (!widgetOpen) return;
+  var w = document.getElementById('widget'), icon = document.getElementById('ttIcon');
+  if (!w.contains(e.target) && !icon.contains(e.target)) {
     closeAll();
     if (viewStack.length > 1) {
       document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('v-active','v-behind'); });

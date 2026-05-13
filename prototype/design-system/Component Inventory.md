@@ -1089,7 +1089,51 @@ Every data view must implement all three states. No exceptions.
 
 ---
 
-## 6. Motion System
+## 6. Icon System
+
+All icons in the widget share a single visual language. Never mix styles or sources.
+
+### Rules
+- **Style:** Single-weight outline. No fill, no duotone, no solid variants inside the widget.
+- **Stroke:** `stroke="currentColor"` always — never hardcoded hex. Inherits from parent color.
+- **Linecap / linejoin:** `stroke-linecap="round"` and `stroke-linejoin="round"` on all paths.
+- **Fill:** `fill="none"` on the `<svg>` element.
+- **No pixel-snapping artifacts:** Use even stroke widths (1.2, 1.4) on even-unit grids.
+
+### Size scale
+
+| Usage | ViewBox | Rendered size | Stroke width |
+|:------|:--------|:-------------|:-------------|
+| Micro (close button, dismiss) | 12×12 | 10px | 1.5 |
+| Navigation (back chevron, chevron-right) | 12×12 | 12px | 1.4 |
+| Standard action (external link, calendar, document) | 16×16 | 14px | 1.3 |
+| Header chrome (gear/settings) | 16×16 | 14px | 1.2 |
+| Expert presence (avatar badge indicators) | 14×14 | 14px | 1.2 |
+
+### Named icons (source of truth)
+
+| Name | Used in | Path description |
+|:-----|:--------|:----------------|
+| `chevron-right` | ActionRow, ExpertFooterCard | `M4 6l4 4-4 4` in 12×12 |
+| `chevron-left` | Header back button | `M8 2L4 6l4 4` in 12×12 |
+| `settings-gear` | Widget header top-right | 8-point gear, centered at 8,8 in 16×16; inner circle r=2.1 |
+| `external-link` | Action item drill-through | Arrow diagonal + L-bracket in 12×12 |
+| `calendar` | Q2 deadline ActionRow | Rectangle + 2 pegs + horizontal rule in 16×16 |
+| `info-circle` | Tax laws ActionRow | Circle + vertical bar in 16×16 |
+| `briefcase` | Business changes ActionRow | Briefcase outline in 16×16 |
+| `close-x` | Close buttons, dismiss | Two crossing diagonals in 12×12, stroke 1.5 |
+
+### Do not
+- Do not use filled icons inside the widget (they read as "selected state" which conflicts with the toggle system)
+- Do not mix Lucide, Heroicons, and Feather in the same view — pick one geometry per icon and stay consistent
+- Do not scale icons above 18px or below 10px
+
+### Scroll area surface token
+The inset scroll zone uses `#E8EDF3` (cool gray-blue, step darker than `#F6F8FA`). This creates a visible but quiet distinction from the white sticky chrome above and below it. Do not lighten this back toward white — the separation is intentional.
+
+---
+
+## 7. Motion System
 
 | Interaction | Duration | Easing | Notes |
 |:------------|:---------|:-------|:------|
