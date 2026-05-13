@@ -454,7 +454,7 @@ body {
 .expert-match {
   border: 0.5px solid var(--border);
   border-radius: 12px;
-  background: var(--brand-subtle);
+  background: var(--bg-card);
   padding: 18px 16px;
   text-align: center;
 }
@@ -901,18 +901,14 @@ body {
   text-align: center;
 }
 .ep-avatar {
-  width: 72px; height: 72px; border-radius: 50%;
-  background: rgba(27,79,138,.12);
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, #1B4F8A, #2D6BC4);
   display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 700; color: var(--brand);
-  margin: 0 auto 12px; position: relative;
+  font-size: 18px; font-weight: 700; color: #fff;
+  margin: 0 auto 12px; position: relative; overflow: hidden;
 }
-[data-theme="dark"] .ep-avatar { background: rgba(75,142,232,.15); }
-.ep-avatar-dot {
-  position: absolute; bottom: 3px; right: 3px;
-  width: 14px; height: 14px; border-radius: 50%;
-  border: 2.5px solid var(--bg-card);
-}
+[data-theme="dark"] .ep-avatar { background: linear-gradient(135deg, #1B4F8A, #2D6BC4); }
+/* ep-avatar-dot removed — availability shown in ep-avail row only */
 .ep-name { font-size: 18px; font-weight: 700; color: var(--text-primary); letter-spacing: -.3px; }
 .ep-creds { display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
 .ep-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--brand-subtle); color: var(--brand); }
@@ -1286,41 +1282,41 @@ body {
     <div class="icon-demos">
       <div class="icon-demo">
         <div class="sb-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
         </div>
         <div class="icon-label">Clean<br>Up to date</div>
       </div>
       <div class="icon-demo">
         <div class="sb-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
           <div class="sb-badge-num">3</div>
         </div>
         <div class="icon-label">Attention<br>Numbered · glows</div>
       </div>
       <div class="icon-demo">
         <div class="sb-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
           <div class="sb-badge-num">9+</div>
         </div>
         <div class="icon-label">Max badge<br>Capped at 9+</div>
       </div>
       <div class="icon-demo">
         <div class="sb-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
           <div class="sb-pulse" style="background:#1B4F8A"></div>
         </div>
         <div class="icon-label">Expert message<br>Someone waiting</div>
       </div>
       <div class="icon-demo">
         <div class="sb-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
           <div class="sb-ring"></div>
         </div>
         <div class="icon-label">Processing<br>Syncing accounts</div>
       </div>
       <div class="icon-demo">
         <div class="sb-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
           <div class="sb-filed">
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
@@ -1329,6 +1325,74 @@ body {
       </div>
     </div>
     <p class="hmw">HMW — presence: the icon is always in the corner of the customer's screen. Its state communicates the full tax health picture before they open anything.</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── Icon System ─── -->
+  <div class="sec">
+    <div class="sec-label">Icon system — all icons share one visual language</div>
+    <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:16px">
+      All icons: <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">fill="none"</code> · <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">stroke="currentColor"</code> · <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">stroke-linecap="round"</code> · <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">stroke-linejoin="round"</code>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:12px">
+
+      <!-- chevron-right -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;background:var(--bg-surface);border-radius:8px;border:0.5px solid var(--border)">
+        <svg viewBox="0 0 12 12" fill="none" style="width:14px;height:14px;color:var(--text-primary)"><path d="M4 2l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">chevron-right</div><div style="font-size:10px;color:var(--text-tertiary)">12×12 · 1.4</div></div>
+      </div>
+
+      <!-- chevron-left (back) -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;background:var(--bg-surface);border-radius:8px;border:0.5px solid var(--border)">
+        <svg viewBox="0 0 12 12" fill="none" style="width:14px;height:14px;color:var(--text-primary)"><path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">chevron-left</div><div style="font-size:10px;color:var(--text-tertiary)">12×12 · 1.4</div></div>
+      </div>
+
+      <!-- settings-gear -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;background:var(--bg-surface);border-radius:8px;border:0.5px solid var(--border)">
+        <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px;color:var(--text-primary)"><path d="M6.2 1.5l-.4 1a4.3 4.3 0 0 0-.9.5l-1-.3L2.5 4.5l.7.7a4.3 4.3 0 0 0 0 1.6l-.7.7 1.4 2.5 1-.3c.3.2.6.4.9.5l.4 1H9.8l.4-1c.3-.1.6-.3.9-.5l1 .3 1.4-2.5-.7-.7a4.3 4.3 0 0 0 0-1.6l.7-.7-1.4-2.5-1 .3a4.3 4.3 0 0 0-.9-.5l-.4-1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="8" cy="8" r="2.1" stroke="currentColor" stroke-width="1.2"/></svg>
+        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">settings-gear</div><div style="font-size:10px;color:var(--text-tertiary)">16×16 · 1.2</div></div>
+      </div>
+
+      <!-- external-link -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;background:var(--bg-surface);border-radius:8px;border:0.5px solid var(--border)">
+        <svg viewBox="0 0 12 12" fill="none" style="width:14px;height:14px;color:var(--text-primary)"><path d="M2 10L10 2M10 2H5M10 2v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">external-link</div><div style="font-size:10px;color:var(--text-tertiary)">12×12 · 1.4</div></div>
+      </div>
+
+      <!-- calendar -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;background:var(--bg-surface);border-radius:8px;border:0.5px solid var(--border)">
+        <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px;color:var(--text-primary)"><rect x="2" y="3" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 1v3M11 1v3M2 7h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">calendar</div><div style="font-size:10px;color:var(--text-tertiary)">16×16 · 1.3</div></div>
+      </div>
+
+      <!-- info-circle -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;background:var(--bg-surface);border-radius:8px;border:0.5px solid var(--border)">
+        <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px;color:var(--text-primary)"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.3"/><path d="M8 7v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="8" cy="5" r=".7" fill="currentColor"/></svg>
+        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">info-circle</div><div style="font-size:10px;color:var(--text-tertiary)">16×16 · 1.3</div></div>
+      </div>
+
+      <!-- briefcase -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;background:var(--bg-surface);border-radius:8px;border:0.5px solid var(--border)">
+        <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px;color:var(--text-primary)"><rect x="2" y="5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 5V3.5A1.5 1.5 0 0 1 7 2h2a1.5 1.5 0 0 1 1.5 1.5V5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M2 9h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">briefcase</div><div style="font-size:10px;color:var(--text-tertiary)">16×16 · 1.3</div></div>
+      </div>
+
+      <!-- close-x -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;background:var(--bg-surface);border-radius:8px;border:0.5px solid var(--border)">
+        <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;color:var(--text-primary)"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:var(--text-primary)">close-x</div><div style="font-size:10px;color:var(--text-tertiary)">12×12 · 1.5</div></div>
+      </div>
+
+      <!-- TTA menu bar -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 10px;background:#1B4F8A;border-radius:8px;border:0.5px solid var(--border)">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><g opacity="0.9"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C0 3.13413 3.13413 0 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="white"/></g></svg>
+        <div style="text-align:center"><div style="font-size:10px;font-weight:600;color:#fff">TTA menu bar</div><div style="font-size:10px;color:rgba(255,255,255,.6)">14×14 template</div></div>
+      </div>
+
+    </div>
+    <p class="hmw">Icon system rule: every icon uses stroke="currentColor", stroke-linecap/linejoin="round", fill="none". Sizes: 12×12 for navigation, 16×16 for actions/header. Stroke: 1.2 (header), 1.3 (actions), 1.4 (nav), 1.5 (close).</p>
   </div>
 
   <div class="divider"></div>
@@ -1579,10 +1643,9 @@ body {
         <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Susan Larsen · Available now · <em>primary expert in prototype</em></div>
         <div class="ep-card">
           <div class="ep-hero">
-            <div class="ep-avatar">
-              <img src="../Susan.png" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="Susan Larsen">
-              <span id="ep-initials-1" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--brand)">SL</span>
-              <div class="ep-avatar-dot" style="background:var(--success)"></div>
+            <div class="ep-avatar" style="background:linear-gradient(135deg,#1B4F8A,#2D6BC4);position:relative;overflow:hidden;">
+              <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;z-index:0">SL</span>
+              <img src="../Susan.png" alt="Susan Larsen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1">
             </div>
             <div class="ep-name">Susan Larsen</div>
             <div class="ep-creds">
@@ -1662,7 +1725,7 @@ body {
         <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Marcus Reid · Responds in 2 hrs</div>
         <div class="ep-card">
           <div class="ep-hero">
-            <div class="ep-avatar" style="background:rgba(107,114,128,.1)"><span style="color:var(--text-secondary)">MR</span><div class="ep-avatar-dot" style="background:var(--warning)"></div></div>
+            <div class="ep-avatar" style="background:linear-gradient(135deg,#6B7280,#9CA3AF)"><span style="color:#fff;font-size:18px;font-weight:700">MR</span></div>
             <div class="ep-name">Marcus Reid</div>
             <div class="ep-creds">
               <span class="ep-badge">CPA</span>
@@ -2033,36 +2096,49 @@ body {
 
   <!-- ─── Settings ─── -->
   <div class="sec">
-    <div class="sec-label">Settings panel</div>
+    <div class="sec-label">Settings view — navigated into from widget header gear icon</div>
     <div class="two-col">
-      <div class="settings-panel">
-        <div class="settings-header">
-          <span class="settings-back">‹</span>
-          <span class="settings-title">Settings</span>
+      <!-- Settings view matches #v-settings in prototype exactly -->
+      <div style="border:0.5px solid var(--border);border-radius:12px;overflow:hidden;width:280px">
+        <!-- Simulated widget header in settings state -->
+        <div style="display:flex;align-items:center;padding:10px 14px;border-bottom:0.5px solid var(--border);background:#fff;gap:8px">
+          <button style="background:none;border:none;cursor:pointer;padding:0;color:var(--text-secondary);display:flex;align-items:center">
+            <svg viewBox="0 0 12 12" fill="none" style="width:10px;height:10px"><path d="M7.5 2L3.5 6l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span style="font-size:13px;font-weight:600;color:var(--text-primary)">Settings</span>
         </div>
+        <!-- Settings content — Business -->
         <div class="settings-section">
-          <div class="settings-section-label">Appearance</div>
-          <div class="seg-control" id="app-seg">
-            <button class="seg-btn on" onclick="setAppMode(this,'light')">Light</button>
-            <button class="seg-btn" onclick="setAppMode(this,'dark')">Dark</button>
-            <button class="seg-btn" onclick="setAppMode(this,'system')">System</button>
+          <div class="settings-section-label">Business</div>
+          <div style="margin-bottom:8px"><div style="font-size:13px;font-weight:600;color:var(--text-primary)">Acme Design Co.</div><div style="font-size:11px;color:var(--text-tertiary)">S Corp · California</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px">
+            <div style="padding:8px 10px;background:#F6F8FA;border-radius:6px"><div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">Revenue</div><div style="font-size:14px;font-weight:700;color:var(--text-primary)">$284k</div></div>
+            <div style="padding:8px 10px;background:#F6F8FA;border-radius:6px"><div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">Deductions</div><div style="font-size:14px;font-weight:700;color:var(--text-primary)">$14.8k</div></div>
+            <div style="padding:8px 10px;background:#F6F8FA;border-radius:6px"><div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">Eff. Rate</div><div style="font-size:14px;font-weight:700;color:var(--text-primary)">18.4%</div></div>
+            <div style="padding:8px 10px;background:#F6F8FA;border-radius:6px"><div style="font-size:10px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px">With TT</div><div style="font-size:14px;font-weight:700;color:var(--text-primary)">6 yrs</div></div>
           </div>
         </div>
+        <!-- Past Returns -->
         <div class="settings-section">
+          <div class="settings-section-label">Past Returns</div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2025</span><span style="font-size:11px;color:var(--text-tertiary)">Federal + CA</span><span style="font-size:12px;font-weight:600;color:var(--danger)">−$4,187</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2024</span><span style="font-size:11px;color:var(--text-tertiary)">Federal + CA</span><span style="font-size:12px;font-weight:600;color:var(--success)">+$1,240</span></div>
+          <div style="display:flex;justify-content:space-between;padding:5px 0"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2023</span><span style="font-size:11px;color:var(--text-tertiary)">Federal + CA</span><span style="font-size:12px;font-weight:600;color:var(--danger)">−$2,950</span></div>
+        </div>
+        <!-- Account -->
+        <div class="settings-section">
+          <div class="settings-section-label">Account</div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Name</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">Sean Xiao</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Email</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">xiao_lu@intuit.com</span></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Plan</span><span style="font-size:11px;font-weight:500;color:var(--brand)">TT Live Full Service</span></div>
+        </div>
+        <!-- Notifications -->
+        <div class="settings-section" style="border-bottom:none">
           <div class="settings-section-label">Notifications</div>
-          <div class="settings-row"><div><div class="settings-row-label">Estimated tax reminders</div><div class="settings-row-sub">Quarterly payment alerts</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="settings-row"><div><div class="settings-row-label">Expert messages</div><div class="settings-row-sub">When Kelly sends something</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="settings-row"><div><div class="settings-row-label">New tax laws</div><div class="settings-row-sub">Relevant to your business type</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="settings-row"><div><div class="settings-row-label">Document reminders</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
-        </div>
-        <div class="settings-section">
-          <div class="settings-section-label">Expert</div>
-          <div class="settings-row"><div><div class="settings-row-label">Kelly Larsen</div><div class="settings-row-sub">Business Tax · S Corp</div></div><span style="font-size:12px;color:var(--brand);cursor:pointer">Change</span></div>
-          <div class="settings-row" style="border:none"><div class="settings-row-label" style="color:var(--brand);cursor:pointer">Schedule a call</div></div>
-        </div>
-        <div class="settings-section">
-          <div style="font-size:12px;color:var(--danger);cursor:pointer">Disconnect and sign out</div>
-          <div style="font-size:11px;color:var(--text-tertiary);margin-top:10px">Version 1.0.0</div>
+          <div class="settings-row"><span class="settings-row-label">Expert messages</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="settings-row"><span class="settings-row-label">Tax deadlines</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+          <div class="settings-row"><span class="settings-row-label">Tax law updates</span><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+          <div class="settings-row" style="border:none"><span class="settings-row-label">Document requests</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
         </div>
       </div>
       <div>
