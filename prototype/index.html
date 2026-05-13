@@ -1285,8 +1285,15 @@ document.getElementById('askSendBtn').addEventListener('click', sendAsk);
 
   /* Show widget immediately — Electron handles BW visibility, not JS */
   var widget = document.getElementById('widget');
-  if (widget) widget.classList.remove('hidden');
+  if (widget) {
+    widget.classList.remove('hidden');
+    widget.style.maxHeight = 'none';   // override calc(100vh - 80px) which clips in a 532px BW
+    widget.style.height    = '532px';
+  }
   widgetOpen = true;
+
+  /* Also ensure html root is transparent */
+  document.documentElement.style.background = 'transparent';
 })();
 </script>
 </body>
