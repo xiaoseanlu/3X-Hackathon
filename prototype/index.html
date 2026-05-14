@@ -769,7 +769,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .ask-async-note { font-size: 10px; color: var(--color-text-tertiary); text-align: center; padding-bottom: 2px; }
 .ask-wrap { flex: 1; position: relative; display: flex; align-items: center; }
 .ask-icon { position: absolute; left: 10px; color: var(--color-text-tertiary); pointer-events: none; }
-.ask-icon svg { width: 13px; height: 13px; }
+.ask-icon svg { width: 14px; height: 14px; }
+.ask-icon img { width: 14px; height: 14px; opacity: 0.45; }
 .ask-input {
   width: 100%; height: 34px; padding: 0 10px 0 30px;
   border: 1px solid var(--color-border); border-radius: var(--r-md);
@@ -1197,52 +1198,11 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       <!-- View: Welcome (Onboarding Splash) -->
       <div class="view v-active" id="v-welcome" style="background:var(--color-bg);overflow-y:auto">
 
-        <!-- Hero: TT logo + tagline -->
-        <div style="padding:var(--s5) var(--s4) 0;text-align:center">
-          <div style="width:52px;height:52px;border-radius:14px;background:#D52B1E;display:inline-flex;align-items:center;justify-content:center;margin-bottom:var(--s3)">
-            <span style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.03em">TT</span>
-          </div>
-          <div style="font-size:18px;font-weight:700;color:var(--color-text-primary);letter-spacing:-0.02em;margin-bottom:var(--s2)">Tax Assistant</div>
-          <div style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.5">Year-round tax confidence.<br>Expert always reachable.</div>
-        </div>
-
-        <!-- Illustration: CPA + AI avatar pair -->
-        <div style="margin:var(--s4) var(--s4) 0;border-radius:var(--r-xl);background:linear-gradient(145deg,#EEF4FB 0%,#F7FAFD 100%);padding:20px var(--s4) 16px;display:flex;flex-direction:column;align-items:center;gap:10px">
-          <svg width="220" height="72" viewBox="0 0 220 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="wlc-cpa" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#1B4F8A"/>
-                <stop offset="100%" stop-color="#2D6BC4"/>
-              </linearGradient>
-              <linearGradient id="wlc-ai" x1="164" y1="0" x2="220" y2="56" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#0077C5"/>
-                <stop offset="100%" stop-color="#00A3E0"/>
-              </linearGradient>
-              <radialGradient id="wlc-glow" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/>
-                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-              </radialGradient>
-            </defs>
-            <!-- CPA avatar -->
-            <circle cx="42" cy="32" r="28" fill="url(#wlc-cpa)"/>
-            <circle cx="42" cy="32" r="28" fill="url(#wlc-glow)"/>
-            <text x="42" y="38" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="15" font-weight="700" fill="white">SL</text>
-            <!-- Connection line + middle node -->
-            <line x1="72" y1="32" x2="102" y2="32" stroke="#C8D8EC" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <circle cx="110" cy="32" r="9" fill="white" stroke="#D8E6F3" stroke-width="1.5"/>
-            <path d="M110 26.5l1.2 4.3 4.3 1.2-4.3 1.2-1.2 4.3-1.2-4.3-4.3-1.2 4.3-1.2z" fill="#0077C5"/>
-            <line x1="118" y1="32" x2="148" y2="32" stroke="#C8D8EC" stroke-width="1.5" stroke-dasharray="3 3"/>
-            <!-- AI orb -->
-            <circle cx="178" cy="32" r="28" fill="url(#wlc-ai)"/>
-            <circle cx="178" cy="32" r="28" fill="url(#wlc-glow)"/>
-            <!-- Sparkle icon -->
-            <path d="M178 20l2 7.5 7.5 2-7.5 2-2 7.5-2-7.5-7.5-2 7.5-2z" fill="white" opacity="0.95"/>
-          </svg>
-          <!-- Labels -->
-          <div style="display:flex;width:220px;justify-content:space-between;padding:0 6px">
-            <span style="font-size:10px;font-weight:600;color:var(--color-text-secondary);letter-spacing:0.02em">Your CPA</span>
-            <span style="font-size:10px;font-weight:600;color:var(--color-text-secondary);letter-spacing:0.02em">Intuit AI</span>
-          </div>
+        <!-- Hero: TurboTax logo + tagline -->
+        <div style="padding:var(--s6) var(--s4) 0;text-align:center">
+          <img src="turbotax-logo.svg" style="height:28px;width:auto;display:inline-block;margin-bottom:var(--s4)">
+          <div style="font-size:18px;font-weight:700;color:var(--color-text-primary);letter-spacing:-0.02em;margin-bottom:var(--s2)">Assistant</div>
+          <div style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.5">Year-round tax confidence.</div>
         </div>
 
         <!-- Value props -->
@@ -1263,7 +1223,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
           </div>
           <button class="ob-cta" onclick="navigate('login')" style="margin-top:var(--s4)">Get Started →</button>
           <div style="text-align:center;margin-top:var(--s3)">
-            <span onclick="demoGoto('main')" style="font-size:var(--text-xs);color:var(--color-text-tertiary);cursor:pointer;text-decoration:underline;text-underline-offset:2px">Skip to demo →</span>
+            <span onclick="demoGoto('demo-controls')" style="font-size:var(--text-xs);color:var(--color-text-tertiary);cursor:pointer;text-decoration:underline;text-underline-offset:2px">Demo controls →</span>
           </div>
         </div>
       </div>
@@ -2703,7 +2663,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
         <div class="chat-messages" id="chatMessages">
           <div class="chat-msg-row ai" id="chatGreeting">
             <div class="chat-av" id="chatGreetingAv">
-              <span class="chat-av-text">TT</span>
+              <img src="intuit-assist.svg" style="width:14px;height:14px;filter:brightness(0) invert(1);position:relative;z-index:1;" alt="">
             </div>
             <div class="chat-bubble" id="chatGreetingBubble">Hi! I'm TurboTax Assistant. Ask me anything about your taxes, deductions, or account.</div>
           </div>
@@ -2948,7 +2908,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       <div class="bottom-bar">
         <div class="bottom-bar-row">
           <div class="ask-wrap">
-            <div class="ask-icon"><svg viewBox="0 0 14 14" fill="none"><path d="M12 2H2a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2v2.5L7 10h5a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+            <div class="ask-icon"><img src="intuit-assist.svg" alt=""></div>
             <input class="ask-input" id="askInput" type="text" placeholder="Ask anything…">
           </div>
           <button class="ask-send" id="askSendBtn"><svg viewBox="0 0 14 14" fill="none"><path d="M13 7H1M8 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
