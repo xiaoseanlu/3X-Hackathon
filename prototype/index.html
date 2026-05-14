@@ -1083,7 +1083,6 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
   flex-shrink: 0; margin-top: 1px;
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -1198,11 +1197,13 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       <!-- View: Welcome (Onboarding Splash) -->
       <div class="view v-active" id="v-welcome" style="background:var(--color-bg);overflow-y:auto">
 
-        <!-- Hero: TurboTax logo + tagline -->
+        <!-- Hero: TurboTax logo + tagline card -->
         <div style="padding:var(--s6) var(--s4) 0;text-align:center">
           <img src="turbotax-logo.svg" style="height:28px;width:auto;display:inline-block;margin-bottom:var(--s4)">
-          <div style="font-size:18px;font-weight:700;color:var(--color-text-primary);letter-spacing:-0.02em;margin-bottom:var(--s2)">Assistant</div>
-          <div style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.5">Year-round tax confidence.</div>
+          <div style="background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--r-xl);padding:var(--s5) var(--s4);display:inline-block;width:100%">
+            <div style="font-size:20px;font-weight:700;color:var(--color-text-primary);letter-spacing:-0.02em;margin-bottom:var(--s2)">Assistant</div>
+            <div style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.5">Year-round tax confidence.</div>
+          </div>
         </div>
 
         <!-- Value props -->
@@ -1223,7 +1224,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
           </div>
           <button class="ob-cta" onclick="navigate('login')" style="margin-top:var(--s4)">Get Started →</button>
           <div style="text-align:center;margin-top:var(--s3)">
-            <span onclick="demoGoto('demo-controls')" style="font-size:var(--text-xs);color:var(--color-text-tertiary);cursor:pointer;text-decoration:underline;text-underline-offset:2px">Demo controls →</span>
+            <span onclick="navigate('demo-controls')" style="font-size:var(--text-xs);color:var(--color-text-tertiary);cursor:pointer;text-decoration:underline;text-underline-offset:2px">Demo controls →</span>
           </div>
         </div>
       </div>
@@ -1257,7 +1258,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
         <!-- QR code -->
         <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s3)">
           <div onclick="window.open('https://myturbotax.intuit.com','_blank')" style="width:148px;height:148px;border:1px solid var(--color-border);border-radius:var(--r-lg);padding:10px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color 120ms" onmouseover="this.style.borderColor='var(--color-brand)'" onmouseout="this.style.borderColor='var(--color-border)'">
-            <div id="qr-login-code" style="width:128px;height:128px;display:flex;align-items:center;justify-content:center"></div>
+            <img id="qr-login-code" src="https://api.qrserver.com/v1/create-qr-code/?size=128x128&data=https%3A%2F%2Fmyturbotax.intuit.com&color=0A2540&bgcolor=ffffff&margin=0" width="128" height="128" style="border-radius:3px;display:block" alt="QR code">
           </div>
           <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);text-align:center;line-height:1.6">Scan with your <strong style="color:var(--color-text-secondary);font-weight:var(--fw-semibold)">TurboTax</strong> app to log in</div>
         </div>
@@ -3166,9 +3167,9 @@ function updateHeader() {
   var id = viewStack[viewStack.length - 1];
   var isOnboarding = (id === 'welcome' || id === 'login');
   var isHub = (id === 'main' || id === 'stage1');
-  /* Always show header; hide footer on onboarding */
+  /* Always show header; hide footer on onboarding and demo-controls (outside prototype) */
   document.querySelector('.widget-header').style.display = 'flex';
-  document.getElementById('widgetFooter').style.display = isOnboarding ? 'none' : 'flex';
+  document.getElementById('widgetFooter').style.display = (isOnboarding || id === 'demo-controls') ? 'none' : 'flex';
   if (isOnboarding) {
     /* Onboarding: brand mark only — no back button, no gear */
     document.getElementById('backBtn').classList.remove('visible');
@@ -3885,20 +3886,7 @@ updateEFC();
   if (menubar) menubar.style.display = 'none';
   if (dock)    dock.style.display    = 'none';
 
-  /* Login QR code */
-  (function() {
-    var qrEl = document.getElementById('qr-login-code');
-    if (!qrEl) return;
-    if (typeof QRCode !== 'undefined') {
-      new QRCode(qrEl, {
-        text: 'https://myturbotax.intuit.com',
-        width: 128, height: 128,
-        colorDark: '#0A2540',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-  })();
+  /* QR code is now a static <img> — no JS init needed */
 
   /* Transparent body so the BrowserWindow shadow shows */
   document.body.style.background = 'transparent';
