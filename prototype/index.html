@@ -992,7 +992,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .hub-divider { height:4px;background:var(--color-border); }
 .hub-section { padding:var(--s4); }
 .hub-section-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3); }
-.hub-section-title { font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-primary); }
+.hub-section-title { font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary); }
 .hub-section-link { font-size:var(--text-xs);color:var(--color-brand);font-weight:var(--fw-medium);background:none;border:none;cursor:pointer;font-family:var(--font-family);padding:0; }
 /* Approval items — standalone bordered cards per screenshot */
 .hub-approval-card { border:1px solid var(--color-border);border-radius:var(--r-xl);padding:var(--s3);margin-bottom:var(--s3); }
@@ -1010,6 +1010,10 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .hub-approve-btn.done { background:var(--color-success);pointer-events:none; }
 .hub-dispute-btn { flex:1;height:36px;background:#fff;color:var(--color-text-secondary);border:1px solid var(--color-border);border-radius:var(--r-lg);font-size:var(--text-xs);font-weight:var(--fw-semibold);cursor:pointer;font-family:var(--font-family);transition:all var(--dur-fast); }
 .hub-dispute-btn:hover { background:var(--color-surface); }
+.hub-amount-input-row { display:flex;align-items:center;gap:6px;margin-top:var(--s2); }
+.hub-amount-input { flex:1;min-width:0;height:30px;border:1.5px solid var(--color-brand);border-radius:var(--r-md);padding:0 10px;font-size:var(--text-xs);font-family:inherit;color:var(--color-text-primary);outline:none;background:var(--color-bg); }
+.hub-amount-confirm { height:30px;padding:0 12px;background:var(--color-brand);color:#fff;border:none;border-radius:var(--r-md);font-size:var(--text-xs);font-weight:var(--fw-semibold);font-family:inherit;cursor:pointer;white-space:nowrap; }
+.hub-amount-cancel { height:30px;padding:0 10px;background:transparent;color:var(--color-text-secondary);border:1px solid var(--color-border);border-radius:var(--r-md);font-size:var(--text-xs);font-family:inherit;cursor:pointer;white-space:nowrap; }
 /* flat clickable hub row (deductions / activity) */
 .hub-flat-link { cursor:pointer;padding:var(--s2) var(--s2);border-radius:var(--r-md);margin:0 calc(-1 * var(--s2));transition:background var(--dur-fast); }
 .hub-flat-link:hover { background:#F4F6F9; }
@@ -1132,8 +1136,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 /* ── Institution Cards (ic-*) ── */
 .ic-card { border:1px solid var(--color-border);border-radius:var(--r-lg);background:var(--color-bg);overflow:hidden;transition:border-color 140ms,background 140ms;cursor:pointer; }
 .ic-card:hover { border-color:var(--color-brand);background:var(--color-brand-subtle); }
-.ic-card.connected { cursor:default; }
-.ic-card.connected:hover { border-color:var(--color-border);background:var(--color-bg); }
+.ic-card.connected { cursor:pointer; }
 .ic-top { display:flex;align-items:center;gap:10px;padding:12px 14px; }
 .ic-logo { width:32px;height:32px;border-radius:var(--r-md);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff; }
 .ic-info { flex:1;min-width:0; }
@@ -1647,6 +1650,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
           </div>
 
         </div>
+
+
       </div>
 
       <!-- View: Expert List — Match with an expert -->
@@ -1727,7 +1732,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       <div class="view" id="v-data-in" style="background:#fff;overflow-y:auto">
 
         <!-- Section 1: Analysis — always visible (QB already connected) -->
-        <div class="w-sec" style="padding-top:var(--s4);padding-bottom:var(--s4)">
+        <div class="w-sec" id="datain-analysis-sec" style="padding-top:var(--s4);padding-bottom:var(--s4)">
           <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Analysis</div>
           <div style="display:flex;flex-direction:column;gap:var(--s2)">
             <div style="display:flex;justify-content:space-between;align-items:center">
@@ -1741,6 +1746,10 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
             <div style="display:flex;justify-content:space-between;align-items:center">
               <span style="font-size:var(--text-sm);color:var(--color-text-secondary)">Identified savings</span>
               <span style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-success)">$4,593</span>
+            </div>
+            <div id="datain-analysis-docs-row" style="display:none;justify-content:space-between;align-items:center">
+              <span style="font-size:var(--text-sm);color:var(--color-text-secondary)">Documents found</span>
+              <span style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary)">12</span>
             </div>
           </div>
         </div>
@@ -1770,34 +1779,35 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
           </div>
 
           <!-- Bank of America -->
-          <div class="ic-card" onclick="reconnectAccount(this)" style="cursor:pointer;margin-bottom:var(--s2)">
+          <div class="ic-card" id="datain-boa" onclick="reconnectAccount(this)" style="cursor:pointer;margin-bottom:var(--s2)">
             <div class="ic-top">
               <div class="ic-logo" style="background:#DC1F26">BA</div>
               <div class="ic-info">
                 <div class="ic-name">Bank of America</div>
                 <div class="ic-type">Business Checking ···4821</div>
               </div>
-              <div class="ic-status reconnect">Reconnect</div>
+              <div class="ic-status reconnect" id="datain-boa-status">Reconnect</div>
             </div>
-            <div style="padding:0 14px 10px">
-              <span style="font-size:var(--text-xs);color:var(--color-text-tertiary)">Previously connected · tap to import 2025 transactions</span>
-            </div>
+            <div class="ic-data" id="datain-boa-data" style="display:none"><div class="ic-data-cell"><div class="ic-data-label">Transactions</div><div class="ic-data-val">189</div></div><div class="ic-data-cell"><div class="ic-data-label">Last sync</div><div class="ic-data-val" style="color:var(--color-text-tertiary)">Today</div></div></div>
+            <div id="datain-boa-note" style="padding:0 14px 10px"><span style="font-size:var(--text-xs);color:var(--color-text-tertiary)">Previously connected · tap to import 2025 transactions</span></div>
           </div>
 
           <!-- Chase -->
-          <div class="ic-card" onclick="reconnectAccount(this)" style="cursor:pointer;margin-bottom:var(--s3)">
+          <div class="ic-card" id="datain-chase" onclick="reconnectAccount(this)" style="cursor:pointer;margin-bottom:var(--s2)">
             <div class="ic-top">
               <div class="ic-logo" style="background:#117ACA">CH</div>
               <div class="ic-info">
                 <div class="ic-name">Chase</div>
                 <div class="ic-type">Business Checking</div>
               </div>
-              <div class="ic-status reconnect">Reconnect</div>
+              <div class="ic-status reconnect" id="datain-chase-status">Reconnect</div>
             </div>
-            <div style="padding:0 14px 10px">
-              <span style="font-size:var(--text-xs);color:var(--color-text-tertiary)">Previously connected · last synced Jan 2025</span>
-            </div>
+            <div class="ic-data" id="datain-chase-data" style="display:none"><div class="ic-data-cell"><div class="ic-data-label">Transactions</div><div class="ic-data-val">94</div></div><div class="ic-data-cell"><div class="ic-data-label">Last sync</div><div class="ic-data-val" style="color:var(--color-text-tertiary)">Today</div></div></div>
+            <div id="datain-chase-note" style="padding:0 14px 10px"><span style="font-size:var(--text-xs);color:var(--color-text-tertiary)">Previously connected · last synced Jan 2025</span></div>
           </div>
+
+          <!-- Fidelity hidden by default -->
+          <div class="ic-card connected" id="datain-fidelity" style="display:none;margin-bottom:var(--s3)"><div class="ic-top"><div class="ic-logo" style="background:#46740E">FI</div><div class="ic-info"><div class="ic-name">Fidelity</div><div class="ic-type">Investment account</div></div><div class="ic-status connected" id="datain-fidelity-status">&#10003; Syncing</div></div><div class="ic-data"><div class="ic-data-cell"><div class="ic-data-label">Holdings</div><div class="ic-data-val">$142,800</div></div><div class="ic-data-cell"><div class="ic-data-label">Last sync</div><div class="ic-data-val" style="color:var(--color-text-tertiary)">Today</div></div></div></div>
 
           <!-- Add financial account -->
           <div class="action-row" onclick="navigate('add-institution')" style="margin:0 calc(-1 * var(--s4));padding:var(--s3) var(--s4);border-top:1px solid var(--color-border);border-bottom:none">
@@ -1872,48 +1882,6 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
           </div>
         </div>
 
-        <!-- Section 5: Documents found — summary, taps into upload-review -->
-        <div class="w-sec">
-          <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Documents found</div>
-          <div class="action-row" onclick="navigate('upload-review')">
-            <div class="action-icon" style="background:#FFF0EE">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.5 1.5H3.5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V5l-3-3.5z" stroke="#D52B1E" stroke-width="1.2" stroke-linejoin="round"/><path d="M8.5 1.5V5h3" stroke="#D52B1E" stroke-width="1.2" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="action-body">
-              <div class="action-title">3 documents found</div>
-              <div class="action-sub">2 processed &nbsp;·&nbsp; 1 needs review</div>
-            </div>
-            <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          </div>
-        </div>
-
-        <!-- Section 6: Expert — two states: unmatched vs booked -->
-        <div class="w-sec clickable" id="datain-expert-cta" onclick="expertBooked ? navigate('expert') : navigate('expert-match')">
-
-          <!-- State A: no expert yet -->
-          <div id="datain-expert-unmatched">
-            <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Your Expert</div>
-            <div style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.6;margin-bottom:var(--s2)">Your expert can review your accounts and tell you exactly what's needed for your return — answer questions, review documents, and walk you through everything.</div>
-            <div style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-brand)">Match with an expert →</div>
-          </div>
-
-          <!-- State B: expert booked — shown once expertBooked = true -->
-          <div id="datain-expert-matched" style="display:none">
-            <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Your Expert</div>
-            <div style="display:flex;align-items:center;gap:var(--s3)">
-              <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1B4F8A,#4A90D9);flex-shrink:0;position:relative;overflow:hidden">
-                <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;z-index:0">SL</span>
-                <img src="Susan.png" alt="Susan" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2">
-              </div>
-              <div style="flex:1;min-width:0">
-                <div style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary)">Susan Larsen</div>
-                <div style="font-size:var(--text-xs);color:var(--color-text-secondary)">EA · S Corp specialist · tap to view</div>
-              </div>
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="var(--color-text-tertiary)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-          </div>
-
-        </div>
 
       </div>
 
@@ -2149,6 +2117,100 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
           </div>
         </div>
 
+
+        <!-- Year-round additional document categories (shown only when navigating from year-round hub) -->
+        <div id="urev-yearround-docs" style="display:none">
+
+          <!-- 1099 / Investment Income -->
+          <div class="ufd-section">
+            <div class="ufd-section-label">1099 / Investment Income</div>
+            <div class="ufd-file">
+              <div class="ufd-top">
+                <div class="ufd-icon" style="background:var(--color-brand-subtle)"><svg width="13" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="var(--color-brand)" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="var(--color-brand)" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                <div class="ufd-meta"><div class="ufd-name">1099-DIV_Fidelity_2026.pdf</div><div class="ufd-row2"><span class="ufd-badge ready">&#10003; Ready</span><span style="font-size:10px;color:var(--color-text-tertiary)">96 KB</span></div></div>
+                <div class="ufd-amount">$1,240</div>
+              </div>
+              <div class="ufd-detail">Dividend income from Fidelity · Qualified dividends confirmed</div>
+            </div>
+            <div class="ufd-file" style="margin-top:var(--s2)">
+              <div class="ufd-top">
+                <div class="ufd-icon" style="background:rgba(245,158,11,.08)"><svg width="13" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="#D97706" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="#D97706" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                <div class="ufd-meta"><div class="ufd-name">1099-B_ETrade_2026.pdf</div><div class="ufd-row2"><span class="ufd-badge question">&#9888; Needs review</span><span style="font-size:10px;color:var(--color-text-tertiary)">142 KB</span></div></div>
+                <div class="ufd-amount">$8,400</div>
+              </div>
+              <div class="ufd-detail">Capital gains from E*Trade · Wash sale rule may apply — Susan flagged for review</div>
+            </div>
+          </div>
+
+          <!-- Business Receipts -->
+          <div class="ufd-section">
+            <div class="ufd-section-label">Business Receipts</div>
+            <div class="ufd-file">
+              <div class="ufd-top">
+                <div class="ufd-icon" style="background:var(--color-brand-subtle)"><svg width="13" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="var(--color-brand)" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="var(--color-brand)" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                <div class="ufd-meta"><div class="ufd-name">Receipts_Q1_2027.zip</div><div class="ufd-row2"><span class="ufd-badge ready">&#10003; Ready</span><span style="font-size:10px;color:var(--color-text-tertiary)">14 receipts · 2.1 MB</span></div></div>
+                <div class="ufd-amount">$4,182</div>
+              </div>
+              <div class="ufd-detail">Q1 business expenses · Equipment, software, meals categorized</div>
+            </div>
+            <div class="ufd-file" style="margin-top:var(--s2)">
+              <div class="ufd-top">
+                <div class="ufd-icon" style="background:rgba(245,158,11,.08)"><svg width="13" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="#D97706" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="#D97706" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                <div class="ufd-meta"><div class="ufd-name">Receipts_Q2_2027.zip</div><div class="ufd-row2"><span class="ufd-badge question">&#9888; Needs review</span><span style="font-size:10px;color:var(--color-text-tertiary)">9 receipts · 1.4 MB</span></div></div>
+                <div class="ufd-amount">$2,845</div>
+              </div>
+              <div class="ufd-detail">Q2 expenses · 2 receipts missing merchant info — Susan flagged</div>
+            </div>
+          </div>
+
+          <!-- Vendor W-9s -->
+          <div class="ufd-section">
+            <div class="ufd-section-label">Vendor W-9s</div>
+            <div class="ufd-file">
+              <div class="ufd-top">
+                <div class="ufd-icon" style="background:var(--color-brand-subtle)"><svg width="13" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="var(--color-brand)" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="var(--color-brand)" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                <div class="ufd-meta"><div class="ufd-name">W9_Pack_Adobe_Zoom_Vercel_Figma.pdf</div><div class="ufd-row2"><span class="ufd-badge ready">&#10003; Ready</span><span style="font-size:10px;color:var(--color-text-tertiary)">204 KB</span></div></div>
+                <div class="ufd-amount" style="color:var(--color-text-tertiary)">—</div>
+              </div>
+              <div class="ufd-detail">4 vendor W-9s on file · EINs verified · Required for 1099-NEC reporting</div>
+            </div>
+          </div>
+
+          <!-- Bank Statements -->
+          <div class="ufd-section">
+            <div class="ufd-section-label">Bank Statements</div>
+            <div class="ufd-file">
+              <div class="ufd-top">
+                <div class="ufd-icon" style="background:var(--color-brand-subtle)"><svg width="13" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="var(--color-brand)" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="var(--color-brand)" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                <div class="ufd-meta"><div class="ufd-name">BofA_Statements_Jan-Jun_2027.pdf</div><div class="ufd-row2"><span class="ufd-badge ready">&#10003; Ready</span><span style="font-size:10px;color:var(--color-text-tertiary)">318 KB</span></div></div>
+                <div class="ufd-amount">$21,430</div>
+              </div>
+              <div class="ufd-detail">6 months of BofA business checking · reconciled with QB transactions</div>
+            </div>
+            <div class="ufd-file" style="margin-top:var(--s2)">
+              <div class="ufd-top">
+                <div class="ufd-icon" style="background:var(--color-brand-subtle)"><svg width="13" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="var(--color-brand)" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="var(--color-brand)" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                <div class="ufd-meta"><div class="ufd-name">Chase_Statements_Jan-Jun_2027.pdf</div><div class="ufd-row2"><span class="ufd-badge ready">&#10003; Ready</span><span style="font-size:10px;color:var(--color-text-tertiary)">241 KB</span></div></div>
+                <div class="ufd-amount">$9,815</div>
+              </div>
+              <div class="ufd-detail">6 months of Chase business checking · reconciled with QB transactions</div>
+            </div>
+          </div>
+
+          <!-- Schedule C / P&L -->
+          <div class="ufd-section">
+            <div class="ufd-section-label">Schedule C / P&amp;L</div>
+            <div class="ufd-file">
+              <div class="ufd-top">
+                <div class="ufd-icon" style="background:var(--color-brand-subtle)"><svg width="13" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="var(--color-brand)" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="var(--color-brand)" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                <div class="ufd-meta"><div class="ufd-name">PnL_Draft_Q1Q2_2027.pdf</div><div class="ufd-row2"><span class="ufd-badge ready">&#10003; Ready</span><span style="font-size:10px;color:var(--color-text-tertiary)">87 KB</span></div></div>
+                <div class="ufd-amount">$35,480</div>
+              </div>
+              <div class="ufd-detail">Net income H1 2027 · Generated from QuickBooks · Susan reviewed</div>
+            </div>
+          </div>
+
+        </div>
         <!-- Newly dropped files injected here by handleFileInput() -->
         <div id="dropped-files-section"></div>
 
@@ -2204,6 +2266,56 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
           </div>
         </div>
 
+        <!-- Actions Needed — quick-tap approval cards -->
+        <div class="hub-divider" id="hubActionsDivider"></div>
+        <div class="hub-section" id="hubActionsSection">
+          <div class="hub-section-header">
+            <div class="hub-section-title">Actions Needed</div>
+            <div id="hub-actions-badge" style="font-size:10px;font-weight:600;color:var(--color-brand);background:rgba(0,82,204,.1);border-radius:var(--r-full);padding:1px 7px">4</div>
+          </div>
+          <div class="hub-approval-card" id="hub-card-q2">
+            <div class="hub-approval-top"><div class="hub-approval-info" style="flex:1;min-width:0"><div class="hub-approval-name">Q2 Estimated Tax</div></div><div class="hub-approval-amount">$3,840</div></div>
+            <div class="hub-approval-desc">Due June 15 · Susan recommends paying now to avoid underpayment penalty.</div>
+            <div class="hub-approval-flag">📅 Susan recommended · Federal + California</div>
+            <div style="display:flex;gap:var(--s2)" id="hub-card-q2-btns">
+              <button class="hub-approve-btn" data-orig-text="Approve" onclick="hubResolveCard(this,'Approved')">Approve</button>
+              <button class="hub-dispute-btn" onclick="hubShowAmountInput(this)">Change amount</button>
+            </div>
+            <div class="hub-amount-input-row" id="hub-card-q2-input" style="display:none">
+              <input class="hub-amount-input" id="hub-card-q2-val" type="text" value="$3,840" />
+              <button class="hub-amount-confirm" onclick="hubConfirmAmount('hub-card-q2')">Confirm</button>
+              <button class="hub-amount-cancel" onclick="hubCancelAmount('hub-card-q2')">Cancel</button>
+            </div>
+          </div>
+          <div class="hub-approval-card" id="hub-card-malucchi">
+            <div class="hub-approval-top"><div class="hub-approval-info" style="flex:1;min-width:0"><div class="hub-approval-name">Malucchi's Ranch</div></div><div class="hub-approval-amount">$500</div></div>
+            <div class="hub-approval-desc">Susan needs to know if this dinner is a business meal or personal expense before finalizing deductions.</div>
+            <div class="hub-approval-flag">🔍 Susan flagged · Meals &amp; Entertainment</div>
+            <div style="display:flex;gap:var(--s2)" id="hub-card-malucchi-btns">
+              <button class="hub-approve-btn" data-orig-text="Business" onclick="hubResolveCard(this,'Business ✓')">Business</button>
+              <button class="hub-dispute-btn" onclick="hubResolveCard(this,'Personal')">Personal</button>
+            </div>
+          </div>
+          <div class="hub-approval-card" id="hub-card-bh">
+            <div class="hub-approval-top"><div class="hub-approval-info" style="flex:1;min-width:0"><div class="hub-approval-name">B&amp;H Photo</div></div><div class="hub-approval-amount">$2,400</div></div>
+            <div class="hub-approval-desc">New vendor — camera equipment purchase. Confirm this is a deductible business expense.</div>
+            <div class="hub-approval-flag">🔍 Susan flagged · Equipment &amp; Hardware</div>
+            <div style="display:flex;gap:var(--s2)" id="hub-card-bh-btns">
+              <button class="hub-approve-btn" data-orig-text="Approve" onclick="hubResolveCard(this,'Approved')">Approve</button>
+              <button class="hub-dispute-btn">Dispute</button>
+            </div>
+          </div>
+          <div class="hub-approval-card" id="hub-card-figma">
+            <div class="hub-approval-top"><div class="hub-approval-info" style="flex:1;min-width:0"><div class="hub-approval-name">Figma</div></div><div class="hub-approval-amount">$576</div></div>
+            <div class="hub-approval-desc">Annual subscription renewed at $576 — up from $144. Confirm the plan upgrade before Susan categorizes it.</div>
+            <div class="hub-approval-flag">🔍 Susan flagged · Software / Annual Subscription</div>
+            <div style="display:flex;gap:var(--s2)" id="hub-card-figma-btns">
+              <button class="hub-approve-btn" data-orig-text="Approve" onclick="hubResolveCard(this,'Approved')">Approve</button>
+              <button class="hub-dispute-btn">Dispute</button>
+            </div>
+          </div>
+        </div>
+
         <!-- Notification banner — event-driven (§3.10) -->
         <div class="notif-banner warning" id="notifBanner" style="display:none">
           <div class="notif-banner-body">
@@ -2238,6 +2350,19 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
               <div class="cal-days" style="color:var(--color-text-tertiary)">127 days</div>
             </div>
           </div>
+        </div>
+
+        <!-- Connected Accounts summary -->
+        <div class="w-sec clickable" onclick="navigate('data-in')" style="border-bottom:none">
+          <div class="hub-section-header" style="margin-bottom:var(--s2)">
+            <div class="hub-section-title">Connected Accounts</div>
+            <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;color:var(--color-text-tertiary)"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <div style="width:7px;height:7px;border-radius:50%;background:var(--color-success);flex-shrink:0"></div>
+            <span style="font-size:var(--text-xs);color:var(--color-text-secondary)">All accounts active · Last synced 2h ago</span>
+          </div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-tertiary)">3 financial institutions · 3 apps connected</div>
         </div>
 
       </div>
@@ -2780,10 +2905,10 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
         </div>
 
         <!-- Thick divider -->
-        <div class="hub-divider"></div>
+        <div class="hub-divider" id="trApprovalsDivider"></div>
 
         <!-- Pending Your Approval -->
-        <div class="hub-section">
+        <div class="hub-section" id="trApprovalsSection">
           <div class="hub-section-header">
             <div class="hub-section-title">Pending Your Approval</div>
             <div id="approval-count-badge" style="font-size:10px;font-weight:600;color:var(--color-brand);background:rgba(0,82,204,.1);border-radius:var(--r-full);padding:1px 7px">3</div>
@@ -2800,7 +2925,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
             <div class="hub-approval-desc">Invoice #4821 is 3× your usual charge ($399). Susan flagged this as an unusually large software expense — please confirm this is a legitimate annual upgrade before she includes it in your deductions.</div>
             <div class="hub-approval-flag">🔍 Susan flagged · Software / Annual Subscription</div>
             <div style="display:flex;gap:var(--s2)">
-              <button class="hub-approve-btn" onclick="approveItem(this)">Approve</button>
+              <button class="hub-approve-btn" data-orig-text="Approve" onclick="approveItem(this)">Approve</button>
               <button class="hub-dispute-btn">Dispute</button>
             </div>
           </div>
@@ -2816,7 +2941,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
             <div class="hub-approval-desc">Your recurring Zoom charge increased from $149.90. Susan detected a new billing tier and wants to confirm this is intentional before categorizing it as a deductible operating expense.</div>
             <div class="hub-approval-flag">🔍 Susan flagged · Software / Monthly Subscription</div>
             <div style="display:flex;gap:var(--s2)">
-              <button class="hub-approve-btn" onclick="approveItem(this)">Approve</button>
+              <button class="hub-approve-btn" data-orig-text="Approve" onclick="approveItem(this)">Approve</button>
               <button class="hub-dispute-btn">Dispute</button>
             </div>
           </div>
@@ -2832,7 +2957,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
             <div class="hub-approval-desc">First-time vendor with no prior transaction history. Susan categorized this as Software / Infrastructure but wants your confirmation before finalizing it as a business expense deduction.</div>
             <div class="hub-approval-flag">🔍 Susan flagged · Software / Infrastructure</div>
             <div style="display:flex;gap:var(--s2)">
-              <button class="hub-approve-btn" onclick="approveItem(this)">Approve</button>
+              <button class="hub-approve-btn" data-orig-text="Approve" onclick="approveItem(this)">Approve</button>
               <button class="hub-dispute-btn">Dispute</button>
             </div>
           </div>
@@ -4015,13 +4140,14 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 var widgetOpen = false;
 var viewStack = ['welcome'];
 var chatMode = 'ai'; /* 'ai' = TurboTax Assistant | 'susan' = Susan Larsen */
-var currentStage = 'yearround'; /* prep | yearround | review | filing | filed */
+var currentStage = 'prep'; /* prep | yearround | review | filing | filed */
 var viewTitles = { main:'', welcome:'', login:'Sign in', 'stage1':'', expert:'Susan Larsen', 'expert-list':'Choose your expert', 'action-q2':'Q2 Estimated Tax', 'action-laws':'New Tax Laws', 'action-biz':'Business Changes', calendar:'Tax Calendar', chat:'Ask anything', settings:'Settings', 'tax-2026':'2026 Tax Return', 'data-in':'Connect & Upload', 'upload':'Upload forms', 'upload-review':'Uploaded Documents', 'add-institution':'Add account', 'qb-detail':'QuickBooks',
   'expert-match':'Susan Larsen', 'expert-david':'David Kim', 'expert-maria':'Maria Chen',
   'book-meeting':'Schedule a Meeting', 'demo-controls':'Demo Controls', 'video-call':'',
   'filing':'Review & File', 'filed':'',
   'tax-review':'Tax Review', 'deductions':'Deductions', 'activity':'Recent Activity', 'review-summary':'Tax Summary' };
 var pendingApprovals = 3;
+var hubPendingActions = 4;
 var epDate = {}, epSlot = {};
 
 /* ── Ask input context ── */
@@ -4254,7 +4380,10 @@ function navigate(viewId) {
   if (SUSAN_PROFILE_VIEWS.indexOf(viewId) > -1) updateExpertTimeline();
   /* Start call timer when entering video-call */
   if (viewId === 'video-call') startCallTimer();
-  /* Stop call timer when leaving video-call */
+  /* Context-aware view updates */
+  if (viewId === 'stage1') updateStage1ExpertCard();
+  if (viewId === 'data-in') updateDataInView();
+  if (viewId === 'upload-review') updateUploadReview();
   /* Re-evaluate fade for the new view */
   setTimeout(updateFade, 0);
 }
@@ -4308,20 +4437,7 @@ function updateHeader() {
     document.getElementById('whTitle').textContent = viewTitles[id] || '';
     document.getElementById('gearBtn').style.visibility = (id === 'settings') ? 'hidden' : 'visible';
   }
-  /* Update menu bar pill text for review screen */
-  var pill = document.getElementById('ttPillText');
-  if (pill) {
-    if (id === 'tax-review') {
-      var cnt = pendingApprovals;
-      pill.textContent = cnt > 0 ? cnt + ' pending · Review' : 'In Review';
-    } else if (id === 'filing') {
-      pill.textContent = 'Ready to File';
-    } else if (id === 'filed') {
-      pill.textContent = 'Filed ✓';
-    } else {
-      pill.textContent = 'Tax Assistant';
-    }
-  }
+  syncPillText();
 }
 function doLogin() {
   var emailEl  = document.getElementById('loginEmail');
@@ -4405,7 +4521,49 @@ function demoGoto(targetView) {
     updateJoinCard();
     updateReviewFileCard();
     updateFiledHomeState();
+    updateStage1ExpertCard();
   }
+  /* Reset tax-review approval cards */
+  if (targetView === 'tax-review') {
+    pendingApprovals = 3;
+    var trSec = document.getElementById('trApprovalsSection');
+    var trDiv = document.getElementById('trApprovalsDivider');
+    if (trSec) { trSec.style.display = ''; trSec.style.opacity = '1'; trSec.style.transition = ''; }
+    if (trDiv) { trDiv.style.display = ''; }
+    var apprBadge = document.getElementById('approval-count-badge');
+    if (apprBadge) apprBadge.textContent = '3';
+    document.querySelectorAll('#trApprovalsSection .hub-approval-card').forEach(function(card) {
+      card.style.display = ''; card.style.opacity = '1'; card.style.transform = ''; card.style.transition = '';
+      card.querySelectorAll('button').forEach(function(b) {
+        b.disabled = false; b.style.opacity = '1';
+        b.classList.remove('done');
+        if (b.dataset.origText) b.textContent = b.dataset.origText;
+      });
+    });
+  }
+  if (targetView === 'main') {
+    hubPendingActions = 4;
+    var hubSec = document.getElementById('hubActionsSection');
+    var hubDiv = document.getElementById('hubActionsDivider');
+    if (hubSec) { hubSec.style.display=''; hubSec.style.opacity='1'; hubSec.style.transition=''; }
+    if (hubDiv) hubDiv.style.display = '';
+    var hubBadge = document.getElementById('hub-actions-badge');
+    if (hubBadge) hubBadge.textContent = '4';
+    ['hub-card-q2','hub-card-malucchi','hub-card-bh','hub-card-figma'].forEach(function(cid) {
+      var card = document.getElementById(cid);
+      if (!card) return;
+      card.style.display=''; card.style.opacity='1'; card.style.transform=''; card.style.transition='';
+      var btns = document.getElementById(cid+'-btns');
+      if (btns) { btns.style.display='flex'; btns.querySelectorAll('button').forEach(function(b){ b.disabled=false; b.style.opacity='1'; b.classList.remove('done'); if(b.dataset.origText) b.textContent=b.dataset.origText; }); }
+      var inp = document.getElementById(cid+'-input');
+      if (inp) inp.style.display='none';
+    });
+    var nb = document.getElementById('notifBanner');
+    if (nb) nb.style.display='none';
+  }
+  /* Context-aware view updates for demo jump */
+  if (targetView === 'data-in') updateDataInView();
+  if (targetView === 'upload-review') updateUploadReview();
   /* Set stage for expert timeline */
   var prepViews = ['welcome','login','stage1','expert-list','expert-match','book-meeting','data-in','upload','upload-review','add-institution','qb-detail'];
   var reviewViews2 = ['tax-review','deductions','activity','review-summary'];
@@ -4594,25 +4752,30 @@ function getDemoDocContext(file) {
   return contexts[cat] || contexts['Other'];
 }
 
-/* ── Approval card: approve → count down → card disappears ── */
+/* ── Approval card: confirm state (500ms) → quick fade + slide out ── */
 function approveItem(btn) {
   btn.textContent = '✓ Approved';
   btn.classList.add('done');
+  btn.parentNode.querySelectorAll('button').forEach(function(b) { b.disabled = true; b.style.opacity = '0.4'; });
   var card = btn.closest('.hub-approval-card');
   pendingApprovals = Math.max(0, pendingApprovals - 1);
   var badge = document.getElementById('approval-count-badge');
   if (badge) badge.textContent = pendingApprovals;
-  /* Update menu bar pill */
-  var pill = document.getElementById('ttPillText');
-  if (pill && viewStack[viewStack.length-1] === 'tax-review') {
-    pill.textContent = pendingApprovals > 0 ? pendingApprovals + ' pending · Review' : 'In Review';
-  }
+  syncPillText();
   setTimeout(function() {
-    card.style.transition = 'opacity 350ms ease, transform 300ms ease';
+    card.style.transition = 'opacity 250ms ease, transform 200ms ease';
     card.style.opacity = '0';
-    card.style.transform = 'translateX(12px)';
-    setTimeout(function() { card.remove(); }, 360);
-  }, 1400);
+    card.style.transform = 'translateX(10px)';
+    setTimeout(function() {
+      card.style.display = 'none';
+      if (pendingApprovals === 0) {
+        var sec = document.getElementById('trApprovalsSection');
+        var div = document.getElementById('trApprovalsDivider');
+        if (sec) { sec.style.transition = 'opacity 250ms ease'; sec.style.opacity = '0'; setTimeout(function() { sec.style.display = 'none'; }, 260); }
+        if (div) div.style.display = 'none';
+      }
+    }, 260);
+  }, 500);
 }
 
 /* ── Stepper: instant stage jump (no slide animation) ── */
@@ -4642,6 +4805,10 @@ function stepTo(viewId) {
     if (el) el.classList.add('v-active');
     viewStack = [viewId];
   }
+  /* Update currentStage so pill text reflects the active stepper stage */
+  var _stageMap = { 'stage1':'prep', 'tax-review':'review', 'deductions':'review', 'activity':'review', 'review-summary':'review', 'filing':'filing', 'filed':'filed', 'main':'yearround' };
+  if (_stageMap[viewId]) currentStage = _stageMap[viewId];
+  if (viewId === 'stage1') updateStage1ExpertCard();
   updateHeader();
   updateEFC();
   updateAskContext(viewId);
@@ -4877,7 +5044,9 @@ function bookingContinue() {
   if (unmatched) unmatched.style.display = 'none';
   if (matched)   matched.style.display   = 'block';
 
-  /* 4. Navigate to the tax review hub */
+  /* 4. Update stage1 expert row */
+  updateStage1ExpertCard();
+  /* 5. Navigate to the tax review hub */
   demoGoto('tax-review');
 }
 
@@ -4963,20 +5132,94 @@ function dismissToast() {
   document.getElementById('meetingToast').classList.remove('show');
 }
 
-/* ── Menu bar pill state ── */
-function updatePillText(state) {
+/* ── Menu bar pill — state-priority machine ── */
+function syncPillText() {
   var el = document.getElementById('ttPillText');
   if (!el) return;
-  if (state === 'meeting') {
-    el.textContent = '· Meeting now';
-    el.style.color = 'rgba(255,255,255,1)';
-  } else if (state === 'filed') {
+  el.style.color = '#fff';
+  if (returnFiled || currentStage === 'filed') {
     el.textContent = '· Filed ✓';
-    el.style.color = 'rgba(120,220,120,1)';
+  } else if (readyToFile || currentStage === 'filing') {
+    el.textContent = '· Ready to file';
+  } else if (currentStage === 'review') {
+    el.textContent = pendingApprovals > 0 ? '· ' + pendingApprovals + ' to approve' : '· In review';
+  } else if (currentStage === 'yearround') {
+    el.textContent = hubPendingActions > 0 ? '· ' + hubPendingActions + ' to review' : '· Year round';
   } else {
     el.textContent = 'Tax Assistant';
-    el.style.color = 'rgba(255,255,255,.92)';
   }
+}
+function updatePillText(state) { syncPillText(); }
+
+/* ── Connected Accounts view: context-aware state ── */
+function updateDataInView() {
+  var isYearRound = (viewStack.length > 0 && viewStack[0] === 'main');
+  viewTitles['data-in'] = isYearRound ? 'Connected Accounts' : 'Connect & Upload';
+  updateHeader();
+  function setAccount(id, connected) {
+    var card = document.getElementById(id);
+    var status = document.getElementById(id + '-status');
+    var data = document.getElementById(id + '-data');
+    var note = document.getElementById(id + '-note');
+    if (!card) return;
+    if (connected) {
+      card.classList.add('connected'); card.onclick = null;
+      if (status) { status.className = 'ic-status connected'; status.textContent = '✓ Syncing'; }
+      if (data) data.style.display = ''; if (note) note.style.display = 'none';
+    } else {
+      card.classList.remove('connected'); card.onclick = function() { reconnectAccount(this); };
+      if (status) { status.className = 'ic-status reconnect'; status.textContent = 'Reconnect'; }
+      if (data) data.style.display = 'none'; if (note) note.style.display = '';
+    }
+  }
+  setAccount('datain-boa', isYearRound);
+  setAccount('datain-chase', isYearRound);
+  var fidelity = document.getElementById('datain-fidelity');
+  if (fidelity) fidelity.style.display = isYearRound ? '' : 'none';
+  ['google', 'apple', 'dropbox'].forEach(function(appId) {
+    var appCard = document.getElementById('app-' + appId);
+    var appStatus = document.getElementById('app-' + appId + '-status');
+    if (!appCard || !appStatus) return;
+    if (isYearRound) {
+      appCard.classList.add('connected');
+      appStatus.className = 'ic-status connected'; appStatus.textContent = '✓ Connected';
+    } else {
+      appCard.classList.remove('connected');
+      appStatus.className = 'ic-status connect'; appStatus.textContent = 'Connect';
+    }
+  });
+  var analysisSec = document.getElementById('datain-analysis-sec');
+  var analysisDocsRow = document.getElementById('datain-analysis-docs-row');
+  if (analysisSec) {
+    if (isYearRound) {
+      analysisSec.classList.add('clickable');
+      analysisSec.onclick = function() { navigate('upload-review'); };
+      if (analysisDocsRow) analysisDocsRow.style.display = 'flex';
+    } else {
+      analysisSec.classList.remove('clickable');
+      analysisSec.onclick = null;
+      if (analysisDocsRow) analysisDocsRow.style.display = 'none';
+    }
+  }
+}
+
+/* ── Upload Review: context-aware heading + extra docs ── */
+function updateUploadReview() {
+  var isYearRound = (viewStack.length > 0 && viewStack[0] === 'main');
+  var extra = document.getElementById('urev-yearround-docs');
+  var heading = document.getElementById('urev-count-heading');
+  var subtitle = document.getElementById('urev-subtitle');
+  if (extra) extra.style.display = isYearRound ? '' : 'none';
+  if (isYearRound) {
+    if (heading) heading.textContent = '12 documents';
+    if (subtitle) subtitle.textContent = '10 analyzed · 2 need review';
+    viewTitles['upload-review'] = 'Documents';
+  } else {
+    if (heading) heading.textContent = '3 documents';
+    if (subtitle) subtitle.textContent = '2 analyzed · 1 processing · expert review queued';
+    viewTitles['upload-review'] = 'Uploaded Documents';
+  }
+  updateHeader();
 }
 
 /* ── Business changes toggle ── */
@@ -5163,6 +5406,66 @@ function reconnectAccount(card) {
   /* Also ensure html root is transparent */
   document.documentElement.style.background = 'transparent';
 })();
+/* ── Hub action cards: resolve + amount input ── */
+function hubResolveCard(btn, label) {
+  btn.textContent = '✓ ' + label;
+  btn.classList.add('done');
+  btn.parentNode.querySelectorAll('button').forEach(function(b){ b.disabled=true; b.style.opacity='0.4'; });
+  var card = btn.closest('.hub-approval-card');
+  hubPendingActions = Math.max(0, hubPendingActions - 1);
+  var badge = document.getElementById('hub-actions-badge');
+  if (badge) badge.textContent = hubPendingActions;
+  syncPillText();
+  setTimeout(function(){
+    card.style.transition = 'opacity 250ms ease, transform 200ms ease';
+    card.style.opacity = '0'; card.style.transform = 'translateX(10px)';
+    setTimeout(function(){
+      card.style.display = 'none';
+      if (hubPendingActions === 0) {
+        var sec = document.getElementById('hubActionsSection');
+        var div = document.getElementById('hubActionsDivider');
+        if (sec){ sec.style.transition='opacity 250ms ease'; sec.style.opacity='0'; setTimeout(function(){ sec.style.display='none'; }, 260); }
+        if (div) div.style.display='none';
+        setTimeout(function(){ var b=document.getElementById('notifBanner'); if(b) b.style.display='flex'; }, 400);
+      }
+    }, 260);
+  }, 500);
+}
+function hubShowAmountInput(btn) {
+  var card = btn.closest('.hub-approval-card'), cid = card.id;
+  var btns = document.getElementById(cid+'-btns'), inp = document.getElementById(cid+'-input');
+  if (btns) btns.style.display='none';
+  if (inp) { inp.style.display='flex'; var v=document.getElementById(cid+'-val'); if(v){v.focus();v.select();} }
+}
+function hubConfirmAmount(cid) {
+  var v = document.getElementById(cid+'-val'), amt = v ? v.value : '';
+  var card = document.getElementById(cid);
+  if (!card) return;
+  var btn = card.querySelector('.hub-approve-btn');
+  if (btn) hubResolveCard(btn, 'Approved · '+amt);
+}
+function hubCancelAmount(cid) {
+  var btns = document.getElementById(cid+'-btns'), inp = document.getElementById(cid+'-input');
+  if (btns) btns.style.display='flex';
+  if (inp) inp.style.display='none';
+}
+
+/* ── Stage 1: dynamic expert row ── */
+function updateStage1ExpertCard() {
+  var expertPath = document.getElementById('stage1-expert-path');
+  var susanBooked = document.getElementById('stage1-susan-booked');
+  var meetingLine = document.getElementById('stage1-susan-meeting-line');
+  if (!expertPath || !susanBooked) return;
+  if (meetingReady || readyToFile || returnFiled) {
+    expertPath.style.display='none'; susanBooked.style.display='none';
+  } else if (expertBooked) {
+    expertPath.style.display='none'; susanBooked.style.display='';
+    if (meetingLine) meetingLine.textContent = (bookedDate||'Thu, May 15')+' · '+(bookedTime||'9:00 AM')+' · tap to view';
+  } else {
+    expertPath.style.display=''; susanBooked.style.display='none';
+  }
+}
+
 </script>
 </body>
 </html>
