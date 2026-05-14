@@ -1,12 +1,12 @@
 # TurboTax Business Tax Assistant
 **Intuit × Anthropic Hackathon · May 2026 · Team Malumin**
 
-## 🚀 [**Live prototype → pages.github.intuit.com/xlu02/TurboTax-Assistant**](https://github.intuit.com/pages/xlu02/TurboTax-Assistant/)
+## 🚀 [Live prototype → github.intuit.com/pages/xlu02/TurboTax-Assistant](https://github.intuit.com/pages/xlu02/TurboTax-Assistant/)
 *No installation. Click the link, then click the TurboTax icon in the simulated menu bar.*
 
 ---
 
-A macOS menu bar widget that gives TurboTax Business customers always-on access to their tax situation — year-round strategy, a persistent CPA expert (Susan Larsen), and AI-powered chat. Right from the menu bar, without opening a browser or app.
+A macOS menu bar widget that gives TurboTax Business customers always-on access to their tax situation — year-round strategy, a dedicated CPA expert, AI-powered chat, and a complete tax filing workflow. Right from the menu bar, without opening a browser or app.
 
 **Team**
 | Role | Person |
@@ -23,33 +23,28 @@ A macOS menu bar widget that gives TurboTax Business customers always-on access 
 
 **[→ Open the live prototype](https://github.intuit.com/pages/xlu02/TurboTax-Assistant/)**
 
-Auto-deploys whenever anything is pushed to `main`. No cloning, no installs.
-
-> **To use it:** click the TurboTax icon in the simulated menu bar at the top of the page.
+Click the TurboTax icon in the simulated macOS menu bar at the top of the page to open the widget. No cloning, no installs, works in any browser.
 
 ---
 
-### Option B — Double-click to launch as a menu bar app
+### Option B — Run as a real macOS menu bar app
 
 **Prerequisite:** Node.js 18+ — [download here](https://nodejs.org) if you don't have it.
 
 1. Clone the repo
 2. Double-click **`Launch Widget.command`** in Finder
 
-That's it. The first time you run it, it installs dependencies (~30 seconds). After that it launches instantly. A TurboTax icon appears in your actual macOS menu bar.
+The first run installs dependencies (~30 seconds). After that it launches instantly. The TurboTax icon appears in your actual macOS menu bar.
 
-> **⚠️ First-run security warning — you WILL see this:** macOS will show a popup saying it "cannot verify" the file. This is expected for any unsigned developer tool downloaded from the internet.
+> **⚠️ First-run security warning:** macOS will say it "cannot verify" the file. This is expected for unsigned developer tools.
 >
-> **To bypass it (one-time only):**
-> 1. **Right-click** `Launch Widget.command` in Finder → click **Open**
-> 2. A new dialog appears with an **Open** button — click it
-> 3. The widget launches. You won't see this warning again.
+> **To bypass it (one-time only):** Right-click `Launch Widget.command` → click **Open** → click **Open** again in the dialog. You won't see this warning again.
 >
-> *(Do NOT double-click the first time — that triggers the block with no bypass option. Right-click → Open is the key.)*
+> *(Do NOT double-click the first time — right-click → Open is the key.)*
 
 ---
 
-### Option C — Run from terminal (developer mode)
+### Option C — Run from terminal
 
 ```bash
 cd electron-app
@@ -67,34 +62,71 @@ npm run build
 # Output: electron-app/dist/TurboTax Business Tax-0.1.0.dmg
 ```
 
-Install the `.dmg` and the app lives in your Applications folder like any macOS app.
+---
+
+## What's Built
+
+### Core experience
+The widget simulates a full TurboTax Business tax assistant that lives in the macOS menu bar. It opens centered below the menu bar icon with a smooth animation, and works both as a browser prototype and as a real Electron menu bar app.
+
+### Views and flows
+
+**Year-round hub (`v-main`)** — the default state when no active tax season is underway. Shows business health stats pulled from QuickBooks (revenue, expenses, estimated tax, refund projection), a year-round tax calendar with upcoming deadlines, and quick-access action rows. Susan Larsen's expert footer card is pinned at the bottom for one-tap access.
+
+**In tax season (`stage1`)** — activates when a tax season is in progress. Shows a progress stepper, business context card (Acme Design Co.), and conditional action rows that change based on workflow state: meet your expert → expert booked → join meeting → review file → filed.
+
+**Expert matching (`v-expert-list`, `v-expert-match`)** — browse a list of matched CPAs with credentials, ratings, and specialties. Tap to view a full expert profile. Susan Larsen is the featured match (CPA, EA, ★ 4.9, 847 returns filed).
+
+**Expert profile (`v-expert`)** — full expert view with booking CTA, availability calendar, activity timeline showing past interactions, and a "Switch Expert" option.
+
+**Meeting booking (`v-book-meeting`)** — date/time selection with confirmation flow. Post-booking, the stage1 view updates to show Susan's status and upcoming meeting.
+
+**Video call (`v-video-call`)** — simulated in-widget meeting experience with a 10-minute notification toast that pulses the menu bar icon.
+
+**Document upload (`v-upload`, `v-upload-review`)** — drag-and-drop zone for tax documents (W-2, 1099, K-1, etc.). After upload, shows a categorized review screen with file details and Susan's review status.
+
+**QuickBooks data (`v-data-in`)** — connected accounts view showing synced financial institutions (Chase, Bank of America, QuickBooks), with a detail drill-down showing recent transactions and account balances.
+
+**Review & File (`v-review-file`, `v-filed`)** — end-to-end filing arc: summary of return, confirm and file CTA, animated success state with refund amount and confirmation ID.
+
+**AI chat** — context-aware ask input pinned to the bottom of every view. Placeholder text adapts to the current view. Smart demo mode with pre-scripted responses (no API key needed for demos).
+
+**Settings** — account info, notification preferences, connected accounts, demo controls for jumping to any flow state, and quit widget.
+
+---
+
+## Demo Flow
+
+The fastest way to walk someone through the full experience:
+
+1. Open the widget → **year-round hub** (QB stats, calendar, action rows)
+2. Settings → Demo Controls → **"Tax Season"** → see stage1 activate
+3. Tap **"Meet your expert"** → expert list → Susan's profile → book meeting
+4. Demo Controls → **"Meeting Starting"** → 10-min toast fires, join meeting card appears
+5. Tap **"Join meeting"** → video call experience
+6. Demo Controls → **"Upload Docs"** → upload view with drag-drop
+7. Demo Controls → **"Review & File"** → filing arc → filed success state
 
 ---
 
 ## Using the Widget
 
-### Opening and closing
-- **Click** the TurboTax icon in the menu bar → opens the widget
-- **Click outside** the widget → closes it (returns to main view on reopen)
-- **Right-click** the icon → context menu: **Open widget** or **Quit TurboTax widget**
+**Opening/closing**
+- Click the TurboTax icon in the menu bar → opens widget centered below icon
+- Click the × button (top right of widget) → closes widget
+- Right-click the tray icon → **Quit** removes it from the menu bar entirely
 
-### Navigation
-- **Tap any action row** → drills into a detail view (layer 2)
-- **Back arrow** (top left) → returns to previous view
-- **Gear icon** (top right) → Settings
-- **Susan's footer card** → tap to open her full profile and book a meeting
-- **Ask input** (bottom bar) → AI chat from any view; switches to Susan chat when on her profile
+**Navigation**
+- Tap any action row → drills into detail view
+- Back arrow (top left) → returns to previous view
+- Gear icon (top right) → Settings
+- Susan's footer card (bottom) → her full profile
 
-### Keyboard shortcuts (while widget is in focus)
+**Keyboard shortcuts** (Electron app only)
 | Shortcut | Action |
 |----------|--------|
-| `Cmd+R` | **Reload the prototype** — picks up any edits you made to `prototype/index.html` instantly. Use this after every change. |
-| `Cmd+Option+I` | Open DevTools (inspect + debug) |
-
-### Quitting
-- Settings → **Quit widget** → removes the icon from the menu bar entirely
-- Right-click the icon → **Quit TurboTax widget** → same result
-- To reopen after quitting: run `Launch Widget.command` again (or `npm start`)
+| `Cmd+R` | Reload prototype — picks up any edits instantly |
+| `Cmd+Option+I` | Open DevTools |
 
 ---
 
@@ -104,116 +136,100 @@ Install the `.dmg` and the app lives in your Applications folder like any macOS 
 TurboTax-Assistant/
 │
 ├── README.md                        ← You are here
-├── AI_INSTRUCTIONS.md               ← Read this before starting a Claude session
-├── CHANGELOG.md                     ← Full version history (v1–v12+)
+├── AI_INSTRUCTIONS.md               ← Read before starting a Claude session
+├── CHANGELOG.md                     ← Full version history (v1–v13+)
 ├── Launch Widget.command            ← Double-click to run the menu bar app
 │
 ├── prototype/                       ← The widget (single self-contained HTML file)
-│   ├── index.html                   ← Everything: HTML + CSS + JS in one file
-│   ├── Susan.png                    ← Expert photo (place here for photo to appear)
+│   ├── index.html                   ← Everything: HTML + CSS + JS in one file (~3,800 lines)
+│   ├── Susan.png                    ← Expert photo
+│   ├── wallpaper.png                ← macOS Sonoma Blue desktop wallpaper
+│   ├── menubar-icon.png             ← TurboTax menu bar icon
 │   └── design-system/
-│       ├── Component Gallery.html   ← Visual reference for every component ← READ THIS
-│       ├── Component Inventory.md   ← Design token + spec source of truth
+│       ├── Component Gallery.html   ← Visual reference for every component
+│       ├── Component Inventory.md   ← Design token + component spec source of truth
 │       └── Product Design Requirements.md
 │
-└── electron-app/                    ← macOS app wrapper (Electron)
-    ├── main.js                      ← Tray icon + window management
-    ├── preload.js                   ← API bridge (extend for Claude API calls)
-    ├── package.json
-    └── assets/
-        ├── menubar-icon.png         ← Menu bar tray icon
-        └── app-icon-1024.png        ← App icon
+├── electron-app/                    ← macOS app wrapper (Electron)
+│   ├── main.js                      ← Tray icon + window management
+│   ├── preload.js                   ← IPC bridge
+│   ├── package.json
+│   └── assets/
+│       ├── menubar-icon.png
+│       ├── menubar-icon@2x.png
+│       └── app-icon-1024.png
+│
+└── .github/
+    └── workflows/
+        └── deploy.yml               ← Auto-deploys prototype/ to GitHub Pages on push to main
 ```
+
+---
+
+## Design System
+
+All visual decisions live in a single source of truth across three files:
+
+| File | Role |
+|------|------|
+| `Component Inventory.md` | Every design token, spacing rule, and component spec in plain text |
+| `Component Gallery.html` | Visual reference — open in browser to see every component live |
+| `prototype/index.html` | The prototype — must always match the Gallery |
+
+**Core principles**
+- **Flat Robinhood-style doctrine** — no shadows, no nested cards, no borders on gray backgrounds. Navigation uses flat action-rows. Cards are reserved for structured data display (numbers, confirmations, grids).
+- **4px spacing grid** — `--s1` through `--s8` tokens only. No hardcoded pixel values.
+- **Color tokens** — `var(--color-brand)`, `var(--color-success)`, `var(--color-text-primary)`, etc. No hardcoded hex.
+- **Typography** — 13px body (`--text-sm`), 11px minimum. Labels use uppercase + letter-spacing.
+- **Two-layer IA** — Layer 1: summary action rows on the main view. Layer 2: full detail views. Every layer-2 view ends with a path to Susan's footer card.
+- **Action-row pattern** — flat rows with negative side margins, border-bottom separator, hover tint. Used for all navigation on gray backgrounds.
 
 ---
 
 ## Contributing with Claude
 
-Every change to this project is made by talking to Claude in a Cowork session. Claude reads `AI_INSTRUCTIONS.md` at the start of each session to understand the project, the design system, and the rules it must follow.
+Every change to this project is made by talking to Claude in a Cowork session.
 
-### Starting a session
-
-Open the project folder in Cowork, then say something like:
-
+**Starting a session:**
+Open the project folder in Cowork and say:
 > *"Read AI_INSTRUCTIONS.md and let's work on [feature/fix]."*
 
-Claude will read the instructions and pick up exactly where you left off.
+Claude reads the instructions, loads the design system context, and picks up exactly where you left off.
 
-### What Claude does automatically
-
-Claude follows the **design workflow** on every change without being asked:
-
-1. Reads the Component Gallery as the visual reference before writing any code
+**What Claude does automatically on every change:**
+1. Reads the Component Gallery as visual reference before writing any code
 2. Updates the Component Gallery when anything changes in the prototype
-3. Runs a **holistic audit** after every change — checks that nothing else in the system is now inconsistent
-4. Writes a CHANGELOG entry for every version
+3. Runs a holistic audit — checks that nothing else in the system is now inconsistent
+4. Writes a CHANGELOG entry
 
-You don't need to remind Claude of these rules every session — `AI_INSTRUCTIONS.md` covers them. But if something seems off, you can always say *"do a holistic audit"* and Claude will sweep the entire system.
+**To suggest a feature:** describe it in plain language. Claude will ask clarifying questions if needed, then build it following the design system.
 
-### Suggesting new features
-
-Just describe what you want in plain language. Examples:
-
-> *"Add a document upload zone to the main view where I can drop a PDF"*
-> *"The Q2 action row should show a progress bar when the payment is pending"*
-> *"Change Susan's availability to show a calendar week view instead of a date strip"*
-
-Claude will ask clarifying questions if needed, then build it following the design system — using the right tokens, matching the existing patterns, updating the Gallery, and logging the change.
-
-### Making design changes
-
-When reviewing a view or component, take a screenshot and share it:
-
-> *"Here's a screenshot of the expert view. The booking scheduler feels too cramped — can we give it more breathing room and make the confirm button more prominent?"*
-
-Claude will diagnose the issue, propose a fix, and implement it holistically.
-
-### After making changes
-
-After Claude makes a change, hit `Cmd+R` in the widget to reload and see your update immediately. No restart needed.
-
----
-
-## The Design System
-
-This project has a **single source of truth** for every visual decision. Before touching anything, understand the three layers:
-
-| File | Role |
-|------|------|
-| `Component Inventory.md` | Defines every design token (colors, spacing, typography, radius) and component spec in text |
-| `Component Gallery.html` | The visual reference — open this in a browser to see every component rendered exactly as it appears in the widget |
-| `prototype/index.html` | The working prototype — must always match the Gallery |
-
-**The Gallery and prototype are mirrors of each other.** If they disagree, the Gallery is the intended design and the prototype needs updating. Claude enforces this automatically.
-
-### Design principles in brief
-
-- **Flat widget doctrine:** No shadows inside the widget. No nested cards. Use background tints and hairline dividers instead.
-- **4px spacing grid:** Always use `--s1` through `--s8` tokens. Never hardcode pixel values.
-- **Color tokens:** Always use `var(--color-brand)`, `var(--color-text-primary)`, etc. Never hardcode hex.
-- **Typography:** Body text is 13px (`--text-sm`). Minimum 11px. Labels use uppercase + letter-spacing.
-- **Two-layer IA:** Layer 1 = summary action rows on the main view. Layer 2 = full detail views. Every layer-2 view ends with copy that leads to Susan's footer card.
+**To make a design change:** share a screenshot and describe what feels off. Claude will diagnose, propose a fix, and implement it holistically.
 
 ---
 
 ## Sprint Plan
 
-### ✅ Done (v1–v12)
-- Full widget prototype: multi-view navigation, all layer-2 views, Susan expert profile, booking scheduler, AI/Susan chat, 10-min meeting notification toast
-- Year-round calendar, tax law detail cards, 2026 tax return drill-down, settings view
-- Flat design system: tokens, Component Inventory, Component Gallery (fully synced)
-- Electron menu bar app with right-click quit, reload shortcut, click-outside dismiss
-- Launch script (`Launch Widget.command`) for one-double-click setup
+### ✅ Completed (v1–v13, May 12–13)
+- Full end-to-end prototype: all views, all flows, complete navigation
+- Year-round hub with QuickBooks stats, tax calendar, action rows
+- In-tax-season flow with stepper, expert matching, booking, meeting
+- Video call demo experience with 10-min notification toast
+- Document upload: drag-and-drop, file categorization, review screen
+- Complete filing arc: review → confirm → file → success state with refund amount
+- Expert profiles: Susan Larsen, David, Maria — all with booking CTAs
+- AI chat with smart demo mode (context-aware, no API key required)
+- Flat Robinhood-style design system — all action rows, cards only for data
+- macOS Sonoma Blue wallpaper + real TurboTax menu bar icon
+- Widget centers below menu bar icon on open
+- Component Gallery fully synced with prototype
+- Electron menu bar app: tray icon, right-click quit, IPC bridge
+- `Launch Widget.command` one-double-click setup
+- GitHub Pages live at [github.intuit.com/pages/xlu02/TurboTax-Assistant](https://github.intuit.com/pages/xlu02/TurboTax-Assistant/)
 
-### 🔲 Day 2 (May 13) — Intelligence
-- **Real Claude API chat:** replace hardcoded AI responses with live `fetch()` calls to Anthropic API
-- **Document parsing:** drop a PDF → Claude parses → returns structured tax summary → "Pending Susan's review" state
-- **Expert review workflow:** Susan reviews → customer approves flow
-- **Wire `preload.js`** for Claude API calls when running in Electron
-
-### 🔲 May 14 — Polish + Ship
-- Bug fixes and presentation polish
-- Build `.dmg` for arm64 (Apple Silicon) + x64 (Intel)
+### 🔲 May 14 — Final Polish + Ship
+- Merge Hailey's features: Decision Cards (expense anomaly detection), Tax Readiness % bar, Deductions tab, Activity timeline
+- Final presentation polish pass
 - Record demo video
 - Hackathon submission
 
@@ -221,6 +237,6 @@ This project has a **single source of truth** for every visual decision. Before 
 
 ## Questions?
 
-- **Design questions** → Sean or Hailey (both XD)
-- **Electron / API / engineering** → Sean or Hailey
-- **Product direction + submission** → Armin
+- **Design** → Sean Lu or Hailey (XD)
+- **Product direction + submission** → Armin Naghashzadeh
+- **Prototype / Electron** → Sean Lu
