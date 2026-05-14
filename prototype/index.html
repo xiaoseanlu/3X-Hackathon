@@ -47,7 +47,7 @@
   /* Type */
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --fw-regular: 400; --fw-medium: 500; --fw-semibold: 600; --fw-bold: 700;
-  --text-xs: 11px; --text-sm: 13px; --text-base: 14px; --text-md: 16px; --text-xl: 28px;
+  --text-xs: 11px; --text-sm: 13px; --text-base: 15px; --text-md: 16px; --text-xl: 28px;
 
   /* Space */
   /* Spacing scale — 4px base grid */
@@ -134,7 +134,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .tt-icon-wrap svg { width: 15px; height: 15px; }
 .tt-pill-text {
   font-size: 12px; font-weight: 500;
-  color: rgba(255,255,255,.92);
+  color: #fff;
   white-space: nowrap;
   letter-spacing: -.01em;
   line-height: 1;
@@ -258,7 +258,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .fil-number-val.refund { color:var(--color-success); }
 .fil-number-val.due { color:var(--color-warning); }
 .fil-susan-note { display:flex;gap:var(--s3);padding:var(--s3) var(--s4);background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--r-lg); }
-.fil-susan-av { width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1B4F8A,#2563EB);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff; }
+.fil-susan-av { width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1B4F8A,#2563EB);flex-shrink:0;position:relative;overflow:hidden; }
 .fil-susan-body { flex:1;min-width:0; }
 .fil-susan-name { font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-primary);margin-bottom:3px; }
 .fil-susan-text { font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.55; }
@@ -314,6 +314,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
   flex-shrink: 0; min-height: 40px;
   background: rgba(255,255,255,0.88);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
   position: relative; z-index: 2;
 }
 .wh-left { display: flex; align-items: center; gap: var(--s2); }
@@ -346,14 +347,14 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .views-host {
   position: relative; flex: 1; overflow: hidden; min-height: 0;
   /* flat — no margin, no border-radius, no card container */
-  background: #F4F6F9;
+  background: #fff;
 }
 /* Bottom fade — fades scroll content into expert footer */
 .views-host::after {
   content: '';
   position: absolute; bottom: 0; left: 0; right: 0;
   height: 48px;
-  background: linear-gradient(to bottom, rgba(244,246,249,0) 0%, #F4F6F9 100%);
+  background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, #fff 100%);
   pointer-events: none;
   z-index: 3;
   transition: opacity 200ms;
@@ -362,7 +363,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .views-host.at-bottom::after { opacity: 0; }
 .view {
   position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-  overflow-y: auto; overflow-x: hidden; background: #F4F6F9;
+  overflow-y: auto; overflow-x: hidden; background: #fff;
   transform: translateX(100%); transition: transform var(--dur-slow) var(--ease);
   scrollbar-width: none;
 }
@@ -371,9 +372,9 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .view.v-behind  { transform: translateX(-28%); pointer-events: none; z-index: 0; }
 
 /* ── Flat section ── */
-/* White band between major sections — creates visible separation on gray scroll bg */
-.w-sec { padding: var(--s4); border-bottom: 4px solid #fff; }
-.w-sec:last-child { border-bottom: none; } /* no trailing white bar on last section of any view */
+/* Gray band between major sections — creates visible separation on white scroll bg */
+.w-sec { padding: var(--s4); border-bottom: 4px solid var(--color-border); }
+.w-sec:last-child { border-bottom: none; } /* no trailing divider on last section of any view */
 
 /* Year badge */
 .yr-badge {
@@ -402,13 +403,18 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .action-row {
   display: flex; align-items: center; gap: var(--s3);
   padding: var(--s3) var(--s4);
-  border-bottom: 1px solid var(--color-border);
   cursor: pointer; transition: background var(--dur-fast);
   margin: 0 calc(-1 * var(--s4));
   padding-left: var(--s4); padding-right: var(--s4);
+  position: relative;
 }
-.action-row:last-child { border-bottom: none; }
-.action-row:hover { background: #fff; }
+/* Inset separator — starts at section padding, never full-width */
+.action-row:not(:last-child)::after {
+  content: ''; position: absolute; bottom: 0;
+  left: var(--s4); right: var(--s4); height: 1px;
+  background: var(--color-border);
+}
+.action-row:hover { background: #F4F6F9; }
 .action-icon { width: 28px; height: 28px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .action-icon.warn    { background: var(--color-warning-subtle); color: var(--color-warning); }
 .action-icon.info    { background: var(--color-brand-subtle);   color: var(--color-brand); }
@@ -426,12 +432,18 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .cal-list { display: flex; flex-direction: column; }
 .cal-item {
   display: flex; align-items: flex-start; gap: var(--s3);
-  padding: 9px 0; border-bottom: 1px solid var(--color-border);
+  padding: 9px 0;
   cursor: pointer; transition: background var(--dur-fast);
   margin: 0 calc(-1 * var(--s4)); padding-left: var(--s4); padding-right: var(--s4);
+  position: relative;
 }
-.cal-item:last-child { border-bottom: none; }
-.cal-item:hover { background: #fff; }
+/* Inset separator — matches content width, not full view width */
+.cal-item:not(:last-child)::after {
+  content: ''; position: absolute; bottom: 0;
+  left: var(--s4); right: var(--s4); height: 1px;
+  background: var(--color-border);
+}
+.cal-item:hover { background: #F4F6F9; }
 .cal-dot-col { display: flex; flex-direction: column; align-items: center; padding-top: 4px; flex-shrink: 0; }
 .cal-dot { width: 8px; height: 8px; border-radius: var(--r-full); flex-shrink: 0; }
 .cal-connector { width: 1px; flex: 1; background: var(--color-border); margin-top: 4px; min-height: 18px; }
@@ -479,9 +491,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 /* Flat widget override: all ep-* use --color-bg, no inner elevation */
 .ep-card { border: none; border-radius: 0; overflow: visible; }
 .ep-hero {
-  padding: 20px var(--s4) var(--s4);
+  padding: 20px var(--s4) var(--s3);
   background: var(--bg-card);
-  border-bottom: 1px solid var(--color-border);
   text-align: center;
 }
 .ep-avatar {
@@ -497,13 +508,13 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .ep-name  { font-size: 18px; font-weight: 700; color: var(--text-primary); letter-spacing: -.3px; }
 .ep-creds { display: flex; justify-content: center; gap: 5px; flex-wrap: wrap; margin-top: 6px; }
 .ep-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--brand-subtle); color: var(--brand); }
-.ep-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px; background: var(--color-border); }
-.ep-stat  { background: var(--bg-card); padding: 14px 8px; text-align: center; }
-.ep-stat-val   { font-size: 24px; font-weight: 700; color: var(--text-primary); letter-spacing: -.6px; line-height: 1; }
+.ep-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; margin: 0 var(--s4) var(--s2); border: 1px solid var(--color-border); border-radius: var(--r-xl); overflow: hidden; background: #fff; }
+.ep-stat  { background: #fff; padding: 14px 8px; text-align: center; border-right: 1px solid var(--color-border); }
+.ep-stat:last-child { border-right: none; }
+.ep-stat-val   { font-size: 22px; font-weight: 700; color: var(--text-primary); letter-spacing: -.5px; line-height: 1; }
 .ep-stat-label { font-size: 10px; color: var(--text-tertiary); margin-top: 4px; }
-.ep-stars { display: flex; justify-content: center; gap: 1px; margin-bottom: 3px; }
-.ep-star  { font-size: 13px; color: var(--warning); }
-.ep-body  { padding: 14px var(--s4); background: var(--bg-card); }
+/* ep-stars removed — star is now inline single ★ in the rating cell */
+.ep-body  { padding: 10px var(--s4) 14px; background: var(--bg-card); }
 .ep-tags  { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
 .ep-tag   { font-size: 11px; color: var(--text-secondary); padding: 3px 9px; border-radius: 99px; border: 0.5px solid var(--border-strong); background: var(--bg-surface); }
 /* Hero action row — Available now + Book a Meeting at top of profile for instant engagement */
@@ -560,11 +571,11 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   gap: 2px; cursor: pointer; transition: all 80ms; flex-shrink: 0;
 }
-.ep-day.sel { background: var(--brand); border-color: var(--brand); }
+.ep-day.sel { background: var(--brand-subtle); border-color: var(--brand); border-width: 1.5px; }
 .ep-day.unavail { opacity: .3; pointer-events: none; }
 .ep-day-dow { font-size: 9px; color: var(--text-tertiary); line-height: 1; }
 .ep-day-num { font-size: 15px; font-weight: 600; color: var(--text-primary); line-height: 1; }
-.ep-day.sel .ep-day-dow, .ep-day.sel .ep-day-num { color: white; }
+.ep-day.sel .ep-day-dow, .ep-day.sel .ep-day-num { color: var(--brand); }
 .ep-slots { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; }
 .ep-slot {
   height: 36px; border-radius: 7px; background: var(--bg-surface);
@@ -575,6 +586,9 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .ep-slot:hover { background: var(--brand-subtle); border-color: var(--brand); color: var(--brand); }
 .ep-slot.sel    { background: var(--brand-subtle); border-color: var(--brand); color: var(--brand); }
 .ep-slot.booked { text-decoration: line-through; color: var(--text-tertiary); opacity: .4; pointer-events: none; }
+.ep-method-btn { flex:1;display:flex;align-items:center;justify-content:center;gap:6px;height:40px;border:1.5px solid var(--color-border);border-radius:var(--r-lg);background:#fff;font-size:var(--text-xs);font-weight:var(--fw-medium);color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-family);transition:all var(--dur-fast); }
+.ep-method-btn.sel { border-color:var(--color-brand);background:var(--color-brand-subtle);color:var(--color-brand); }
+.ep-method-btn:disabled { opacity:.35;cursor:not-allowed; }
 .ep-confirm-btn {
   width: 100%; height: 38px; background: var(--brand); color: #fff; border: none;
   border-radius: 8px; font-size: 13px; font-weight: 500; font-family: inherit; cursor: pointer; transition: background 80ms;
@@ -698,9 +712,9 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 }
 .tx-doc-btn:hover { background: var(--color-brand-hover); }
 
-/* ── Clickable 2026 section on main view ── */
+/* ── Clickable section — hover darkens on white background ── */
 .w-sec.clickable { cursor: pointer; transition: background var(--dur-fast); }
-.w-sec.clickable:hover { background: #fff; }
+.w-sec.clickable:hover { background: #F4F6F9; }
 
 /* ── Settings edit icon button ── */
 .s-edit-btn {
@@ -864,7 +878,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 /* Settings body — parent .view handles scroll; no inner overflow needed */
 .s-body   { padding-bottom: var(--s6); }
 /* White band separators between settings sections — matches w-sec pattern */
-.s-sec    { padding: var(--s3) var(--s4); border-bottom: 4px solid #fff; background: var(--color-bg); }
+.s-sec    { padding: var(--s3) var(--s4); border-bottom: 4px solid var(--color-border); background: var(--color-bg); }
 .s-sec:last-child { border-bottom: none; }
 .s-sec-label { font-size: var(--text-xs); font-weight: var(--fw-semibold); letter-spacing: .06em; text-transform: uppercase; color: var(--color-text-tertiary); margin-bottom: var(--s2); }
 .demo-row { display:flex;align-items:center;gap:var(--s2);padding:var(--s2) var(--s3);border-radius:var(--r-md);cursor:pointer;color:var(--color-text-secondary);font-size:var(--text-sm);transition:background 120ms; }
@@ -872,6 +886,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .demo-tag { margin-left:auto;font-size:10px;font-weight:var(--fw-semibold);color:var(--color-text-tertiary);background:#F0F2F5;padding:2px 6px;border-radius:var(--r-full); }
 .demo-tag-green { background:rgba(0,135,90,.1);color:#006B47; }
 .demo-tag-blue  { background:rgba(27,79,138,.1);color:var(--color-brand); }
+.demo-stage-header { font-size:10px;font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-tertiary);padding:var(--s2) var(--s3) var(--s1);margin-top:var(--s2); }
+.demo-stage-header:first-child { margin-top:0; }
 .s-action-row { display:flex;align-items:center;gap:var(--s2);width:100%;background:none;border:none;padding:var(--s2) 0;font-size:var(--text-sm);color:var(--color-text-secondary);cursor:pointer;font-family:inherit;border-bottom:0.5px solid var(--color-border); }
 .s-action-row:last-child { border-bottom:none; }
 .s-action-row.danger { color:var(--color-danger); }
@@ -895,26 +911,179 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .toggle.off::after { left: 2px; }
 
 /* ── Filing Stages Stepper (fs-*) ── */
-.fs-stepper { display:flex;align-items:flex-start;padding:16px 16px 12px;border-bottom:4px solid #fff; }
-.fs-step { display:flex;flex-direction:column;align-items:center;gap:5px;flex:1; }
-.fs-dot { width:8px;height:8px;border-radius:50%;background:var(--color-border-strong);flex-shrink:0;transition:background 200ms,box-shadow 200ms; }
-.fs-step.active .fs-dot { background:var(--color-brand);box-shadow:0 0 0 3px var(--color-brand-subtle); }
-.fs-step.done .fs-dot { background:var(--color-success); }
-.fs-label { font-size:9px;font-weight:600;color:var(--color-text-tertiary);text-align:center;line-height:1.3;letter-spacing:.02em; }
-.fs-step.active .fs-label { color:var(--color-brand);font-weight:700; }
-.fs-step.done .fs-label { color:var(--color-success); }
-.fs-line { flex:1;height:1px;background:var(--color-border);align-self:flex-start;margin-top:7px; }
-.fs-line.done { background:var(--color-success); }
+.fs-stepper { display:flex;flex-direction:column;padding:14px 16px 28px;border-bottom:4px solid var(--color-border);overflow:visible; }
+.fs-track { display:flex;align-items:center; }
+.fs-dot { width:10px;height:10px;border-radius:50%;background:var(--color-border-strong);flex-shrink:0;cursor:pointer;transition:background 200ms,box-shadow 200ms;position:relative; }
+.fs-dot.active { background:var(--color-brand);box-shadow:0 0 0 3px var(--color-brand-subtle); }
+.fs-dot.done { background:var(--color-success); }
+.fs-lbl { position:absolute;top:15px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:600;color:var(--color-text-tertiary);white-space:nowrap;text-align:center;line-height:1.3;letter-spacing:.01em;pointer-events:none; }
+.fs-dot.active .fs-lbl { color:var(--color-brand);font-weight:700; }
+.fs-dot.done .fs-lbl { color:var(--color-success); }
+/* Prevent first/last labels from overflowing widget edges */
+.fs-track > .fs-dot:first-child .fs-lbl { left:0;transform:none; }
+.fs-track > .fs-dot:last-child .fs-lbl { left:auto;right:0;transform:none; }
+.fs-seg { flex:1;height:1.5px;background:var(--color-border); }
+.fs-seg.done { background:var(--color-success); }
+
+/* ── Filed View Redesign (fv-*) ── */
+.fv-hero { padding:var(--s5) var(--s4) var(--s4);display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--s3);background:#fff; }
+.fv-check { width:52px;height:52px;border-radius:50%;background:rgba(0,135,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.fv-title { font-size:20px;font-weight:var(--fw-bold);color:var(--color-text-primary);letter-spacing:-.3px; }
+.fv-date { font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:-var(--s1); }
+.fv-confirm-pill { display:inline-flex;flex-direction:column;align-items:center;gap:2px;padding:var(--s2) var(--s4);border:1px solid var(--color-border);border-radius:var(--r-xl);background:var(--color-bg); }
+.fv-confirm-label { font-size:10px;color:var(--color-text-tertiary); }
+.fv-confirm-num { font-size:var(--text-sm);font-weight:var(--fw-bold);color:var(--color-text-primary);letter-spacing:.03em; }
+.fv-refund-amount { font-size:32px;font-weight:var(--fw-bold);color:var(--color-success);letter-spacing:-.5px; }
+.fv-refund-sub { font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:-4px; }
+.fv-actions { display:flex;flex-direction:column;gap:0; }
+.fv-action-row { display:flex;align-items:center;gap:var(--s3);padding:var(--s4);border-bottom:1px solid var(--color-border);cursor:pointer;background:#fff;transition:background var(--dur-fast); }
+.fv-action-row:hover { background:var(--color-brand-subtle); }
+.fv-action-row:last-child { border-bottom:none; }
+.fv-action-icon { width:36px;height:36px;border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.fv-action-label { flex:1;font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary); }
+.fv-action-label.primary { color:#fff; }
+.fv-action-chev { color:var(--color-text-tertiary); }
+/* Refund tracker (rt-*) */
+.rt-container { background:#F0FAF5;border-radius:var(--r-xl);margin:var(--s4);overflow:hidden; }
+.rt-progress-track { padding:var(--s4) var(--s4) var(--s3); }
+.rt-step-labels { display:flex;justify-content:space-between;margin-bottom:var(--s2); }
+.rt-step-lbl { font-size:10px;font-weight:var(--fw-medium);color:var(--color-text-tertiary);flex:1;text-align:center; }
+.rt-step-lbl.active,.rt-step-lbl.done { color:var(--color-success);font-weight:var(--fw-semibold); }
+.rt-bar-row { display:flex;align-items:center;gap:2px;margin-bottom:var(--s3); }
+.rt-bar-seg { flex:1;height:6px;border-radius:var(--r-full);background:rgba(0,135,90,.2); }
+.rt-bar-seg.done { background:var(--color-success); }
+.rt-bar-dot { width:12px;height:12px;border-radius:50%;flex-shrink:0;border:2px solid #fff;transition:all 200ms; }
+.rt-bar-dot.done { background:var(--color-success); }
+.rt-bar-dot.active { background:var(--color-success);box-shadow:0 0 0 3px rgba(0,135,90,.25); }
+.rt-bar-dot.pending { background:rgba(0,135,90,.2); }
+.rt-items { padding:0 var(--s4) var(--s4);display:flex;flex-direction:column;gap:0; }
+.rt-item { display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s3) 0;border-top:1px solid rgba(0,135,90,.1); }
+.rt-item:first-child { border-top:none; }
+.rt-item-dot { width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px; }
+.rt-item-dot.done { background:var(--color-success); }
+.rt-item-dot.active { background:#fff;border:2px solid var(--color-success); }
+.rt-item-dot.pending { background:rgba(0,135,90,.1);border:1.5px solid rgba(0,135,90,.2); }
+.rt-item-body { flex:1; }
+.rt-item-title { font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary);line-height:1.3; }
+.rt-item-title.pending { color:var(--color-text-secondary); }
+.rt-item-sub { font-size:11px;color:var(--color-text-secondary);margin-top:2px; }
+.rt-item-sub.pending { color:var(--color-text-tertiary); }
+.rt-item-date { font-size:11px;color:var(--color-text-secondary);font-weight:var(--fw-medium);white-space:nowrap;flex-shrink:0; }
+.rt-item-date.pending { color:var(--color-text-tertiary); }
+.rt-total-row { display:flex;align-items:center;justify-content:space-between;padding:var(--s3) var(--s4);border-top:1px solid rgba(0,135,90,.2);background:rgba(0,135,90,.05); }
+.rt-total-label { font-size:var(--text-sm);color:var(--color-text-secondary); }
+.rt-total-amount { font-size:var(--text-sm);font-weight:var(--fw-bold);color:var(--color-success); }
+
+/* ── Tax Review Hub (hub-*) ── */
+.hub-overview { margin:var(--s4);border:1px solid var(--color-border);border-radius:var(--r-xl);overflow:hidden; }
+.hub-overview-header { padding:var(--s3) var(--s4);background:var(--color-brand);display:flex;align-items:center;justify-content:space-between; }
+.hub-overview-title { font-size:var(--text-xs);font-weight:var(--fw-semibold);color:rgba(255,255,255,.8); }
+.hub-overview-year { font-size:var(--text-xs);font-weight:var(--fw-semibold);color:#fff; }
+.hub-overview-body { padding:var(--s4); }
+.hub-tax-row { display:flex;align-items:baseline;gap:var(--s2);margin-bottom:var(--s3); }
+.hub-tax-label { font-size:var(--text-xs);color:var(--color-text-secondary); }
+.hub-tax-amount { font-size:22px;font-weight:var(--fw-bold);color:var(--color-text-primary);letter-spacing:-.5px; }
+.hub-tax-badge { font-size:10px;font-weight:var(--fw-semibold);color:var(--color-success);background:rgba(0,135,90,.1);padding:2px 6px;border-radius:var(--r-full); }
+.hub-progress-row { display:flex;align-items:center;justify-content:space-between;margin-bottom:6px; }
+.hub-progress-label { font-size:11px;color:var(--color-text-secondary); }
+.hub-progress-pct { font-size:11px;font-weight:var(--fw-semibold);color:var(--color-brand); }
+.hub-progress-bar { height:6px;background:var(--color-border);border-radius:var(--r-full);overflow:hidden; }
+.hub-progress-fill { height:100%;background:var(--color-brand);border-radius:var(--r-full);transition:width 600ms var(--ease); }
+.hub-divider { height:4px;background:var(--color-border); }
+.hub-section { padding:var(--s4); }
+.hub-section-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s3); }
+.hub-section-title { font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-primary); }
+.hub-section-link { font-size:var(--text-xs);color:var(--color-brand);font-weight:var(--fw-medium);background:none;border:none;cursor:pointer;font-family:var(--font-family);padding:0; }
+/* Approval items — standalone bordered cards per screenshot */
+.hub-approval-card { border:1px solid var(--color-border);border-radius:var(--r-xl);padding:var(--s3);margin-bottom:var(--s3); }
+.hub-approval-card:last-child { margin-bottom:0; }
+.hub-approval-top { display:flex;align-items:flex-start;gap:var(--s2);margin-bottom:var(--s2); }
+.hub-approval-radio { width:20px;height:20px;border-radius:50%;border:2px solid var(--color-warning);flex-shrink:0;margin-top:2px; }
+.hub-approval-info { flex:1;min-width:0; }
+.hub-approval-name { font-size:var(--text-sm);font-weight:var(--fw-bold);color:var(--color-text-primary);line-height:1.3; }
+.hub-approval-amount { font-size:var(--text-sm);font-weight:var(--fw-bold);color:var(--color-text-primary);flex-shrink:0;white-space:nowrap; }
+.hub-approval-desc { font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.55;margin-bottom:var(--s2); }
+.hub-approval-flag { font-size:11px;color:var(--color-text-tertiary);margin-bottom:var(--s3); }
+.hub-approval-btns { display:flex;gap:var(--s2); }
+.hub-approve-btn { flex:1;height:36px;background:var(--color-brand);color:#fff;border:none;border-radius:var(--r-lg);font-size:var(--text-xs);font-weight:var(--fw-semibold);cursor:pointer;font-family:var(--font-family);transition:background var(--dur-fast); }
+.hub-approve-btn:hover { background:var(--color-brand-hover); }
+.hub-approve-btn.done { background:var(--color-success);pointer-events:none; }
+.hub-dispute-btn { flex:1;height:36px;background:#fff;color:var(--color-text-secondary);border:1px solid var(--color-border);border-radius:var(--r-lg);font-size:var(--text-xs);font-weight:var(--fw-semibold);cursor:pointer;font-family:var(--font-family);transition:all var(--dur-fast); }
+.hub-dispute-btn:hover { background:var(--color-surface); }
+/* flat clickable hub row (deductions / activity) */
+.hub-flat-link { cursor:pointer;padding:var(--s2) var(--s2);border-radius:var(--r-md);margin:0 calc(-1 * var(--s2));transition:background var(--dur-fast); }
+.hub-flat-link:hover { background:#F4F6F9; }
+/* clickable hub-section (same token as w-sec.clickable) */
+.hub-section.clickable { cursor:pointer;transition:background var(--dur-fast); }
+.hub-section.clickable:hover { background:#F4F6F9; }
+.hub-ded-left { display:flex;flex-direction:column;gap:2px; }
+.hub-ded-total { font-size:var(--text-sm);font-weight:var(--fw-bold);color:var(--color-text-primary); }
+.hub-ded-sub { font-size:11px;color:var(--color-text-secondary); }
+.hub-activity-mini { display:flex;flex-direction:column;gap:0; }
+.hub-act-mini-item { display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s2) 0;position:relative; }
+.hub-act-mini-dot { width:6px;height:6px;border-radius:50%;background:var(--color-brand-subtle);border:1.5px solid var(--color-brand);flex-shrink:0;margin-top:4px; }
+.hub-act-mini-text { font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.4; }
+.hub-act-mini-time { font-size:10px;color:var(--color-text-tertiary);margin-left:auto;flex-shrink:0; }
+
+/* ── Financial Summary component (fin-*) — from Component Inventory ── */
+.fin-label { font-size:11px;color:var(--color-text-tertiary);margin-bottom:var(--s2); }
+.fin-hero { font-size:32px;font-weight:var(--fw-bold);color:var(--color-text-primary);letter-spacing:-1.2px;line-height:1; }
+.fin-delta { font-size:var(--text-sm);margin-top:6px; }
+.fin-bars { margin-top:var(--s3);display:flex;flex-direction:column;gap:var(--s2); }
+.fin-bar-row { display:flex;align-items:center;gap:var(--s2); }
+.fin-bar-name { font-size:11px;color:var(--color-text-secondary);width:72px;flex-shrink:0; }
+.fin-bar-track { flex:1;height:3px;background:var(--color-border);border-radius:2px;overflow:hidden; }
+.fin-bar-fill { height:100%;border-radius:2px; }
+.fin-bar-val { font-size:11px;color:var(--color-text-secondary);font-weight:var(--fw-medium);width:44px;text-align:right;flex-shrink:0; }
+
+/* ── Deductions View (ded-*) ── */
+.ded-header-card { margin:var(--s4);padding:var(--s4);background:var(--color-brand);border-radius:var(--r-xl); }
+.ded-header-total { font-size:26px;font-weight:var(--fw-bold);color:#fff;letter-spacing:-.5px; }
+.ded-header-label { font-size:var(--text-xs);color:rgba(255,255,255,.7);margin-top:2px; }
+.ded-header-meta { font-size:10px;color:rgba(255,255,255,.6);margin-top:var(--s2); }
+.ded-list { padding:0 var(--s4) var(--s5); }
+.ded-item { display:flex;align-items:center;gap:var(--s3);padding:var(--s3) 0;border-bottom:1px solid var(--color-border); }
+.ded-item:last-child { border-bottom:none; }
+.ded-icon { width:32px;height:32px;border-radius:var(--r-md);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px; }
+.ded-info { flex:1;min-width:0; }
+.ded-name { font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary); }
+.ded-cat { font-size:11px;color:var(--color-text-tertiary); }
+.ded-right { display:flex;flex-direction:column;align-items:flex-end;gap:2px; }
+.ded-amount { font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary); }
+.ded-status { font-size:10px;font-weight:var(--fw-semibold);padding:2px 7px;border-radius:var(--r-full); }
+.ded-status.confirmed { color:var(--color-success);background:rgba(0,135,90,.1); }
+.ded-status.review { color:#B45309;background:rgba(180,83,9,.1); }
+
+/* ── Activity View (act-*) ── */
+.act-progress-card { margin:var(--s4);padding:var(--s4);border:1px solid var(--color-border);border-radius:var(--r-xl); }
+.act-progress-title { font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-primary);margin-bottom:var(--s3); }
+.act-dates-row { display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s2); }
+.act-date-label { font-size:10px;color:var(--color-text-tertiary); }
+.act-stats-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3);margin-top:var(--s3); }
+.act-stat { display:flex;flex-direction:column;align-items:center;gap:2px; }
+.act-stat-num { font-size:18px;font-weight:var(--fw-bold);color:var(--color-text-primary);line-height:1; }
+.act-stat-label { font-size:10px;color:var(--color-text-tertiary);text-align:center; }
+.act-timeline { padding:var(--s4) var(--s4) var(--s5); }
+.act-timeline-title { font-size:11px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-tertiary);margin-bottom:var(--s3); }
+.act-item { display:flex;gap:var(--s3);padding-bottom:var(--s3);position:relative; }
+.act-item::before { content:'';position:absolute;left:11px;top:20px;bottom:0;width:1px;background:var(--color-border); }
+.act-item:last-child::before { display:none; }
+.act-dot-wrap { display:flex;flex-direction:column;align-items:center;flex-shrink:0; }
+.act-dot { width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0; }
+.act-body { flex:1;padding-top:2px; }
+.act-title { font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary);line-height:1.3; }
+.act-detail { font-size:11px;color:var(--color-text-secondary);margin-top:2px;line-height:1.4; }
+.act-time { font-size:10px;color:var(--color-text-tertiary);margin-top:2px; }
 
 /* ── Business Context Card (bc-*) ── */
-.biz-context { padding:var(--s4) var(--s4);border-bottom:4px solid #fff; }
+.biz-context { padding:var(--s4);margin:var(--s3) var(--s4);border:1px solid var(--color-border);border-radius:var(--r-xl); }
 .bc-top { display:flex;align-items:center;gap:10px;margin-bottom:10px; }
 .bc-logo { width:32px;height:32px;border-radius:var(--r-md);flex-shrink:0;background:var(--color-brand-subtle);color:var(--color-brand);font-size:11px;font-weight:var(--fw-bold);display:flex;align-items:center;justify-content:center; }
 .bc-info { flex:1;min-width:0; }
 .bc-name { font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary);line-height:1.2; }
-.bc-meta { font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:2px; }
+.bc-meta { font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:2px;display:flex;flex-direction:column;gap:1px; }
 .bc-entity { font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--color-brand);background:var(--color-brand-subtle);padding:2px 8px;border-radius:var(--r-full);flex-shrink:0; }
-.bc-returns { display:flex;align-items:center;gap:6px;flex-wrap:wrap; }
+.bc-returns { display:flex;align-items:center;gap:6px;flex-wrap:nowrap; }
 .bc-returns-label { font-size:10px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-tertiary);flex-shrink:0; }
 .bc-chip { font-size:11px;font-weight:500;padding:2px 8px;border-radius:var(--r-full);border:0.5px solid var(--color-border-strong);background:var(--color-surface);color:var(--color-text-secondary); }
 .bc-chip.filed { color:var(--color-success);border-color:rgba(0,135,90,.25);background:rgba(0,135,90,.06); }
@@ -973,6 +1142,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .ic-status { font-size:10px;font-weight:var(--fw-semibold);letter-spacing:.03em;padding:3px 7px;border-radius:var(--r-full);flex-shrink:0; }
 .ic-status.connected { background:#E3FCEF;color:var(--color-success); }
 .ic-status.reconnect { background:var(--color-warning-subtle);color:var(--color-warning); }
+.ic-status.scanning { background:#EBF2FA;color:var(--color-brand); }
+.ic-status.connect  { background:var(--color-brand);color:#fff;cursor:pointer; }
 .ic-data { padding:var(--s2) 14px var(--s3);border-top:0.5px solid var(--color-border);display:flex;gap:var(--s4); }
 .ic-data-cell { display:flex;flex-direction:column;gap:1px; }
 .ic-data-label { font-size:9px;font-weight:var(--fw-semibold);text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-tertiary); }
@@ -1007,7 +1178,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .usum-next-label { font-size:var(--text-xs);font-weight:var(--fw-medium);color:var(--color-text-secondary);flex:1; }
 
 /* ── Upload Review Screen (ufd-*) ── */
-.ufd-section { padding:var(--s4) var(--s4) var(--s3);border-bottom:4px solid #fff; }
+.ufd-section { padding:var(--s4) var(--s4) var(--s3);border-bottom:4px solid var(--color-border); }
 .ufd-section-label { font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3); }
 .ufd-file { background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--r-lg);padding:var(--s3) var(--s4);margin-bottom:var(--s2); }
 .ufd-top { display:flex;align-items:flex-start;gap:var(--s3); }
@@ -1177,7 +1348,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
             <path d="M6.5 10.2l2.3 2.4 4.7-5.1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           <!-- Updated label per feedback -->
-          <span class="wh-brand-name">TurboTax Assistant</span>
+          <span class="wh-brand-name" id="whBrandName">TurboTax Assistant</span>
         </div>
         <span class="wh-title" id="whTitle"></span>
       </div>
@@ -1200,14 +1371,14 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
         <!-- Hero: TurboTax logo + tagline card -->
         <div style="padding:var(--s6) var(--s4) 0;text-align:center">
           <img src="turbotax-logo.svg" style="height:28px;width:auto;display:inline-block;margin-bottom:var(--s4)">
-          <div style="background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--r-xl);padding:var(--s5) var(--s4);display:inline-block;width:100%">
-            <div style="font-size:20px;font-weight:700;color:var(--color-text-primary);letter-spacing:-0.02em;margin-bottom:var(--s2)">Assistant</div>
-            <div style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.5">Year-round tax confidence.</div>
+          <div style="background:var(--bg-surface);border:1px solid var(--color-border);border-radius:var(--r-xl);padding:var(--s3) var(--s4);display:inline-block;width:100%">
+            <div style="font-size:15px;font-weight:700;color:var(--color-text-primary);letter-spacing:-0.01em;margin-bottom:4px">Tax Assistant</div>
+            <div style="font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.5">Year-round tax confidence.</div>
           </div>
         </div>
 
         <!-- Value props -->
-        <div style="padding:var(--s4) var(--s4) var(--s4)">
+        <div style="padding:32px var(--s4) var(--s4)">
           <div style="display:flex;flex-direction:column;gap:var(--s3)">
             <div style="display:flex;gap:10px;align-items:flex-start">
               <div class="ob-prop-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.2 2.5L8 2.5" stroke="var(--color-brand)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -1222,7 +1393,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
               <div><div style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary);line-height:1.4">Context travels automatically</div><div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:2px;line-height:1.5">Every conversation picks up where you left off — no rebriefing</div></div>
             </div>
           </div>
-          <button class="ob-cta" onclick="navigate('login')" style="margin-top:var(--s4)">Get Started →</button>
+          <button class="ob-cta" onclick="navigate('login')" style="margin-top:32px">Get Started →</button>
           <div style="text-align:center;margin-top:var(--s3)">
             <span onclick="navigate('demo-controls')" style="font-size:var(--text-xs);color:var(--color-text-tertiary);cursor:pointer;text-decoration:underline;text-underline-offset:2px">Demo controls →</span>
           </div>
@@ -1236,7 +1407,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
         <!-- Email -->
         <div style="margin-bottom:var(--s3)">
           <label style="display:block;font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:var(--s1)">Email</label>
-          <input class="ob-input" type="email" id="loginEmail" placeholder="biztax_customer@turbotax.com">
+          <input class="ob-input" type="email" id="loginEmail" placeholder="your@email.com">
         </div>
 
         <!-- Password -->
@@ -1265,7 +1436,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       </div>
 
       <!-- View: Stage 1 — Form Collection (active filing season, new customer) -->
-      <div class="view" id="v-stage1" style="background:#F4F6F9;overflow-y:auto">
+      <div class="view" id="v-stage1" style="background:#fff;overflow-y:auto">
 
         <!-- Skeleton state (shown for 1.5s after login) -->
         <div id="stage1-skeleton" style="padding:var(--s4);display:flex;flex-direction:column;gap:10px">
@@ -1314,69 +1485,61 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
         <div id="stage1-content" style="display:none">
           <!-- Filing stages stepper -->
           <div class="fs-stepper" id="stage1-stepper">
-            <div class="fs-step active">
-              <div class="fs-dot"></div>
-              <div class="fs-label">Form<br>Collection</div>
-            </div>
-            <div class="fs-line"></div>
-            <div class="fs-step">
-              <div class="fs-dot"></div>
-              <div class="fs-label">Expert<br>Review</div>
-            </div>
-            <div class="fs-line"></div>
-            <div class="fs-step">
-              <div class="fs-dot"></div>
-              <div class="fs-label">Ready<br>to File</div>
-            </div>
-            <div class="fs-line"></div>
-            <div class="fs-step">
-              <div class="fs-dot"></div>
-              <div class="fs-label">Filed</div>
+            <div class="fs-track">
+              <div class="fs-dot active" onclick="stepTo('stage1')"><span class="fs-lbl">Prep</span></div>
+              <div class="fs-seg"></div>
+              <div class="fs-dot" onclick="stepTo('tax-review')"><span class="fs-lbl">Review</span></div>
+              <div class="fs-seg"></div>
+              <div class="fs-dot" onclick="stepTo('filing')"><span class="fs-lbl">Ready to File</span></div>
+              <div class="fs-seg"></div>
+              <div class="fs-dot" onclick="stepTo('filed')"><span class="fs-lbl">Filed</span></div>
+              <div class="fs-seg"></div>
+              <div class="fs-dot" onclick="stepTo('main')"><span class="fs-lbl">Year Round</span></div>
             </div>
           </div>
 
           <!-- Business context -->
           <div class="biz-context">
             <div class="bc-top">
-              <div class="bc-logo">AC</div>
               <div class="bc-info">
                 <div class="bc-name">Acme Design Co.</div>
-                <div class="bc-meta">3rd year with TurboTax Business</div>
+                <div class="bc-meta"><span>Graphic design &amp; branding studio</span><span>San Francisco, CA</span></div>
               </div>
               <div class="bc-entity">S Corp</div>
             </div>
             <div class="bc-returns">
-              <div class="bc-returns-label">Prior returns</div>
-              <span class="bc-chip filed">2022 ✓</span>
+              <div class="bc-returns-label">Returns</div>
               <span class="bc-chip filed">2023 ✓</span>
               <span class="bc-chip filed">2024 ✓</span>
-              <span class="bc-chip current">2025 ›</span>
+              <span class="bc-chip filed">2025 ✓</span>
             </div>
           </div>
 
-          <!-- Stage intro -->
-          <div style="padding:var(--s4) var(--s4) var(--s3);border-bottom:4px solid #fff">
-            <div id="stage1-intro-title" style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary);margin-bottom:var(--s1)">Let's get your 2025 return started</div>
-            <div id="stage1-intro-sub" style="font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.6">Choose how you'd like to begin — your expert and AI are here to help either way.</div>
-          </div>
+          <!-- Section divider between business card and get-started section -->
+          <div style="height:4px;background:var(--color-border)"></div>
 
-          <!-- Path cards (flat action-rows — no card borders on gray bg) -->
+          <!-- Path cards + intro — one unified section -->
           <div id="stage1-path-cards" class="w-sec">
+            <div id="stage1-intro-title" style="font-size:var(--text-sm);font-weight:var(--fw-bold);color:var(--color-text-primary);margin-bottom:var(--s1)">Start your 2026 tax return</div>
+            <div id="stage1-intro-sub" style="font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.6;margin-bottom:var(--s3)">Choose how you'd like to begin — your expert and AI are here to help either way.</div>
 
-            <!-- Path 1: Expert — hidden after booking -->
-            <div class="action-row" id="stage1-expert-path" onclick="navigate('expert-list')">
-              <div class="action-icon info">
-                <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 12c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+            <!-- Thin divider above action rows -->
+            <div style="height:1px;background:var(--color-border);margin:0 calc(-1 * var(--s4)) var(--s1)"></div>
+
+            <!-- Path 1: Expert — goes directly to Susan's profile, not the list -->
+            <div class="action-row" id="stage1-expert-path" onclick="navigate('expert-match')" style="padding-top:14px;padding-bottom:14px">
+              <div class="action-icon info" style="width:32px;height:32px;border-radius:var(--r-lg)">
+                <svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px"><circle cx="7" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 12c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
               </div>
               <div class="action-body">
-                <div class="action-title">Meet your expert</div>
-                <div class="action-sub">Susan Larsen · CPA · EA · ★ 4.9 — they'll tell you exactly what's needed</div>
+                <div class="action-title" style="font-weight:var(--fw-semibold)">Meet your expert</div>
+                <div class="action-sub" style="font-size:var(--text-xs);margin-top:2px">Susan Larsen · CPA · EA · ★ 4.9 — review your accounts and tell you exactly what's needed</div>
               </div>
               <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             </div>
 
             <!-- Susan booked status — shown after booking (replaces Path 1) -->
-            <div class="action-row" id="stage1-susan-booked" style="display:none" onclick="navigate('expert')">
+            <div class="action-row" id="stage1-susan-booked" style="display:none;padding-top:14px;padding-bottom:14px" onclick="navigate('expert')">
               <div class="action-icon" style="background:rgba(27,79,138,.1);color:var(--color-brand)">
                 <svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5 6.5-6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
@@ -1412,13 +1575,13 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
             </div>
 
             <!-- Path 2: Documents & accounts -->
-            <div class="action-row" onclick="navigate('data-in')">
-              <div class="action-icon neutral">
-                <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="1.5" width="10" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 5h5M4.5 7h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <div class="action-row" onclick="navigate('data-in')" style="padding-top:14px;padding-bottom:14px">
+              <div class="action-icon neutral" style="width:32px;height:32px;border-radius:var(--r-lg)">
+                <svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px"><rect x="2" y="1.5" width="10" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 5h5M4.5 7h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
               </div>
               <div class="action-body">
-                <div class="action-title">Connect accounts &amp; upload forms</div>
-                <div class="action-sub">W-2s, 1099s, K-1s, financial accounts — ~10–30 min to process</div>
+                <div class="action-title" style="font-weight:var(--fw-semibold)">Connect accounts &amp; upload forms</div>
+                <div class="action-sub" style="font-size:var(--text-xs);margin-top:2px">W-2s, 1099s, K-1s, financial accounts — ~10–30 min to process</div>
               </div>
               <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
             </div>
@@ -1487,9 +1650,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       </div>
 
       <!-- View: Expert List — Match with an expert -->
-      <div class="view" id="v-expert-list" style="background:#F4F6F9;overflow-y:auto">
+      <div class="view" id="v-expert-list" style="background:#fff;overflow-y:auto">
         <div class="w-sec" style="padding-bottom:var(--s3)">
-          <div style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary);margin-bottom:4px">Choose your expert</div>
           <div style="font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.6;margin-bottom:var(--s4)">We matched you with CPAs who specialize in S Corps and small business returns in California.</div>
           <div class="emi-list">
 
@@ -1562,9 +1724,28 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       </div>
 
       <!-- View: Data In — Connect Accounts & Upload Forms -->
-      <div class="view" id="v-data-in" style="background:#F4F6F9;overflow-y:auto">
+      <div class="view" id="v-data-in" style="background:#fff;overflow-y:auto">
 
-        <!-- Section 1: Connected accounts + add account action -->
+        <!-- Section 1: Analysis — always visible (QB already connected) -->
+        <div class="w-sec" style="padding-top:var(--s4);padding-bottom:var(--s4)">
+          <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Analysis</div>
+          <div style="display:flex;flex-direction:column;gap:var(--s2)">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:var(--text-sm);color:var(--color-text-secondary)">Transactions reviewed</span>
+              <span style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary)">247</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:var(--text-sm);color:var(--color-text-secondary)">Deductions found</span>
+              <span style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary)">14</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:var(--text-sm);color:var(--color-text-secondary)">Identified savings</span>
+              <span style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-success)">$4,593</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Connected accounts -->
         <div class="w-sec">
           <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Connected accounts</div>
 
@@ -1577,7 +1758,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
                 <div class="ic-type">Business accounting · Intuit</div>
               </div>
               <div style="display:flex;align-items:center;gap:var(--s2)">
-                <div class="ic-status connected">✓ Synced</div>
+                <div class="ic-status connected">✓ Syncing</div>
                 <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="var(--color-text-tertiary)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </div>
             </div>
@@ -1588,8 +1769,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
             </div>
           </div>
 
-          <!-- Recommended: Bank of America -->
-          <div class="ic-card" onclick="this.querySelector('.ic-status').textContent='Connecting…'" style="cursor:pointer;margin-bottom:var(--s2)">
+          <!-- Bank of America -->
+          <div class="ic-card" onclick="reconnectAccount(this)" style="cursor:pointer;margin-bottom:var(--s2)">
             <div class="ic-top">
               <div class="ic-logo" style="background:#DC1F26">BA</div>
               <div class="ic-info">
@@ -1603,8 +1784,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
             </div>
           </div>
 
-          <!-- Recommended: Chase -->
-          <div class="ic-card" onclick="this.querySelector('.ic-status').textContent='Connecting…'" style="cursor:pointer;margin-bottom:var(--s3)">
+          <!-- Chase -->
+          <div class="ic-card" onclick="reconnectAccount(this)" style="cursor:pointer;margin-bottom:var(--s3)">
             <div class="ic-top">
               <div class="ic-logo" style="background:#117ACA">CH</div>
               <div class="ic-info">
@@ -1618,7 +1799,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
             </div>
           </div>
 
-          <!-- Add financial account — lives with accounts, not forms -->
+          <!-- Add financial account -->
           <div class="action-row" onclick="navigate('add-institution')" style="margin:0 calc(-1 * var(--s4));padding:var(--s3) var(--s4);border-top:1px solid var(--color-border);border-bottom:none">
             <div class="action-icon neutral">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -1631,7 +1812,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
           </div>
         </div>
 
-        <!-- Section 2: Upload tax forms — flat action-row -->
+        <!-- Section 3: Tax documents — drag & drop upload -->
         <div class="w-sec">
           <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Tax documents</div>
           <div class="action-row" onclick="navigate('upload')">
@@ -1646,17 +1827,98 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
           </div>
         </div>
 
-        <!-- Expert CTA — hidden once user has booked Susan (bookingContinue hides it) -->
-        <div class="w-sec" id="datain-expert-cta">
-          <div class="ad-susan-cta" style="margin:0;padding-top:0;border-top:none">
-            <div class="ad-susan-label">Not sure what to connect? Your expert can review your accounts and tell you exactly what's needed for your S Corp return.</div>
+        <!-- Section 4: Applications -->
+        <div class="w-sec">
+          <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Applications</div>
+
+          <!-- Google -->
+          <div class="ic-card" id="app-google" onclick="connectApp('google')" style="margin-bottom:var(--s2)">
+            <div class="ic-top">
+              <div class="ic-logo" style="background:linear-gradient(135deg,#4285F4,#34A853)">G</div>
+              <div class="ic-info">
+                <div class="ic-name">Google</div>
+                <div class="ic-type">Gmail · Google Drive</div>
+              </div>
+              <div class="ic-status connect" id="app-google-status">Connect</div>
+            </div>
           </div>
+
+          <!-- Apple -->
+          <div class="ic-card" id="app-apple" onclick="connectApp('apple')" style="margin-bottom:var(--s2)">
+            <div class="ic-top">
+              <div class="ic-logo" style="background:#555">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M12.2 8.5c0-2 1.6-3 1.7-3.1-.9-1.4-2.4-1.6-2.9-1.6-1.2-.1-2.4.7-3 .7-.6 0-1.6-.7-2.6-.7-1.3 0-2.6.8-3.3 2C.6 8.4 1.7 12 3.3 14c.8 1.1 1.7 2.3 2.9 2.2 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.2.9-1.3 1.3-2.6 1.3-2.6s-2.1-.8-2.1-2.9zM10.2 3c.6-.8 1.1-1.9 1-3-.9.1-2.1.6-2.8 1.4-.6.7-1.1 1.8-1 2.9 1.1.1 2.2-.5 2.8-1.3z" fill="white"/></svg>
+              </div>
+              <div class="ic-info">
+                <div class="ic-name">Apple</div>
+                <div class="ic-type">iCloud Drive · iCloud Mail</div>
+              </div>
+              <div class="ic-status connect" id="app-apple-status">Connect</div>
+            </div>
+          </div>
+
+          <!-- Dropbox -->
+          <div class="ic-card" id="app-dropbox" onclick="connectApp('dropbox')">
+            <div class="ic-top">
+              <div class="ic-logo" style="background:#0061FF">
+                <svg width="16" height="14" viewBox="0 0 16 14" fill="none"><path d="M4 0L0 2.8l4 2.8-4 2.8 4 2.8 4-2.8 4 2.8 4-2.8-4-2.8 4-2.8L12 0 8 2.8 4 0zM4 11.2L0 8.4l4-2.8 4 2.8-4 2.8zM8 8.4l4-2.8 4 2.8-4 2.8L8 8.4z" fill="white"/></svg>
+              </div>
+              <div class="ic-info">
+                <div class="ic-name">Dropbox</div>
+                <div class="ic-type">Cloud storage · file sync</div>
+              </div>
+              <div class="ic-status connect" id="app-dropbox-status">Connect</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 5: Documents found — summary, taps into upload-review -->
+        <div class="w-sec">
+          <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Documents found</div>
+          <div class="action-row" onclick="navigate('upload-review')">
+            <div class="action-icon" style="background:#FFF0EE">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M8.5 1.5H3.5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V5l-3-3.5z" stroke="#D52B1E" stroke-width="1.2" stroke-linejoin="round"/><path d="M8.5 1.5V5h3" stroke="#D52B1E" stroke-width="1.2" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="action-body">
+              <div class="action-title">3 documents found</div>
+              <div class="action-sub">2 processed &nbsp;·&nbsp; 1 needs review</div>
+            </div>
+            <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+        </div>
+
+        <!-- Section 6: Expert — two states: unmatched vs booked -->
+        <div class="w-sec clickable" id="datain-expert-cta" onclick="expertBooked ? navigate('expert') : navigate('expert-match')">
+
+          <!-- State A: no expert yet -->
+          <div id="datain-expert-unmatched">
+            <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Your Expert</div>
+            <div style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.6;margin-bottom:var(--s2)">Your expert can review your accounts and tell you exactly what's needed for your return — answer questions, review documents, and walk you through everything.</div>
+            <div style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-brand)">Match with an expert →</div>
+          </div>
+
+          <!-- State B: expert booked — shown once expertBooked = true -->
+          <div id="datain-expert-matched" style="display:none">
+            <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Your Expert</div>
+            <div style="display:flex;align-items:center;gap:var(--s3)">
+              <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1B4F8A,#4A90D9);flex-shrink:0;position:relative;overflow:hidden">
+                <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;z-index:0">SL</span>
+                <img src="Susan.png" alt="Susan" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2">
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary)">Susan Larsen</div>
+                <div style="font-size:var(--text-xs);color:var(--color-text-secondary)">EA · S Corp specialist · tap to view</div>
+              </div>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="var(--color-text-tertiary)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+
         </div>
 
       </div>
 
       <!-- View: QuickBooks Detail -->
-      <div class="view" id="v-qb-detail" style="background:#F4F6F9;overflow-y:auto">
+      <div class="view" id="v-qb-detail" style="background:#fff;overflow-y:auto">
         <!-- QB header row -->
         <div class="qbd-header">
           <div class="qbd-logo">QB</div>
@@ -1768,7 +2030,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       </div>
 
       <!-- View: Upload Forms — dedicated drag & drop screen -->
-      <div class="view" id="v-upload" style="background:#F4F6F9;overflow-y:auto">
+      <div class="view" id="v-upload" style="background:#fff;overflow-y:auto">
         <div class="w-sec" style="display:flex;flex-direction:column;gap:var(--s3)">
 
           <!-- Drop zone — functional: drag/drop + browse -->
@@ -1810,7 +2072,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       </div>
 
       <!-- View: Upload Review — categorized file detail screen -->
-      <div class="view" id="v-upload-review" style="background:#F4F6F9;overflow-y:auto">
+      <div class="view" id="v-upload-review" style="background:#fff;overflow-y:auto">
         <div class="w-sec" style="padding-bottom:var(--s3)">
           <div style="font-size:var(--text-base);font-weight:var(--fw-semibold);color:var(--color-text-primary);margin-bottom:2px" id="urev-count-heading">3 documents</div>
           <div style="font-size:var(--text-xs);color:var(--color-text-secondary)" id="urev-subtitle">2 analyzed · 1 processing · expert review queued</div>
@@ -1890,18 +2152,26 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
         <!-- Newly dropped files injected here by handleFileInput() -->
         <div id="dropped-files-section"></div>
 
-        <!-- Susan CTA -->
-        <div class="w-sec">
-          <div style="background:var(--color-brand-subtle);border:1px solid rgba(27,79,138,.15);border-radius:var(--r-lg);padding:var(--s4)">
-            <div style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary);margin-bottom:var(--s1)">Work through these with Susan</div>
-            <div style="font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.6;margin-bottom:var(--s3)">Susan can review each document, answer the 1099-NEC question, and verify the K-1 totals before your return is filed.</div>
-            <button onclick="navigate('expert')" style="width:100%;height:38px;background:var(--color-brand);color:#fff;border:none;border-radius:var(--r-md);font-size:var(--text-sm);font-weight:var(--fw-semibold);cursor:pointer;font-family:var(--font-family)">Message Susan</button>
-          </div>
-        </div>
       </div>
 
       <!-- View: Main -->
       <div class="view" id="v-main">
+
+        <!-- Global stepper: Year Round active -->
+        <div class="fs-stepper">
+          <div class="fs-track">
+            <div class="fs-dot done" onclick="stepTo('stage1')"><span class="fs-lbl">Prep</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot done" onclick="stepTo('tax-review')"><span class="fs-lbl">Review</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot done" onclick="stepTo('filing')"><span class="fs-lbl">Ready to File</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot done" onclick="stepTo('filed')"><span class="fs-lbl">Filed</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot active" onclick="stepTo('main')"><span class="fs-lbl">Year Round</span></div>
+          </div>
+        </div>
+
         <div class="w-sec clickable" onclick="navigate('tax-2026')">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s2)">
             <div class="yr-badge brand" style="margin-bottom:0">2026 Tax Year</div>
@@ -1973,41 +2243,43 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       </div>
 
       <!-- View: Expert — uses ExpertProfileCard (ep-*) from Component Gallery -->
-      <div class="view" id="v-expert">
-        <!-- ep-card with flat widget overrides (no outer border/radius since widget provides it) -->
+      <div class="view" id="v-expert" style="overflow-y:auto">
         <div class="ep-card">
+
+          <!-- Hero — matches new design; "Schedule a meeting" replaces "Book first meeting" -->
           <div class="ep-hero">
-            <!-- Susan photo: drop Susan.png alongside this HTML file to show her photo -->
             <div class="ep-avatar" id="susanAvatar">
               <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;z-index:0">SL</span>
               <img src="Susan.png" alt="Susan Larsen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1">
             </div>
             <div class="ep-name">Susan Larsen</div>
-            <div class="ep-creds">
-              <span class="ep-badge">CPA</span>
-              <span class="ep-badge">EA</span>
-              <span class="ep-badge">S Corp</span>
-            </div>
-            <!-- Availability + Book a Meeting — first thing user sees, immediate engagement -->
-            <div class="ep-hero-action">
-              <div class="ep-avail">
-                <div class="ep-avail-dot" style="background:var(--color-success)"></div>
-                <div>
-                  <div class="ep-avail-text">Available now</div>
-                  <div class="ep-avail-sched">Mon–Fri · 9am–6pm PT</div>
-                </div>
+            <!-- Availability row — replaces credential badges in year-round view -->
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:var(--s1)">
+              <div style="width:7px;height:7px;border-radius:50%;background:var(--color-success);flex-shrink:0"></div>
+              <div style="text-align:left">
+                <div style="font-size:var(--text-xs);color:var(--color-text-primary);font-weight:var(--fw-medium);line-height:1.3">Available now</div>
+                <div style="font-size:10px;color:var(--color-text-tertiary);line-height:1.3">Mon–Fri · 9am–6pm PT</div>
               </div>
-              <button class="ep-book-btn-compact" onclick="navigate('book-meeting')">Book a Meeting</button>
+            </div>
+            <div style="display:flex;justify-content:center;margin-top:var(--s3)">
+              <button onclick="navigate('book-meeting')" style="display:inline-flex;align-items:center;gap:6px;padding:0 20px;height:36px;background:var(--color-brand);color:#fff;border:none;border-radius:var(--r-lg);font-size:var(--text-sm);font-weight:var(--fw-semibold);cursor:pointer;font-family:var(--font-family);transition:background var(--dur-fast)" onmouseover="this.style.background='var(--color-brand-hover)'" onmouseout="this.style.background='var(--color-brand)'">
+                <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 2v2M11 2v2M2 7h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Schedule a meeting
+              </button>
             </div>
           </div>
+
+          <!-- Stats — new contained card design -->
           <div class="ep-stats">
             <div class="ep-stat">
               <div class="ep-stat-val">19</div>
               <div class="ep-stat-label">years exp.</div>
             </div>
             <div class="ep-stat">
-              <div class="ep-stars"><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span></div>
-              <div class="ep-stat-val">4.9</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:3px;line-height:1;margin-bottom:3px">
+                <span style="font-size:15px;color:var(--color-text-primary);font-weight:700">★</span>
+                <span class="ep-stat-val">4.9</span>
+              </div>
               <div class="ep-stat-label">372 reviews</div>
             </div>
             <div class="ep-stat">
@@ -2015,17 +2287,23 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
               <div class="ep-stat-label">returns filed</div>
             </div>
           </div>
-          <div class="ep-body" style="padding-bottom:10px">
+
+          <!-- Tags only — no "Why your business" in year-round view -->
+          <div class="ep-body">
             <div class="ep-tags">
+              <span class="ep-tag">CPA</span>
+              <span class="ep-tag">EA</span>
               <span class="ep-tag">S Corp</span>
               <span class="ep-tag">Sole Prop</span>
               <span class="ep-tag">Small Business</span>
               <span class="ep-tag">California</span>
-              <span class="ep-tag">English</span>
-              <span class="ep-tag">Spanish</span>
             </div>
           </div>
-          <!-- Activity timeline — vertical history of Susan's work with Acme Design Co. -->
+
+          <!-- Thick section divider before timeline -->
+          <div style="height:4px;background:var(--color-border)"></div>
+
+          <!-- Activity timeline — grows as the relationship progresses -->
           <div class="ep-activity">
             <div class="ep-activity-label">With your business</div>
 
@@ -2035,70 +2313,102 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
               <div class="ep-tl-content">
                 <div class="ep-tl-date" style="color:var(--color-brand);font-weight:var(--fw-semibold)">Upcoming</div>
                 <div class="ep-tl-title">First conversation scheduled</div>
-                <div class="ep-tl-desc" id="ep-upcoming-detail">Tue, May 13 · 9:00 AM · 30 min video call</div>
+                <div class="ep-tl-desc" id="ep-upcoming-detail">Thu, May 15 · 9:00 AM · 30 min video call</div>
               </div>
             </div>
 
-            <!-- ep-history: year-round relationship entries — hidden in onboarding flow after bookingContinue() -->
+            <!-- Empty state — prep stage only (just matched, no history yet) -->
+            <div id="ep-history-empty" style="display:none;padding:var(--s4) 0 var(--s3);text-align:center">
+              <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);line-height:1.5">Your activity with Susan will appear here<br>as your return progresses.</div>
+            </div>
+
+            <!-- ep-history: grows by stage -->
             <div id="ep-history">
-            <div class="ep-tl-item">
-              <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-brand)"></div><div class="ep-tl-line"></div></div>
-              <div class="ep-tl-content">
-                <div class="ep-tl-date">May 12, 2026 · 3 days ago</div>
-                <div class="ep-tl-title">Reviewed Q1 books</div>
-                <div class="ep-tl-desc">Flagged a missed home office deduction — estimated $1,200 in additional savings for 2027.</div>
+
+              <!-- filed stage only: return submitted -->
+              <div class="ep-tl-item" data-min-stage="filed">
+                <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-success);box-shadow:0 0 0 3px rgba(0,135,90,.15)"></div><div class="ep-tl-line"></div></div>
+                <div class="ep-tl-content">
+                  <div class="ep-tl-date" style="color:var(--color-success);font-weight:var(--fw-semibold)">May 14, 2026 · Today</div>
+                  <div class="ep-tl-title">Return filed ✓</div>
+                  <div class="ep-tl-desc">Federal + CA 2025 returns submitted. Estimated refund $8,420. IRS confirmation expected in 21 days.</div>
+                </div>
               </div>
-            </div>
-            <div class="ep-tl-item">
-              <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-success)"></div><div class="ep-tl-line"></div></div>
-              <div class="ep-tl-content">
-                <div class="ep-tl-date">Apr 13, 2026</div>
-                <div class="ep-tl-title">2025 return accepted by IRS</div>
-                <div class="ep-tl-desc">Federal + CA filed. Total taxes owed: $4,187. Refund of $1,240 applied to 2026 estimates.</div>
+
+              <!-- filing+ stage: review approved -->
+              <div class="ep-tl-item" data-min-stage="filing">
+                <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-success)"></div><div class="ep-tl-line"></div></div>
+                <div class="ep-tl-content">
+                  <div class="ep-tl-date" style="color:var(--color-success);font-weight:var(--fw-semibold)">May 14, 2026 · Today</div>
+                  <div class="ep-tl-title">Review complete — ready to file</div>
+                  <div class="ep-tl-desc">All 3 flagged items resolved. Susan has approved your 2025 return for filing.</div>
+                </div>
               </div>
-            </div>
-            <div class="ep-tl-item">
-              <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-success)"></div><div class="ep-tl-line"></div></div>
-              <div class="ep-tl-content">
-                <div class="ep-tl-date">Mar 15, 2026</div>
-                <div class="ep-tl-title">Q1 estimated payment confirmed</div>
-                <div class="ep-tl-desc">$3,840 Federal · $960 CA. Susan verified amounts match YTD income.</div>
+
+              <!-- review+ stage: tax review started -->
+              <div class="ep-tl-item" data-min-stage="review">
+                <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-brand);box-shadow:0 0 0 3px rgba(27,79,138,.12)"></div><div class="ep-tl-line"></div></div>
+                <div class="ep-tl-content">
+                  <div class="ep-tl-date" style="color:var(--color-brand);font-weight:var(--fw-semibold)">May 13, 2026 · Yesterday</div>
+                  <div class="ep-tl-title">2025 tax review started</div>
+                  <div class="ep-tl-desc">Susan began reviewing your return. 3 items flagged for your input — income classification, equipment deduction, home office.</div>
+                </div>
               </div>
-            </div>
-            <div class="ep-tl-item">
-              <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-brand)"></div><div class="ep-tl-line"></div></div>
-              <div class="ep-tl-content">
-                <div class="ep-tl-date">Feb 3, 2026</div>
-                <div class="ep-tl-title">S Corp salary structure reviewed</div>
-                <div class="ep-tl-desc">Aligned W-2 salary to IRS safe harbor (60/40 rule). Updated distribution schedule to reduce self-employment tax exposure.</div>
+
+              <!-- yearround+ items: full relationship history -->
+              <div class="ep-tl-item" data-min-stage="yearround">
+                <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-brand)"></div><div class="ep-tl-line"></div></div>
+                <div class="ep-tl-content">
+                  <div class="ep-tl-date">May 12, 2026 · 3 days ago</div>
+                  <div class="ep-tl-title">Reviewed Q1 books</div>
+                  <div class="ep-tl-desc">Flagged a missed home office deduction — estimated $1,200 in additional savings for 2027.</div>
+                </div>
               </div>
-            </div>
-            <div class="ep-tl-item">
-              <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-brand)"></div></div>
-              <div class="ep-tl-content">
-                <div class="ep-tl-date">Jan 8, 2026</div>
-                <div class="ep-tl-title">Year-end planning session</div>
-                <div class="ep-tl-desc">Identified $4,320 in additional deductions. Recommended Section 179 timing for equipment purchases before Dec 31.</div>
+              <div class="ep-tl-item" data-min-stage="yearround">
+                <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-success)"></div><div class="ep-tl-line"></div></div>
+                <div class="ep-tl-content">
+                  <div class="ep-tl-date">Apr 13, 2026</div>
+                  <div class="ep-tl-title">2025 return accepted by IRS</div>
+                  <div class="ep-tl-desc">Federal + CA filed. Total taxes owed: $4,187. Refund of $1,240 applied to 2026 estimates.</div>
+                </div>
               </div>
-            </div>
+              <div class="ep-tl-item" data-min-stage="yearround">
+                <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-success)"></div><div class="ep-tl-line"></div></div>
+                <div class="ep-tl-content">
+                  <div class="ep-tl-date">Mar 15, 2026</div>
+                  <div class="ep-tl-title">Q1 estimated payment confirmed</div>
+                  <div class="ep-tl-desc">$3,840 Federal · $960 CA. Susan verified amounts match YTD income.</div>
+                </div>
+              </div>
+              <div class="ep-tl-item" data-min-stage="yearround">
+                <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-brand)"></div><div class="ep-tl-line"></div></div>
+                <div class="ep-tl-content">
+                  <div class="ep-tl-date">Feb 3, 2026</div>
+                  <div class="ep-tl-title">S Corp salary structure reviewed</div>
+                  <div class="ep-tl-desc">Aligned W-2 salary to IRS safe harbor (60/40 rule). Updated distribution schedule to reduce self-employment tax exposure.</div>
+                </div>
+              </div>
+              <div class="ep-tl-item" data-min-stage="yearround">
+                <div class="ep-tl-dot-col"><div class="ep-tl-dot" style="background:var(--color-brand)"></div></div>
+                <div class="ep-tl-content">
+                  <div class="ep-tl-date">Jan 8, 2026</div>
+                  <div class="ep-tl-title">Year-end planning session</div>
+                  <div class="ep-tl-desc">Identified $4,320 in additional deductions. Recommended Section 179 timing for equipment purchases before Dec 31.</div>
+                </div>
+              </div>
+
             </div><!-- /ep-history -->
           </div>
 
-          <!-- Find a different expert — permanent secondary action -->
-          <div style="padding:var(--s4) var(--s4) var(--s5);border-top:0.5px solid var(--color-border)">
-            <button onclick="navigate('expert-list')" style="width:100%;display:flex;align-items:center;gap:10px;padding:12px var(--s3);background:none;border:1px solid var(--color-border);border-radius:var(--r-lg);cursor:pointer;font-family:var(--font-family);transition:border-color 140ms,background 140ms;text-align:left" onmouseover="this.style.borderColor='var(--color-brand)';this.style.background='var(--color-brand-subtle)'" onmouseout="this.style.borderColor='var(--color-border)';this.style.background='none'">
-              <div style="width:34px;height:34px;border-radius:var(--r-md);background:#F0F2F5;flex-shrink:0;display:flex;align-items:center;justify-content:center">
-                <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px"><path d="M2 5h9M8 2l3 3-3 3M14 11H5m3-3l-3 3 3 3" stroke="var(--color-text-secondary)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div style="flex:1;min-width:0">
-                <div style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary);line-height:1.3">Find a different expert</div>
-                <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px">Browse other CPAs matched to your S Corp</div>
-              </div>
-              <svg viewBox="0 0 8 12" fill="none" style="width:7px;height:10px;flex-shrink:0"><path d="M1 1l5 5-5 5" stroke="var(--color-text-tertiary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-        </div>
+          <!-- Thick section divider before bottom CTA -->
+          <div style="height:4px;background:var(--color-border)"></div>
 
+          <!-- Bottom CTA — matches new design pattern -->
+          <div style="padding-bottom:var(--s4)">
+            <button onclick="navigate('expert-list')" style="width:100%;height:36px;background:none;border:none;font-size:var(--text-xs);font-weight:var(--fw-medium);color:var(--color-brand);cursor:pointer;font-family:var(--font-family)">Looking for a different expert? See all experts</button>
+          </div>
+
+        </div>
       </div>
 
       <!-- View: Book Meeting — full-screen scheduling flow (navigated from any expert view) -->
@@ -2121,11 +2431,10 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
             <div class="ep-scheduler" style="display:block;border:none;padding:var(--s4) var(--s4) 0">
               <div class="ep-sched-label">Select a date</div>
               <div class="ep-date-strip">
-                <div class="ep-day sel" onclick="epSelDay(this,'bm-sched','Tue, May 13')"><span class="ep-day-dow">TUE</span><span class="ep-day-num">13</span></div>
-                <div class="ep-day" onclick="epSelDay(this,'bm-sched','Wed, May 14')"><span class="ep-day-dow">WED</span><span class="ep-day-num">14</span></div>
-                <div class="ep-day unavail"><span class="ep-day-dow">THU</span><span class="ep-day-num">15</span></div>
-                <div class="ep-day unavail"><span class="ep-day-dow">FRI</span><span class="ep-day-num">16</span></div>
+                <div class="ep-day sel" onclick="epSelDay(this,'bm-sched','Thu, May 15')"><span class="ep-day-dow">THU</span><span class="ep-day-num">15</span></div>
+                <div class="ep-day" onclick="epSelDay(this,'bm-sched','Fri, May 16')"><span class="ep-day-dow">FRI</span><span class="ep-day-num">16</span></div>
                 <div class="ep-day unavail"><span class="ep-day-dow">SAT</span><span class="ep-day-num">17</span></div>
+                <div class="ep-day unavail"><span class="ep-day-dow">SUN</span><span class="ep-day-num">18</span></div>
                 <div class="ep-day" onclick="epSelDay(this,'bm-sched','Mon, May 19')"><span class="ep-day-dow">MON</span><span class="ep-day-num">19</span></div>
                 <div class="ep-day" onclick="epSelDay(this,'bm-sched','Tue, May 20')"><span class="ep-day-dow">TUE</span><span class="ep-day-num">20</span></div>
               </div>
@@ -2139,76 +2448,157 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
                 <button class="ep-slot" onclick="epSelSlot(this,'bm-sched','3:30 PM')">3:30 PM</button>
               </div>
             </div>
-            <div style="padding:var(--s4)">
+            <!-- Method selector -->
+            <div style="padding:0 var(--s4) var(--s4)">
+              <div class="ep-sched-label" style="margin-bottom:var(--s2)">Select a method</div>
+              <div style="display:flex;gap:var(--s2)">
+                <button class="ep-method-btn sel" id="bm-method-video">
+                  <svg viewBox="0 0 16 16" fill="none" style="width:13px;height:13px;flex-shrink:0"><rect x="1" y="4" width="9" height="8" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M10 6.5l5-3v9l-5-3V6.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                  Video call
+                </button>
+                <button class="ep-method-btn" id="bm-method-phone" disabled>
+                  <svg viewBox="0 0 16 16" fill="none" style="width:13px;height:13px;flex-shrink:0"><path d="M3 2.5h3l1.5 3.5-2 1.2A8 8 0 0 0 9.8 11l1.2-2 3.5 1.5V13.5a1 1 0 0 1-1 1C5.2 14 2 8.8 2 3.5a1 1 0 0 1 1-1z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+                  Phone call
+                </button>
+              </div>
+            </div>
+            <div style="padding:0 var(--s4) var(--s4)">
               <button class="ep-confirm-btn" id="ep-confirm-bm" disabled onclick="confirmBMBooking()">Select date &amp; time</button>
             </div>
           </div>
 
           <!-- Success state (shown after confirming) -->
-          <div id="bm-confirmed" style="display:none;padding:var(--s6) var(--s4);flex-direction:column;align-items:center;gap:var(--s4);text-align:center">
+          <div id="bm-confirmed" style="display:none;padding:var(--s5) var(--s4) var(--s4);flex-direction:column;align-items:center;gap:var(--s4);text-align:center">
+
+            <!-- Checkmark + heading -->
             <div style="width:52px;height:52px;border-radius:var(--r-full);background:rgba(0,135,90,.1);display:flex;align-items:center;justify-content:center">
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M4 11l5 5 9-9" stroke="var(--color-success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <div>
               <div style="font-size:var(--text-base);font-weight:var(--fw-semibold);color:var(--color-text-primary)">Meeting confirmed!</div>
-              <div style="font-size:var(--text-sm);color:var(--color-text-secondary);margin-top:var(--s1)" id="bm-confirmed-detail">Tue, May 13 · 9:00 AM with Susan</div>
+              <div style="font-size:var(--text-sm);color:var(--color-text-secondary);margin-top:var(--s1)" id="bm-confirmed-detail">Thu, May 15 · 9:00 AM with Susan</div>
               <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:4px">Calendar invite sent · 30 min video call</div>
             </div>
-            <div style="width:100%;background:var(--color-brand-subtle);border:1px solid rgba(27,79,138,.15);border-radius:var(--r-lg);padding:var(--s3) var(--s4)">
-              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.5">Susan will review your Acme Design Co. profile before the call and come prepared with a plan for your 2025 S Corp return.</div>
+
+            <!-- Section divider -->
+            <div style="width:100%;height:1px;background:var(--color-border)"></div>
+
+            <!-- What Happens Next -->
+            <div style="width:100%;text-align:left">
+              <div style="font-size:10px;font-weight:var(--fw-semibold);color:var(--color-text-tertiary);letter-spacing:.06em;text-transform:uppercase;margin-bottom:var(--s2)">What happens next</div>
+
+              <!-- Row 1: Meeting scheduled -->
+              <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s3) 0;border-bottom:1px solid var(--color-border)">
+                <div style="width:32px;height:32px;border-radius:50%;background:rgba(0,135,90,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+                  <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px"><path d="M3 8l3.5 3.5 6.5-7" stroke="var(--color-success)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">First conversation scheduled</div>
+                  <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px;line-height:1.5">No prep needed — just come with your questions.</div>
+                </div>
+              </div>
+
+              <!-- Row 2: Handoff in progress -->
+              <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s3) 0">
+                <div style="width:32px;height:32px;border-radius:50%;background:var(--color-brand-subtle);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+                  <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px"><circle cx="8" cy="8" r="6" stroke="var(--color-brand)" stroke-width="1.4"/><path d="M8 5v3.5l2 1.5" stroke="var(--color-brand)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div>
+                  <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">Tax handoff in progress</div>
+                  <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px;line-height:1.5">Susan will review your synced files before the meeting — she'll be ready to talk tax-saving strategies.</div>
+                </div>
+              </div>
             </div>
-            <button onclick="bookingContinue()" style="width:100%;height:42px;background:var(--color-brand);color:#fff;border:none;border-radius:var(--r-md);font-size:var(--text-sm);font-weight:var(--fw-semibold);cursor:pointer;font-family:var(--font-family)">Continue to data collection</button>
+
+            <button onclick="bookingContinue()" style="width:100%;height:42px;background:var(--color-brand);color:#fff;border:none;border-radius:var(--r-md);font-size:var(--text-sm);font-weight:var(--fw-semibold);cursor:pointer;font-family:var(--font-family)">Continue your tax return</button>
           </div>
         </div>
       </div>
 
       <!-- View: Filing — review return + file CTA -->
-      <div class="view" id="v-filing" style="background:#F4F6F9;overflow-y:auto">
+      <div class="view" id="v-filing" style="background:#fff;overflow-y:auto">
 
-        <!-- Section 1: Return summary + key numbers -->
-        <div class="w-sec" style="display:flex;flex-direction:column;gap:var(--s3)">
-          <div class="fil-return-card">
-            <div class="fil-return-label">Ready to file</div>
-            <div class="fil-return-name">2025 S Corp Return — Acme Design Co.</div>
-            <div class="fil-return-meta">Federal + California · Reviewed by Susan Larsen · CPA</div>
-          </div>
-          <div class="fil-numbers">
-            <div class="fil-number-row">
-              <div>
-                <div class="fil-number-label">Federal refund</div>
-                <div style="font-size:10px;color:var(--color-text-tertiary);margin-top:2px">IRS · 7–10 business days</div>
-              </div>
-              <div class="fil-number-val refund">+$8,420</div>
-            </div>
-            <div class="fil-number-row">
-              <div>
-                <div class="fil-number-label">California balance due</div>
-                <div style="font-size:10px;color:var(--color-text-tertiary);margin-top:2px">FTB · Due Apr 15</div>
-              </div>
-              <div class="fil-number-val due">$2,340</div>
-            </div>
-            <div class="fil-number-row">
-              <div>
-                <div class="fil-number-label">Total deductions claimed</div>
-                <div style="font-size:10px;color:var(--color-text-tertiary);margin-top:2px">Home office · Vehicle · Equipment</div>
-              </div>
-              <div class="fil-number-val" style="color:var(--color-text-primary)">$23,800</div>
-            </div>
+        <!-- Global stepper: Ready to File active -->
+        <div class="fs-stepper">
+          <div class="fs-track">
+            <div class="fs-dot done" onclick="stepTo('stage1')"><span class="fs-lbl">Prep</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot done" onclick="stepTo('tax-review')"><span class="fs-lbl">Review</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot active" onclick="stepTo('filing')"><span class="fs-lbl">Ready to File</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('filed')"><span class="fs-lbl">Filed</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('main')"><span class="fs-lbl">Year Round</span></div>
           </div>
         </div>
 
-        <!-- Section 2: Susan's sign-off -->
+        <!-- Hero: Ready to File — clickable into filing summary -->
+        <div class="w-sec" style="text-align:center;padding-top:var(--s6);padding-bottom:var(--s5)">
+          <!-- Green checkmark circle -->
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--color-success);display:inline-flex;align-items:center;justify-content:center;margin-bottom:var(--s3)">
+            <svg viewBox="0 0 24 24" fill="none" style="width:26px;height:26px"><path d="M5 12.5l5 5 9-10" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div style="font-size:var(--text-md);font-weight:var(--fw-bold);color:var(--color-text-primary);margin-bottom:var(--s1)">Ready to File</div>
+          <div style="font-size:var(--text-sm);color:var(--color-text-secondary);margin-bottom:var(--s4)">Expert approved · All items resolved</div>
+          <div style="font-size:28px;font-weight:var(--fw-bold);color:var(--color-success);letter-spacing:-.5px;line-height:1">$8,420</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:4px">Estimated federal refund</div>
+        </div>
+
+        <!-- Thick divider -->
+        <div class="hub-divider"></div>
+
+        <!-- What You're Filing -->
+        <div class="w-sec" style="padding-top:var(--s4);padding-bottom:var(--s4)">
+          <div style="font-size:10px;font-weight:var(--fw-semibold);color:var(--color-text-tertiary);letter-spacing:.06em;text-transform:uppercase;margin-bottom:var(--s3)">What You're Filing</div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--s3) 0;border-bottom:1px solid var(--color-border)">
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">Business return (S Corp)</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:2px">Form 1120-S · Federal</div>
+            </div>
+            <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-success)">Complete ✓</div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--s3) 0;border-bottom:1px solid var(--color-border)">
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">Personal return</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:2px">Form 1040 · Federal</div>
+            </div>
+            <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-success)">Complete ✓</div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--s3) 0">
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">State return</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:2px">California · FTB</div>
+            </div>
+            <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-success)">Complete ✓</div>
+          </div>
+        </div>
+
+        <!-- Thick divider -->
+        <div class="hub-divider"></div>
+
+        <!-- Susan's sign-off -->
         <div class="w-sec">
           <div class="fil-susan-note" style="border:none;padding:0;background:none">
-            <div class="fil-susan-av">SL</div>
+            <div class="fil-susan-av">
+              <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:0">SL</span>
+              <img src="Susan.png" alt="Susan Larsen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:2">
+            </div>
             <div class="fil-susan-body">
               <div class="fil-susan-name">Susan Larsen · CPA, EA</div>
               <div class="fil-susan-text">Everything checks out. Your home office deduction and vehicle expenses are fully documented and defensible. I recommend filing today to get your federal refund started.</div>
+              <button onclick="navigate('book-meeting')" style="margin-top:var(--s2);background:none;border:none;padding:0;font-family:var(--font-family);font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-brand);cursor:pointer">Schedule a final review with Susan →</button>
             </div>
           </div>
         </div>
 
-        <!-- Section 3: File CTA -->
+        <!-- Thick divider -->
+        <div class="hub-divider"></div>
+
+        <!-- File CTA -->
         <div class="w-sec" style="display:flex;flex-direction:column;gap:var(--s3)">
           <button class="fil-cta" onclick="filingSubmit()">File Federal &amp; State Return →</button>
           <div class="fil-disclaimer">By filing you confirm the information in your return is accurate and complete to the best of your knowledge.</div>
@@ -2218,58 +2608,591 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 
       <!-- View: Filed — success confirmation -->
       <div class="view" id="v-filed" style="background:var(--color-bg);overflow-y:auto">
-        <div class="filed-body">
 
-          <!-- Check -->
-          <div class="filed-check">
-            <svg viewBox="0 0 32 32" fill="none"><path d="M6 16l7 7 13-13" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <!-- Global stepper: Filed active -->
+        <div class="fs-stepper">
+          <div class="fs-track">
+            <div class="fs-dot done" onclick="stepTo('stage1')"><span class="fs-lbl">Prep</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot done" onclick="stepTo('tax-review')"><span class="fs-lbl">Review</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot done" onclick="stepTo('filing')"><span class="fs-lbl">Ready to File</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot active" onclick="stepTo('filed')"><span class="fs-lbl">Filed</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('main')"><span class="fs-lbl">Year Round</span></div>
+          </div>
+        </div>
+
+        <!-- Status card — same pattern as year-round view -->
+        <div class="w-sec">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s2)">
+            <div class="yr-badge green" style="margin-bottom:0">2026 Tax Year · Filed</div>
+            <div style="font-size:var(--text-xs);color:var(--color-success);font-weight:var(--fw-semibold)">✓ Accepted</div>
+          </div>
+          <div class="status-main"><span class="status-label">Federal refund</span><span class="status-hero">$8,420</span></div>
+          <div class="status-lines">
+            <div class="status-line"><span class="sl-lbl">Federal taxes paid</span><span class="sl-val">$3,387</span></div>
+            <div class="status-line"><span class="sl-lbl">State: California paid</span><span class="sl-val">$800</span></div>
+          </div>
+          <p class="status-note" style="margin-bottom:0">Filed May 14, 2026 · IRS Confirmation IRS-2026-8472951 · Refund arriving in 7–21 days.</p>
+        </div>
+
+        <!-- Divider -->
+        <div class="hub-divider"></div>
+
+        <!-- Actions section -->
+        <div class="w-sec" style="padding-top:var(--s3);padding-bottom:var(--s3)">
+
+          <!-- Track Refund Status — expandable -->
+          <div class="action-row" id="rt-toggle" onclick="toggleRefundTracker()" style="border-bottom:none;padding-bottom:var(--s3)">
+            <div class="action-icon info">
+              <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3.5l2 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="action-body">
+              <div class="action-title">Track Refund Status</div>
+              <div class="action-sub">Currently processing · Est. May 18–21</div>
+            </div>
+            <div class="action-chev" id="rt-chevron">
+              <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
           </div>
 
-          <div>
-            <div class="filed-title">Return filed!</div>
-            <div class="filed-sub">Your 2025 S Corp return has been submitted to the IRS and California FTB.</div>
+          <!-- Refund tracker panel — expandable -->
+          <div id="rt-panel" style="display:none;padding-bottom:var(--s2)">
+            <div class="rt-container">
+              <div class="rt-progress-track">
+                <div class="rt-step-labels">
+                  <div class="rt-step-lbl done">Filed</div>
+                  <div class="rt-step-lbl active">Processing</div>
+                  <div class="rt-step-lbl">Approved</div>
+                  <div class="rt-step-lbl">Deposited</div>
+                </div>
+                <div class="rt-bar-row">
+                  <div class="rt-bar-dot done"></div>
+                  <div class="rt-bar-seg done"></div>
+                  <div class="rt-bar-dot active"></div>
+                  <div class="rt-bar-seg" style="background:rgba(0,135,90,.15)"></div>
+                  <div class="rt-bar-dot pending"></div>
+                  <div class="rt-bar-seg" style="background:rgba(0,135,90,.1)"></div>
+                  <div class="rt-bar-dot pending"></div>
+                </div>
+              </div>
+              <div class="rt-items">
+                <div class="rt-item">
+                  <div class="rt-item-dot done"><svg viewBox="0 0 12 12" fill="none" style="width:10px;height:10px"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="rt-item-body"><div class="rt-item-title">Return Filed</div><div class="rt-item-sub">Received by IRS</div></div>
+                  <div class="rt-item-date">May 14, 2026</div>
+                </div>
+                <div class="rt-item">
+                  <div class="rt-item-dot active"><div style="width:6px;height:6px;border-radius:50%;background:var(--color-success)"></div></div>
+                  <div class="rt-item-body"><div class="rt-item-title">IRS Processing</div><div class="rt-item-sub">Your return is being reviewed</div></div>
+                  <div class="rt-item-date">May 14–17</div>
+                </div>
+                <div class="rt-item">
+                  <div class="rt-item-dot pending"></div>
+                  <div class="rt-item-body"><div class="rt-item-title pending">Refund Approved</div><div class="rt-item-sub pending">IRS will issue refund</div></div>
+                  <div class="rt-item-date pending">Est. May 18–21</div>
+                </div>
+                <div class="rt-item">
+                  <div class="rt-item-dot pending"></div>
+                  <div class="rt-item-body"><div class="rt-item-title pending">Direct Deposit</div><div class="rt-item-sub pending">Chase ••••4829</div></div>
+                  <div class="rt-item-date pending">Est. May 21–28</div>
+                </div>
+              </div>
+              <div class="rt-total-row">
+                <div class="rt-total-label">Expected federal refund</div>
+                <div class="rt-total-amount">$8,420</div>
+              </div>
+            </div>
           </div>
 
-          <!-- Confirmation numbers -->
-          <div class="filed-confirms">
-            <div class="filed-confirm-row">
-              <div class="filed-confirm-label">Federal confirmation</div>
-              <div class="filed-confirm-val">2025-F-482931</div>
+          <div style="height:1px;background:var(--color-border);margin-bottom:var(--s3)"></div>
+
+          <!-- Download Tax Return -->
+          <div class="action-row" onclick="alert('Downloading 2026 S Corp Return (PDF)…')" style="border-bottom:none;padding-bottom:var(--s3)">
+            <div class="action-icon neutral">
+              <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px"><path d="M8 2v8M5 8l3 3 3-3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 13h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
             </div>
-            <div class="filed-confirm-row">
-              <div class="filed-confirm-label">California confirmation</div>
-              <div class="filed-confirm-val">CA-2025-089201</div>
+            <div class="action-body">
+              <div class="action-title">Download Tax Return</div>
+              <div class="action-sub">2026 S Corp · PDF</div>
+            </div>
+            <div class="action-chev"><svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+
+
+        </div>
+
+        <!-- Divider -->
+        <div class="hub-divider"></div>
+
+        <!-- Continue CTA -->
+        <div style="padding:var(--s4)">
+          <button onclick="stepTo('main')" style="width:100%;height:44px;background:var(--color-brand);color:#fff;border:none;border-radius:var(--r-lg);font-size:var(--text-sm);font-weight:var(--fw-semibold);cursor:pointer;font-family:var(--font-family)">Continue to tax planning</button>
+        </div>
+
+      </div>
+
+      <!-- View: Tax Review Hub — post-booking overview -->
+      <div class="view" id="v-tax-review" style="background:var(--color-bg);overflow-y:auto">
+
+        <!-- Global stepper: Review active -->
+        <div class="fs-stepper">
+          <div class="fs-track">
+            <div class="fs-dot done" onclick="stepTo('stage1')"><span class="fs-lbl">Prep</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot active" onclick="stepTo('tax-review')"><span class="fs-lbl">Review</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('filing')"><span class="fs-lbl">Ready to File</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('filed')"><span class="fs-lbl">Filed</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('main')"><span class="fs-lbl">Year Round</span></div>
+          </div>
+        </div>
+
+        <!-- Tax year overview — matches year-round style, clickable -->
+        <div class="w-sec clickable" onclick="navigate('review-summary')">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--s2)">
+            <div class="yr-badge brand" style="margin-bottom:0">2026 Tax Year · In Review</div>
+            <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;color:var(--color-text-tertiary)"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="status-main"><span class="status-label">Estimated tax due</span><span class="status-hero">$4,187</span></div>
+          <div class="status-lines">
+            <div class="status-line"><span class="sl-lbl">Federal</span><span class="sl-val">$3,387</span></div>
+            <div class="status-line"><span class="sl-lbl">State: California</span><span class="sl-val">$800</span></div>
+          </div>
+          <p class="status-note" style="margin-bottom:var(--s3)">Expert review in progress · Meeting with Susan on May 15.</p>
+
+          <!-- Progress bar — review-specific -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <span style="font-size:var(--text-xs);color:var(--color-text-secondary)">Return completion</span>
+            <span style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-brand)">78%</span>
+          </div>
+          <div class="hub-progress-bar">
+            <div class="hub-progress-fill" style="width:78%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px">
+            <span style="font-size:10px;color:var(--color-text-tertiary)">Started Mar 1</span>
+            <span style="font-size:10px;color:var(--color-text-tertiary)">Meeting May 15</span>
+          </div>
+        </div>
+
+        <!-- Thick divider -->
+        <div class="hub-divider"></div>
+
+        <!-- Pending Your Approval -->
+        <div class="hub-section">
+          <div class="hub-section-header">
+            <div class="hub-section-title">Pending Your Approval</div>
+            <div id="approval-count-badge" style="font-size:10px;font-weight:600;color:var(--color-brand);background:rgba(0,82,204,.1);border-radius:var(--r-full);padding:1px 7px">3</div>
+          </div>
+
+          <!-- Adobe -->
+          <div class="hub-approval-card">
+            <div class="hub-approval-top">
+              <div class="hub-approval-info" style="flex:1;min-width:0">
+                <div class="hub-approval-name">Adobe Inc.</div>
+              </div>
+              <div class="hub-approval-amount">$1,200.00</div>
+            </div>
+            <div class="hub-approval-desc">Invoice #4821 is 3× your usual charge ($399). Susan flagged this as an unusually large software expense — please confirm this is a legitimate annual upgrade before she includes it in your deductions.</div>
+            <div class="hub-approval-flag">🔍 Susan flagged · Software / Annual Subscription</div>
+            <div style="display:flex;gap:var(--s2)">
+              <button class="hub-approve-btn" onclick="approveItem(this)">Approve</button>
+              <button class="hub-dispute-btn">Dispute</button>
             </div>
           </div>
 
-          <!-- Federal refund highlight -->
-          <div class="filed-refund-card">
-            <div>
-              <div class="filed-refund-label">Federal refund</div>
-              <div style="font-size:10px;color:var(--color-text-tertiary);margin-top:2px">Expected in 7–10 business days</div>
+          <!-- Zoom -->
+          <div class="hub-approval-card">
+            <div class="hub-approval-top">
+              <div class="hub-approval-info" style="flex:1;min-width:0">
+                <div class="hub-approval-name">Zoom Video Communications</div>
+              </div>
+              <div class="hub-approval-amount">$289.90</div>
             </div>
-            <div class="filed-refund-amount">$8,420</div>
-          </div>
-
-          <!-- What's next -->
-          <div class="filed-next-label">What's next</div>
-
-          <div style="width:100%">
-            <div class="filed-next-item">
-              <div class="filed-next-icon"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.2"/><path d="M6 3.5V6l1.5 1.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></div>
-              <div class="filed-next-text">Susan will follow up once your refund is confirmed and your Q2 estimated payment is calculated</div>
-            </div>
-            <div class="filed-next-item">
-              <div class="filed-next-icon"><svg viewBox="0 0 12 12" fill="none"><rect x="1.5" y="2" width="9" height="8" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5h5M3.5 7h3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg></div>
-              <div class="filed-next-text">Keep records of all supporting documents — Susan has them archived in your account</div>
-            </div>
-            <div class="filed-next-item" style="border-bottom:none">
-              <div class="filed-next-icon"><svg viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1.5 11c0-2.49 2.01-4.5 4.5-4.5s4.5 2.01 4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
-              <div class="filed-next-text">Your 2026 return planning starts now — Susan's already tracking changes that affect next year</div>
+            <div class="hub-approval-desc">Your recurring Zoom charge increased from $149.90. Susan detected a new billing tier and wants to confirm this is intentional before categorizing it as a deductible operating expense.</div>
+            <div class="hub-approval-flag">🔍 Susan flagged · Software / Monthly Subscription</div>
+            <div style="display:flex;gap:var(--s2)">
+              <button class="hub-approve-btn" onclick="approveItem(this)">Approve</button>
+              <button class="hub-dispute-btn">Dispute</button>
             </div>
           </div>
 
-          <button class="filed-done-btn" onclick="filingDone()">Back to dashboard</button>
+          <!-- Vercel -->
+          <div class="hub-approval-card">
+            <div class="hub-approval-top">
+              <div class="hub-approval-info" style="flex:1;min-width:0">
+                <div class="hub-approval-name">Vercel Inc.</div>
+              </div>
+              <div class="hub-approval-amount">$420.00</div>
+            </div>
+            <div class="hub-approval-desc">First-time vendor with no prior transaction history. Susan categorized this as Software / Infrastructure but wants your confirmation before finalizing it as a business expense deduction.</div>
+            <div class="hub-approval-flag">🔍 Susan flagged · Software / Infrastructure</div>
+            <div style="display:flex;gap:var(--s2)">
+              <button class="hub-approve-btn" onclick="approveItem(this)">Approve</button>
+              <button class="hub-dispute-btn">Dispute</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Thick divider -->
+        <div class="hub-divider"></div>
+
+        <!-- Deductions Summary — Financial Summary component -->
+        <div class="hub-section clickable" onclick="navigate('deductions')" style="border-radius:var(--r-lg)">
+          <div class="hub-section-header" style="margin-bottom:var(--s2)">
+            <div class="hub-section-title">Deductions</div>
+            <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;color:var(--color-text-tertiary)"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="fin-label">Deductions found</div>
+          <div class="fin-hero">$4,593</div>
+          <div class="fin-delta" style="color:var(--color-success)">↑ $1,200 vs last year</div>
+          <div class="fin-bars">
+            <div class="fin-bar-row"><div class="fin-bar-name">Equipment</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:100%;background:#1B4F8A"></div></div><div class="fin-bar-val">$2,739</div></div>
+            <div class="fin-bar-row"><div class="fin-bar-name">Software</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:48%;background:#3B82F6"></div></div><div class="fin-bar-val">$1,309</div></div>
+            <div class="fin-bar-row"><div class="fin-bar-name">Meals</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:18%;background:#6366F1"></div></div><div class="fin-bar-val">$485</div></div>
+            <div class="fin-bar-row"><div class="fin-bar-name">Office</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:16%;background:#8B5CF6"></div></div><div class="fin-bar-val">$450</div></div>
+            <div class="fin-bar-row"><div class="fin-bar-name">Travel</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:12%;background:#A78BFA"></div></div><div class="fin-bar-val">$320</div></div>
+          </div>
+        </div>
+
+        <!-- Thick divider -->
+        <div class="hub-divider"></div>
+
+        <!-- Recent Activity -->
+        <div class="hub-section clickable" onclick="navigate('activity')" style="padding-bottom:var(--s5);border-radius:var(--r-lg)">
+          <div class="hub-section-header">
+            <div class="hub-section-title">Recent Activity</div>
+            <svg viewBox="0 0 12 12" fill="none" style="width:12px;height:12px;color:var(--color-text-tertiary)"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="hub-activity-mini">
+            <div class="hub-act-mini-item">
+              <div class="hub-act-mini-dot"></div>
+              <div class="hub-act-mini-text">QuickBooks sync completed — 247 transactions imported</div>
+              <div class="hub-act-mini-time">2h ago</div>
+            </div>
+            <div class="hub-act-mini-item">
+              <div class="hub-act-mini-dot"></div>
+              <div class="hub-act-mini-text">Susan flagged 3 travel expenses for your review</div>
+              <div class="hub-act-mini-time">Yesterday</div>
+            </div>
+            <div class="hub-act-mini-item">
+              <div class="hub-act-mini-dot"></div>
+              <div class="hub-act-mini-text">2 new deductions identified: MacBook Pro, WeWork</div>
+              <div class="hub-act-mini-time">2 days ago</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- View: Deductions -->
+      <div class="view" id="v-deductions" style="background:var(--color-bg);overflow-y:auto">
+
+        <!-- Global stepper: Review active -->
+        <div class="fs-stepper">
+          <div class="fs-track">
+            <div class="fs-dot done" onclick="stepTo('stage1')"><span class="fs-lbl">Prep</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot active" onclick="stepTo('tax-review')"><span class="fs-lbl">Review</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('filing')"><span class="fs-lbl">Ready to File</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('filed')"><span class="fs-lbl">Filed</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('main')"><span class="fs-lbl">Year Round</span></div>
+          </div>
+        </div>
+
+        <!-- Deductions list — categorized -->
+        <div class="ded-list">
+
+          <!-- Category: Software & Subscriptions -->
+          <div style="padding:var(--s4) 0 var(--s2);font-size:10px;font-weight:var(--fw-semibold);color:var(--color-text-tertiary);letter-spacing:.05em;text-transform:uppercase">Software &amp; Subscriptions</div>
+
+          <div class="ded-item">
+            <div class="ded-icon" style="background:rgba(255,0,0,.06)">🎨</div>
+            <div class="ded-info">
+              <div class="ded-name">Adobe Creative Cloud</div>
+              <div class="ded-cat">Annual subscription</div>
+            </div>
+            <div class="ded-right">
+              <div class="ded-amount">$599</div>
+              <div class="ded-status confirmed">Confirmed</div>
+            </div>
+          </div>
+
+          <div class="ded-item">
+            <div class="ded-icon" style="background:rgba(0,124,240,.08)">📹</div>
+            <div class="ded-info">
+              <div class="ded-name">Zoom Pro</div>
+              <div class="ded-cat">Monthly × 12</div>
+            </div>
+            <div class="ded-right">
+              <div class="ded-amount">$289.90</div>
+              <div class="ded-status review">Needs review</div>
+            </div>
+          </div>
+
+          <div class="ded-item">
+            <div class="ded-icon" style="background:rgba(0,0,0,.05)">▲</div>
+            <div class="ded-info">
+              <div class="ded-name">Vercel Inc.</div>
+              <div class="ded-cat">Infrastructure / hosting</div>
+            </div>
+            <div class="ded-right">
+              <div class="ded-amount">$420</div>
+              <div class="ded-status review">Needs review</div>
+            </div>
+          </div>
+
+          <!-- Category: Equipment & Hardware -->
+          <div style="padding:var(--s5) 0 var(--s2);font-size:10px;font-weight:var(--fw-semibold);color:var(--color-text-tertiary);letter-spacing:.05em;text-transform:uppercase">Equipment &amp; Hardware</div>
+
+          <div class="ded-item">
+            <div class="ded-icon" style="background:rgba(0,82,204,.08)">💻</div>
+            <div class="ded-info">
+              <div class="ded-name">MacBook Pro 16"</div>
+              <div class="ded-cat">Section 179 deduction</div>
+            </div>
+            <div class="ded-right">
+              <div class="ded-amount">$2,499</div>
+              <div class="ded-status confirmed">Confirmed</div>
+            </div>
+          </div>
+
+          <div class="ded-item">
+            <div class="ded-icon" style="background:rgba(0,82,204,.08)">📱</div>
+            <div class="ded-info">
+              <div class="ded-name">iPhone 15 Pro</div>
+              <div class="ded-cat">60% business use</div>
+            </div>
+            <div class="ded-right">
+              <div class="ded-amount">$240</div>
+              <div class="ded-status confirmed">Confirmed</div>
+            </div>
+          </div>
+
+          <!-- Category: Office & Workspace -->
+          <div style="padding:var(--s5) 0 var(--s2);font-size:10px;font-weight:var(--fw-semibold);color:var(--color-text-tertiary);letter-spacing:.05em;text-transform:uppercase">Office &amp; Workspace</div>
+
+          <div class="ded-item">
+            <div class="ded-icon" style="background:rgba(0,135,90,.08)">🏢</div>
+            <div class="ded-info">
+              <div class="ded-name">WeWork Membership</div>
+              <div class="ded-cat">Monthly · 12 months</div>
+            </div>
+            <div class="ded-right">
+              <div class="ded-amount">$450</div>
+              <div class="ded-status confirmed">Confirmed</div>
+            </div>
+          </div>
+
+          <!-- Category: Meals & Entertainment -->
+          <div style="padding:var(--s5) 0 var(--s2);font-size:10px;font-weight:var(--fw-semibold);color:var(--color-text-tertiary);letter-spacing:.05em;text-transform:uppercase">Meals &amp; Entertainment</div>
+
+          <div class="ded-item">
+            <div class="ded-icon" style="background:rgba(180,83,9,.08)">🍽️</div>
+            <div class="ded-info">
+              <div class="ded-name">Client dinner · Bix Restaurant</div>
+              <div class="ded-cat">50% deductible</div>
+            </div>
+            <div class="ded-right">
+              <div class="ded-amount">$485</div>
+              <div class="ded-status review">Needs review</div>
+            </div>
+          </div>
+
+          <!-- Category: Travel -->
+          <div style="padding:var(--s3) var(--s4) var(--s1);font-size:10px;font-weight:var(--fw-semibold);color:var(--color-text-tertiary);letter-spacing:.05em;text-transform:uppercase;text-align:left">Travel</div>
+
+          <div class="ded-item" style="border-bottom:none">
+            <div class="ded-icon" style="background:rgba(180,83,9,.08)">✈️</div>
+            <div class="ded-info">
+              <div class="ded-name">Delta — SFO to NYC</div>
+              <div class="ded-cat">Business trip · client meeting</div>
+            </div>
+            <div class="ded-right">
+              <div class="ded-amount">$320</div>
+              <div class="ded-status review">Needs review</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- View: Activity -->
+      <div class="view" id="v-activity" style="background:var(--color-bg);overflow-y:auto">
+
+        <!-- Global stepper: Review active -->
+        <div class="fs-stepper">
+          <div class="fs-track">
+            <div class="fs-dot done" onclick="stepTo('stage1')"><span class="fs-lbl">Prep</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot active" onclick="stepTo('tax-review')"><span class="fs-lbl">Review</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('filing')"><span class="fs-lbl">Ready to File</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('filed')"><span class="fs-lbl">Filed</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('main')"><span class="fs-lbl">Year Round</span></div>
+          </div>
+        </div>
+
+        <!-- Activity timeline -->
+        <div class="act-timeline">
+          <div class="act-timeline-title">Recent Activity</div>
+
+          <div class="act-item">
+            <div class="act-dot-wrap">
+              <div class="act-dot" style="background:rgba(0,82,204,.1)">
+                <svg viewBox="0 0 12 12" fill="none" style="width:10px;height:10px"><path d="M6 2v4l2.5 1.5" stroke="var(--color-brand)" stroke-width="1.2" stroke-linecap="round"/><circle cx="6" cy="6" r="4.5" stroke="var(--color-brand)" stroke-width="1.1"/></svg>
+              </div>
+            </div>
+            <div class="act-body">
+              <div class="act-title">QuickBooks sync completed</div>
+              <div class="act-detail">247 transactions imported · 3 flagged for review</div>
+              <div class="act-time">Today · 2:14 PM</div>
+            </div>
+          </div>
+
+          <div class="act-item">
+            <div class="act-dot-wrap">
+              <div class="act-dot" style="background:rgba(0,135,90,.1)">
+                <svg viewBox="0 0 12 12" fill="none" style="width:10px;height:10px"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="var(--color-success)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="act-body">
+              <div class="act-title">Susan reviewed your QuickBooks data</div>
+              <div class="act-detail">Found 2 new deductions — MacBook Pro, WeWork</div>
+              <div class="act-time">Today · 11:30 AM</div>
+            </div>
+          </div>
+
+          <div class="act-item">
+            <div class="act-dot-wrap">
+              <div class="act-dot" style="background:rgba(180,83,9,.1)">
+                <svg viewBox="0 0 12 12" fill="none" style="width:10px;height:10px"><path d="M6 3v3.5M6 8.5v.5" stroke="#B45309" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </div>
+            </div>
+            <div class="act-body">
+              <div class="act-title">3 travel expenses flagged</div>
+              <div class="act-detail">Delta flight, client dinner, Uber — need your approval</div>
+              <div class="act-time">Yesterday · 4:02 PM</div>
+            </div>
+          </div>
+
+          <div class="act-item">
+            <div class="act-dot-wrap">
+              <div class="act-dot" style="background:rgba(0,82,204,.1)">
+                <svg viewBox="0 0 12 12" fill="none" style="width:10px;height:10px"><rect x="2" y="2" width="8" height="8" rx="1" stroke="var(--color-brand)" stroke-width="1.1"/><path d="M4 5h4M4 7h2.5" stroke="var(--color-brand)" stroke-width="1" stroke-linecap="round"/></svg>
+              </div>
+            </div>
+            <div class="act-body">
+              <div class="act-title">W-2 and 1099-NEC uploaded</div>
+              <div class="act-detail">2 documents processed · all fields extracted</div>
+              <div class="act-time">May 11 · 10:15 AM</div>
+            </div>
+          </div>
+
+          <div class="act-item">
+            <div class="act-dot-wrap">
+              <div class="act-dot" style="background:rgba(0,135,90,.1)">
+                <svg viewBox="0 0 12 12" fill="none" style="width:10px;height:10px"><path d="M2.5 6l2.5 2.5 4.5-5" stroke="var(--color-success)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="act-body">
+              <div class="act-title">Meeting booked with Susan Larsen</div>
+              <div class="act-detail">Thu, May 15 · 9:00 AM · 30 min video call</div>
+              <div class="act-time">May 10 · 2:30 PM</div>
+            </div>
+          </div>
+
+          <div class="act-item" style="padding-bottom:var(--s5)">
+            <div class="act-dot-wrap">
+              <div class="act-dot" style="background:rgba(0,82,204,.1)">
+                <svg viewBox="0 0 12 12" fill="none" style="width:10px;height:10px"><circle cx="6" cy="4.5" r="2" stroke="var(--color-brand)" stroke-width="1.1"/><path d="M2 10.5c0-2.21 1.79-4 4-4s4 1.79 4 4" stroke="var(--color-brand)" stroke-width="1.1" stroke-linecap="round"/></svg>
+              </div>
+            </div>
+            <div class="act-body">
+              <div class="act-title">Susan Larsen assigned as your expert</div>
+              <div class="act-detail">S Corp specialist · CPA, EA · Matched based on your business profile</div>
+              <div class="act-time">May 8 · 9:00 AM</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- View: Review Summary — preliminary tax numbers (in review) -->
+      <div class="view" id="v-review-summary" style="background:var(--color-bg);overflow-y:auto">
+
+        <!-- Global stepper: Review active -->
+        <div class="fs-stepper">
+          <div class="fs-track">
+            <div class="fs-dot done" onclick="stepTo('stage1')"><span class="fs-lbl">Prep</span></div>
+            <div class="fs-seg done"></div>
+            <div class="fs-dot active" onclick="stepTo('tax-review')"><span class="fs-lbl">Review</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('filing')"><span class="fs-lbl">Ready to File</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('filed')"><span class="fs-lbl">Filed</span></div>
+            <div class="fs-seg"></div>
+            <div class="fs-dot" onclick="stepTo('main')"><span class="fs-lbl">Year Round</span></div>
+          </div>
+        </div>
+
+        <div class="action-detail-content">
+
+          <!-- Header -->
+          <div style="margin-bottom:var(--s4)">
+            <div class="yr-badge" style="background:var(--color-warning-subtle);color:var(--color-warning);margin-bottom:var(--s2)">In Review · Preliminary</div>
+            <div class="ad-title">2026 Tax Return</div>
+            <div class="ad-sub" style="margin-top:var(--s1)">Expert review in progress · Meeting scheduled May 15. Final amounts confirmed before filing.</div>
+          </div>
+
+          <!-- Tax owed: 3-box grid -->
+          <div style="margin-bottom:var(--s4)">
+            <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:var(--s2)">Estimated tax due</div>
+            <div style="display:flex;gap:var(--s2);margin-bottom:var(--s2)">
+              <div style="flex:1;background:var(--color-brand-subtle);border-radius:var(--r-md);padding:10px var(--s3);text-align:center">
+                <div style="font-size:16px;font-weight:700;color:var(--color-danger);letter-spacing:-.5px">$3,387</div>
+                <div style="font-size:10px;color:var(--color-text-tertiary);margin-top:2px">Federal</div>
+              </div>
+              <div style="flex:1;background:var(--color-brand-subtle);border-radius:var(--r-md);padding:10px var(--s3);text-align:center">
+                <div style="font-size:16px;font-weight:700;color:var(--color-danger);letter-spacing:-.5px">$800</div>
+                <div style="font-size:10px;color:var(--color-text-tertiary);margin-top:2px">California</div>
+              </div>
+              <div style="flex:1;background:var(--color-warning-subtle);border-radius:var(--r-md);padding:10px var(--s3);text-align:center">
+                <div style="font-size:16px;font-weight:700;color:var(--color-warning);letter-spacing:-.5px">$4,187</div>
+                <div style="font-size:10px;color:var(--color-text-tertiary);margin-top:2px">Total</div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--color-text-tertiary);line-height:1.5">⏳ 3 items still pending Susan's review — numbers may change.</div>
+          </div>
+
+          <!-- Deductions so far -->
+          <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:var(--s2)">Deductions identified so far</div>
+          <div style="margin-bottom:var(--s4)">
+            <div class="tx-summary-row"><span class="tx-summary-lbl">Home office deduction</span><span class="tx-summary-val neg">−$2,400</span></div>
+            <div class="tx-summary-row"><span class="tx-summary-lbl">Equipment &amp; hardware</span><span class="tx-summary-val neg">−$2,739</span></div>
+            <div class="tx-summary-row"><span class="tx-summary-lbl">Software &amp; subscriptions</span><span class="tx-summary-val neg">−$1,309</span></div>
+            <div class="tx-summary-row"><span class="tx-summary-lbl">Health insurance premiums</span><span class="tx-summary-val neg">−$7,200</span></div>
+            <div class="tx-summary-row"><span class="tx-summary-lbl" style="color:var(--color-warning)">Meals &amp; travel (pending)</span><span class="tx-summary-val" style="color:var(--color-warning)">$402</span></div>
+            <div class="tx-summary-row" style="padding-top:8px;border-top:1.5px solid var(--color-border-strong)"><span style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary)">Total so far</span><span style="font-size:var(--text-sm);font-weight:var(--fw-bold);color:var(--color-success)">−$14,050</span></div>
+          </div>
+
+          <!-- Business summary -->
+          <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);letter-spacing:.06em;text-transform:uppercase;color:var(--color-text-tertiary);margin-bottom:var(--s2)">Business summary</div>
+          <div style="margin-bottom:var(--s5)">
+            <div class="tx-summary-row"><span class="tx-summary-lbl">Gross revenue</span><span class="tx-summary-val">$412,000</span></div>
+            <div class="tx-summary-row"><span class="tx-summary-lbl">W-2 salary (S Corp)</span><span class="tx-summary-val">$120,000</span></div>
+            <div class="tx-summary-row"><span class="tx-summary-lbl">Owner distributions</span><span class="tx-summary-val">$85,000</span></div>
+            <div class="tx-summary-row" style="border-bottom:none"><span class="tx-summary-lbl">Net business profit</span><span class="tx-summary-val">$207,000</span></div>
+          </div>
 
         </div>
       </div>
@@ -2347,171 +3270,281 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 
       </div>
 
-      <!-- View: Expert Match — Susan first-time intro (from expert-list, no prior history) -->
+      <!-- View: Expert Match — Susan (top recommendation, Hayley layout) -->
       <div class="view" id="v-expert-match" style="overflow-y:auto">
-        <div class="ep-card" style="border:none;box-shadow:none">
-          <div class="ep-hero">
-            <div class="ep-avatar">
-              <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;z-index:0">SL</span>
-              <img src="Susan.png" alt="Susan Larsen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1" onerror="this.style.display='none'">
-            </div>
-            <div class="ep-name">Susan Larsen</div>
-            <div class="ep-creds">
-              <span class="ep-badge">CPA</span>
-              <span class="ep-badge">EA</span>
-              <span class="ep-badge">S Corp</span>
-            </div>
-            <!-- Availability + inline Schedule button — same hero pattern as v-expert -->
-            <div class="ep-hero-action">
-              <div class="ep-avail">
-                <div class="ep-avail-dot" style="background:var(--color-success)"></div>
-                <div>
-                  <div class="ep-avail-text">Available now</div>
-                  <div class="ep-avail-sched">Mon–Fri · 9am–6pm PT</div>
-                </div>
-              </div>
-              <button class="ep-book-btn-compact" onclick="navigate('book-meeting')">Schedule first conversation</button>
-            </div>
+
+        <!-- Hero — avatar · name · creds · availability · book button -->
+        <div class="ep-hero" style="padding-bottom:var(--s4)">
+          <div class="ep-avatar">
+            <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;z-index:0">SL</span>
+            <img src="Susan.png" alt="Susan Larsen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1" onerror="this.style.display='none'">
           </div>
-          <div class="ep-stats">
-            <div class="ep-stat"><div class="ep-stat-val">19</div><div class="ep-stat-label">years exp.</div></div>
-            <div class="ep-stat">
-              <div class="ep-stars"><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span></div>
-              <div class="ep-stat-val">4.9</div>
-              <div class="ep-stat-label">372 reviews</div>
-            </div>
-            <div class="ep-stat"><div class="ep-stat-val">847</div><div class="ep-stat-label">returns filed</div></div>
+          <div class="ep-name">Susan Larsen</div>
+          <!-- Availability line — centered -->
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:var(--s3)">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--color-success);flex-shrink:0"></div>
+            <span style="font-size:var(--text-xs);color:var(--color-text-secondary)">Available now · Mon–Fri · 9am–5pm PT</span>
           </div>
-          <div class="ep-body">
-            <div class="ep-tags">
-              <span class="ep-tag">S Corp</span>
-              <span class="ep-tag">Sole Prop</span>
-              <span class="ep-tag">Small Business</span>
-              <span class="ep-tag">California</span>
-              <span class="ep-tag">English</span>
-              <span class="ep-tag">Spanish</span>
-            </div>
-            <div style="margin-top:var(--s3);padding:var(--s3);background:var(--color-brand-subtle);border-radius:var(--r-md)">
-              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.6">"I specialize in S Corp compliance, quarterly planning, and small business deductions. I'll review your books and get you filed accurately — with zero surprises."</div>
-              <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:4px">— Susan Larsen, CPA</div>
-            </div>
-          </div>
-          <!-- Secondary CTAs below body — first contact, no timeline -->
-          <div style="padding:var(--s4) var(--s4) var(--s3);display:flex;flex-direction:column;gap:var(--s2);border-top:0.5px solid var(--color-border)">
-            <button onclick="navigate('data-in')" style="width:100%;height:40px;background:none;border:1px solid var(--color-border);border-radius:var(--r-md);font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-family)">Continue to data collection</button>
-            <button onclick="goBack()" style="width:100%;height:36px;background:none;border:none;font-size:var(--text-xs);color:var(--color-text-tertiary);cursor:pointer;font-family:var(--font-family)">Not the right fit? See other experts</button>
+          <!-- Book first meeting — narrower, calendar icon, centered -->
+          <div style="display:flex;justify-content:center;margin-top:var(--s3)">
+            <button onclick="navigate('book-meeting')" style="display:inline-flex;align-items:center;gap:6px;padding:0 20px;height:36px;background:var(--color-brand);color:#fff;border:none;border-radius:var(--r-lg);font-size:var(--text-sm);font-weight:var(--fw-semibold);cursor:pointer;font-family:var(--font-family);transition:background var(--dur-fast)" onmouseover="this.style.background='var(--color-brand-hover)'" onmouseout="this.style.background='var(--color-brand)'">
+              <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 2v2M11 2v2M2 7h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Book first meeting
+            </button>
           </div>
         </div>
+
+        <!-- Stats grid -->
+        <div class="ep-stats">
+          <div class="ep-stat"><div class="ep-stat-val">19</div><div class="ep-stat-label">years exp.</div></div>
+          <div class="ep-stat">
+            <div style="display:flex;align-items:center;justify-content:center;gap:3px;line-height:1;margin-bottom:3px">
+              <span style="font-size:15px;color:var(--color-text-primary);font-weight:700">★</span>
+              <span class="ep-stat-val">4.9</span>
+            </div>
+            <div class="ep-stat-label">372 reviews</div>
+          </div>
+          <div class="ep-stat"><div class="ep-stat-val">847</div><div class="ep-stat-label">returns filed</div></div>
+        </div>
+
+        <!-- Specialty tags (credentials moved here from hero) -->
+        <div class="ep-body" style="border-bottom:4px solid var(--color-border)">
+          <div class="ep-tags">
+            <span class="ep-tag">CPA</span>
+            <span class="ep-tag">EA</span>
+            <span class="ep-tag">S Corp</span>
+            <span class="ep-tag">Sole Prop</span>
+            <span class="ep-tag">Small Business</span>
+            <span class="ep-tag">California</span>
+            <span class="ep-tag">English</span>
+            <span class="ep-tag">Spanish</span>
+          </div>
+        </div>
+
+        <!-- Why we matched you — static non-clickable list, no chevrons -->
+        <div class="w-sec">
+          <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Why we matched you</div>
+
+          <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s2) 0;border-bottom:1px solid var(--color-border)">
+            <div style="width:20px;height:20px;background:var(--color-brand-subtle);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M2.5 7l3 3 6-6" stroke="var(--color-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">S Corp specialist</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px">Your entity type + California filing experience</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s2) 0;border-bottom:1px solid var(--color-border)">
+            <div style="width:20px;height:20px;background:var(--color-brand-subtle);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M2.5 7l3 3 6-6" stroke="var(--color-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">Small business focus</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px">Avg business size: 1–10 employees</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s2) 0">
+            <div style="width:20px;height:20px;background:var(--color-brand-subtle);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M2.5 7l3 3 6-6" stroke="var(--color-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">Year-round availability</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px">Available now for onboarding session</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom CTA — only "Not the right fit?" (Connect btn removed — redundant with hero) -->
+        <div style="padding:var(--s4)">
+          <button onclick="navigate('expert-list')" style="width:100%;height:36px;background:none;border:none;font-size:var(--text-xs);font-weight:var(--fw-medium);color:var(--color-brand);cursor:pointer;font-family:var(--font-family)">Not the right fit? See other experts</button>
+        </div>
+
       </div>
 
-      <!-- View: Expert David Kim — first-time intro -->
+      <!-- View: Expert David Kim (Hayley layout — booking disabled, Susan is matched expert) -->
       <div class="view" id="v-expert-david" style="overflow-y:auto">
-        <div class="ep-card" style="border:none;box-shadow:none">
-          <div class="ep-hero">
-            <div class="ep-avatar" style="background:linear-gradient(135deg,#2D6BC4,#4A90D9)">
-              <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff">DK</span>
-            </div>
-            <div class="ep-name">David Kim</div>
-            <div class="ep-creds">
-              <span class="ep-badge">CPA</span>
-              <span class="ep-badge">Multi-state</span>
-              <span class="ep-badge">Partnerships</span>
-            </div>
-            <div class="ep-hero-action">
-              <div class="ep-avail">
-                <div class="ep-avail-dot" style="background:var(--color-warning)"></div>
-                <div>
-                  <div class="ep-avail-text" style="color:var(--color-warning)">Responds in ~2 hrs</div>
-                  <div class="ep-avail-sched">Mon–Fri · 8am–5pm PT</div>
-                </div>
-              </div>
-              <button class="ep-book-btn-compact" onclick="navigate('book-meeting')">Schedule first conversation</button>
-            </div>
+
+        <!-- Hero -->
+        <div class="ep-hero" style="padding-bottom:var(--s4)">
+          <div class="ep-avatar" style="background:linear-gradient(135deg,#2D6BC4,#4A90D9)">
+            <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;z-index:0">DK</span>
           </div>
-          <div class="ep-stats">
-            <div class="ep-stat"><div class="ep-stat-val">12</div><div class="ep-stat-label">years exp.</div></div>
-            <div class="ep-stat">
-              <div class="ep-stars"><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star" style="opacity:.4">★</span></div>
-              <div class="ep-stat-val">4.8</div>
-              <div class="ep-stat-label">218 reviews</div>
-            </div>
-            <div class="ep-stat"><div class="ep-stat-val">512</div><div class="ep-stat-label">returns filed</div></div>
+          <div class="ep-name">David Kim</div>
+          <!-- Availability line — centered -->
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:var(--s3)">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--color-warning);flex-shrink:0"></div>
+            <span style="font-size:var(--text-xs);color:var(--color-text-secondary)">Responds in ~2 hrs · Mon–Fri · 8am–5pm PT</span>
           </div>
-          <div class="ep-body">
-            <div class="ep-tags">
-              <span class="ep-tag">S Corp</span>
-              <span class="ep-tag">C Corp</span>
-              <span class="ep-tag">Multi-state</span>
-              <span class="ep-tag">Partnerships</span>
-              <span class="ep-tag">California</span>
-              <span class="ep-tag">English</span>
-              <span class="ep-tag">Korean</span>
-            </div>
-            <div style="margin-top:var(--s3);padding:var(--s3);background:var(--color-brand-subtle);border-radius:var(--r-md)">
-              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.6">"I work with multi-state businesses and complex corporate structures. If you have operations across state lines or need partnership tax handled right, that's my specialty."</div>
-              <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:4px">— David Kim, CPA</div>
-            </div>
-          </div>
-          <div style="padding:var(--s4);display:flex;flex-direction:column;gap:var(--s2);border-top:0.5px solid var(--color-border)">
-            <button onclick="navigate('data-in')" style="width:100%;height:40px;background:none;border:1px solid var(--color-border);border-radius:var(--r-md);font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-family)">Continue to data collection</button>
-            <button onclick="goBack()" style="width:100%;height:36px;background:none;border:none;font-size:var(--text-xs);color:var(--color-text-tertiary);cursor:pointer;font-family:var(--font-family)">Not the right fit? See other experts</button>
+          <!-- Book first meeting — narrower, disabled, calendar icon -->
+          <div style="display:flex;justify-content:center;margin-top:var(--s3)">
+            <button disabled style="display:inline-flex;align-items:center;gap:6px;padding:0 20px;height:36px;background:var(--color-border);color:var(--color-text-tertiary);border:none;border-radius:var(--r-lg);font-size:var(--text-sm);font-weight:var(--fw-semibold);cursor:not-allowed;font-family:var(--font-family);opacity:.7">
+              <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 2v2M11 2v2M2 7h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Book first meeting
+            </button>
           </div>
         </div>
+
+        <!-- Stats grid -->
+        <div class="ep-stats">
+          <div class="ep-stat"><div class="ep-stat-val">12</div><div class="ep-stat-label">years exp.</div></div>
+          <div class="ep-stat">
+            <div style="display:flex;align-items:center;justify-content:center;gap:3px;line-height:1;margin-bottom:3px">
+              <span style="font-size:15px;color:var(--color-text-primary);font-weight:700">★</span>
+              <span class="ep-stat-val">4.8</span>
+            </div>
+            <div class="ep-stat-label">218 reviews</div>
+          </div>
+          <div class="ep-stat"><div class="ep-stat-val">512</div><div class="ep-stat-label">returns filed</div></div>
+        </div>
+
+        <!-- Specialty tags (credentials moved here from hero) -->
+        <div class="ep-body" style="border-bottom:4px solid var(--color-border)">
+          <div class="ep-tags">
+            <span class="ep-tag">CPA</span>
+            <span class="ep-tag">S Corp</span>
+            <span class="ep-tag">C Corp</span>
+            <span class="ep-tag">Multi-state</span>
+            <span class="ep-tag">Partnerships</span>
+            <span class="ep-tag">California</span>
+            <span class="ep-tag">English</span>
+            <span class="ep-tag">Korean</span>
+          </div>
+        </div>
+
+        <!-- Why clients choose David — static non-clickable list, no chevrons -->
+        <div class="w-sec">
+          <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Why clients choose David</div>
+
+          <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s2) 0;border-bottom:1px solid var(--color-border)">
+            <div style="width:20px;height:20px;background:var(--color-brand-subtle);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M2.5 7l3 3 6-6" stroke="var(--color-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">Multi-state specialist</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px">Businesses with operations across state lines</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s2) 0;border-bottom:1px solid var(--color-border)">
+            <div style="width:20px;height:20px;background:var(--color-brand-subtle);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M2.5 7l3 3 6-6" stroke="var(--color-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">Complex structures</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px">C Corps, partnerships, and multi-entity setups</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s2) 0">
+            <div style="width:20px;height:20px;background:var(--color-brand-subtle);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M2.5 7l3 3 6-6" stroke="var(--color-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">Bilingual (English / Korean)</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px">Serves Korean-speaking business owners</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom CTA — only "Not the right fit?" -->
+        <div style="padding:var(--s4)">
+          <button onclick="goBack()" style="width:100%;height:36px;background:none;border:none;font-size:var(--text-xs);font-weight:var(--fw-medium);color:var(--color-brand);cursor:pointer;font-family:var(--font-family)">Not the right fit? See other experts</button>
+        </div>
+
       </div>
 
-      <!-- View: Expert Maria Chen — first-time intro -->
+      <!-- View: Expert Maria Chen (Hayley layout — booking disabled, Susan is matched expert) -->
       <div class="view" id="v-expert-maria" style="overflow-y:auto">
-        <div class="ep-card" style="border:none;box-shadow:none">
-          <div class="ep-hero">
-            <div class="ep-avatar" style="background:linear-gradient(135deg,#6B4FA8,#9B6EC7)">
-              <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff">MC</span>
-            </div>
-            <div class="ep-name">Maria Chen</div>
-            <div class="ep-creds">
-              <span class="ep-badge">EA</span>
-              <span class="ep-badge">S Corp</span>
-              <span class="ep-badge">LLC</span>
-            </div>
-            <div class="ep-hero-action">
-              <div class="ep-avail">
-                <div class="ep-avail-dot" style="background:var(--color-warning)"></div>
-                <div>
-                  <div class="ep-avail-text" style="color:var(--color-warning)">Responds in ~4 hrs</div>
-                  <div class="ep-avail-sched">Mon–Fri · 9am–7pm PT</div>
-                </div>
-              </div>
-              <button class="ep-book-btn-compact" onclick="navigate('book-meeting')">Schedule first conversation</button>
-            </div>
+
+        <!-- Hero -->
+        <div class="ep-hero" style="padding-bottom:var(--s4)">
+          <div class="ep-avatar" style="background:linear-gradient(135deg,#6B4FA8,#9B6EC7)">
+            <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;z-index:0">MC</span>
           </div>
-          <div class="ep-stats">
-            <div class="ep-stat"><div class="ep-stat-val">9</div><div class="ep-stat-label">years exp.</div></div>
-            <div class="ep-stat">
-              <div class="ep-stars"><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star">★</span><span class="ep-star" style="opacity:.4">★</span></div>
-              <div class="ep-stat-val">4.7</div>
-              <div class="ep-stat-label">145 reviews</div>
-            </div>
-            <div class="ep-stat"><div class="ep-stat-val">291</div><div class="ep-stat-label">returns filed</div></div>
+          <div class="ep-name">Maria Chen</div>
+          <!-- Availability line — centered -->
+          <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:var(--s3)">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--color-warning);flex-shrink:0"></div>
+            <span style="font-size:var(--text-xs);color:var(--color-text-secondary)">Responds in ~4 hrs · Mon–Fri · 9am–7pm PT</span>
           </div>
-          <div class="ep-body">
-            <div class="ep-tags">
-              <span class="ep-tag">S Corp</span>
-              <span class="ep-tag">LLC</span>
-              <span class="ep-tag">Freelance</span>
-              <span class="ep-tag">Creative agencies</span>
-              <span class="ep-tag">California</span>
-              <span class="ep-tag">English</span>
-              <span class="ep-tag">Mandarin</span>
-            </div>
-            <div style="margin-top:var(--s3);padding:var(--s3);background:var(--color-brand-subtle);border-radius:var(--r-md)">
-              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);line-height:1.6">"I focus on creative businesses — agencies, studios, and freelancers converting to S Corps. I'll help you maximize deductions and set up a structure that grows with your business."</div>
-              <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:4px">— Maria Chen, EA</div>
-            </div>
-          </div>
-          <div style="padding:var(--s4);display:flex;flex-direction:column;gap:var(--s2);border-top:0.5px solid var(--color-border)">
-            <button onclick="navigate('data-in')" style="width:100%;height:40px;background:none;border:1px solid var(--color-border);border-radius:var(--r-md);font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-secondary);cursor:pointer;font-family:var(--font-family)">Continue to data collection</button>
-            <button onclick="goBack()" style="width:100%;height:36px;background:none;border:none;font-size:var(--text-xs);color:var(--color-text-tertiary);cursor:pointer;font-family:var(--font-family)">Not the right fit? See other experts</button>
+          <!-- Book first meeting — narrower, disabled, calendar icon -->
+          <div style="display:flex;justify-content:center;margin-top:var(--s3)">
+            <button disabled style="display:inline-flex;align-items:center;gap:6px;padding:0 20px;height:36px;background:var(--color-border);color:var(--color-text-tertiary);border:none;border-radius:var(--r-lg);font-size:var(--text-sm);font-weight:var(--fw-semibold);cursor:not-allowed;font-family:var(--font-family);opacity:.7">
+              <svg viewBox="0 0 16 16" fill="none" style="width:14px;height:14px;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 2v2M11 2v2M2 7h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              Book first meeting
+            </button>
           </div>
         </div>
+
+        <!-- Stats grid -->
+        <div class="ep-stats">
+          <div class="ep-stat"><div class="ep-stat-val">9</div><div class="ep-stat-label">years exp.</div></div>
+          <div class="ep-stat">
+            <div style="display:flex;align-items:center;justify-content:center;gap:3px;line-height:1;margin-bottom:3px">
+              <span style="font-size:15px;color:var(--color-text-primary);font-weight:700">★</span>
+              <span class="ep-stat-val">4.7</span>
+            </div>
+            <div class="ep-stat-label">145 reviews</div>
+          </div>
+          <div class="ep-stat"><div class="ep-stat-val">291</div><div class="ep-stat-label">returns filed</div></div>
+        </div>
+
+        <!-- Specialty tags (credentials moved here from hero) -->
+        <div class="ep-body" style="border-bottom:4px solid var(--color-border)">
+          <div class="ep-tags">
+            <span class="ep-tag">EA</span>
+            <span class="ep-tag">S Corp</span>
+            <span class="ep-tag">LLC</span>
+            <span class="ep-tag">Freelance</span>
+            <span class="ep-tag">Creative agencies</span>
+            <span class="ep-tag">California</span>
+            <span class="ep-tag">English</span>
+            <span class="ep-tag">Mandarin</span>
+          </div>
+        </div>
+
+        <!-- Why clients choose Maria — static non-clickable list, no chevrons -->
+        <div class="w-sec">
+          <div style="font-size:var(--text-xs);font-weight:var(--fw-semibold);color:var(--color-text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:var(--s3)">Why clients choose Maria</div>
+
+          <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s2) 0;border-bottom:1px solid var(--color-border)">
+            <div style="width:20px;height:20px;background:var(--color-brand-subtle);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M2.5 7l3 3 6-6" stroke="var(--color-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">Creative industry specialist</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px">Agencies, studios, and design businesses</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s2) 0;border-bottom:1px solid var(--color-border)">
+            <div style="width:20px;height:20px;background:var(--color-brand-subtle);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M2.5 7l3 3 6-6" stroke="var(--color-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">LLC to S Corp conversions</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px">Helps businesses optimize entity structure</div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:flex-start;gap:var(--s3);padding:var(--s2) 0">
+            <div style="width:20px;height:20px;background:var(--color-brand-subtle);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">
+              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M2.5 7l3 3 6-6" stroke="var(--color-brand)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary)">Bilingual (English / Mandarin)</div>
+              <div style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:2px">Serves Mandarin-speaking business owners</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom CTA — only "Not the right fit?" -->
+        <div style="padding:var(--s4)">
+          <button onclick="goBack()" style="width:100%;height:36px;background:none;border:none;font-size:var(--text-xs);font-weight:var(--fw-medium);color:var(--color-brand);cursor:pointer;font-family:var(--font-family)">Not the right fit? See other experts</button>
+        </div>
+
       </div>
 
       <!-- View: Action Detail — Q2 -->
@@ -2734,7 +3767,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
         </div>
       </div>
 
-      <div class="view" id="v-settings" style="background:#F4F6F9;overflow-y:auto">
+      <div class="view" id="v-settings" style="background:#fff;overflow-y:auto">
         <div class="s-body">
 
           <!-- ── Company Info ── -->
@@ -2815,11 +3848,14 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
       </div>
 
       <!-- View: Demo Controls — quick-switch between flows for presentation -->
-      <div class="view" id="v-demo-controls" style="background:#F4F6F9;overflow-y:auto">
+      <div class="view" id="v-demo-controls" style="background:#fff;overflow-y:auto">
         <div class="s-body">
           <div class="s-sec">
             <div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-bottom:var(--s3);line-height:1.5">Jump to any flow for the demo. State resets to the selected starting point.</div>
-            <div style="display:flex;flex-direction:column;gap:var(--s2)">
+            <div style="display:flex;flex-direction:column;gap:0">
+
+              <!-- Stage 1: Prep -->
+              <div class="demo-stage-header">① Prep</div>
               <div class="demo-row" onclick="demoGoto('welcome')">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3l1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
                 <span>Onboarding</span>
@@ -2827,18 +3863,18 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
               </div>
               <div class="demo-row" onclick="demoGoto('stage1')">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 8l3 3 6-6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span>Form Collection (Stage 1)</span>
-                <span class="demo-tag">Filing season</span>
+                <span>Form Collection</span>
+                <span class="demo-tag">Stage 1</span>
               </div>
               <div class="demo-row" onclick="demoGoto('expert-list')">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M3 10.5c0-2.21 1.79-4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="10.5" cy="10" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M10.5 8.5v1.5l1 1" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M3 10.5c0-2.21 1.79-4 4-4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="10.5" cy="10" r="2.5" stroke="currentColor" stroke-width="1.2"/></svg>
                 <span>Choose your expert</span>
                 <span class="demo-tag">Expert list</span>
               </div>
               <div class="demo-row" onclick="demoGoto('expert-match')">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 13c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-                <span>Susan — Expert detail</span>
-                <span class="demo-tag">First-time</span>
+                <span>Susan — Expert profile</span>
+                <span class="demo-tag">First match</span>
               </div>
               <div class="demo-row" onclick="demoGoto('book-meeting')">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="2.5" width="11" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 1v3M9.5 1v3M1.5 6.5h11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
@@ -2850,6 +3886,15 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
                 <span>Connect &amp; Upload</span>
                 <span class="demo-tag">Data-in</span>
               </div>
+
+              <!-- Stage 2: Review -->
+              <div style="height:1px;background:var(--color-border);margin:var(--s2) 0"></div>
+              <div class="demo-stage-header">② Review</div>
+              <div class="demo-row" onclick="demoGoto('tax-review')">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="2" width="11" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 5.5h6M4 8h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <span>Tax Review Hub</span>
+                <span class="demo-tag demo-tag-blue">Overview</span>
+              </div>
               <div class="demo-row" onclick="demoSetMeetingReadyState()">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1.5" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M9.5 6l-3.5 2.5V3.5L9.5 6z" fill="currentColor"/><path d="M3 12.5h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
                 <span>Meeting starting</span>
@@ -2860,21 +3905,54 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
                 <span>Video call w/ Susan</span>
                 <span class="demo-tag demo-tag-green">Live call</span>
               </div>
+
+              <!-- Stage 3: Ready to File -->
+              <div style="height:1px;background:var(--color-border);margin:var(--s2) 0"></div>
+              <div class="demo-stage-header">③ Ready to File</div>
               <div class="demo-row" onclick="demoSetReadyToFileState()">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7.5l3 3 6-6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/></svg>
                 <span>Ready to file</span>
-                <span class="demo-tag demo-tag-blue">Post-review</span>
+                <span class="demo-tag demo-tag-blue">Pre-submit</span>
               </div>
+
+              <!-- Stage 4: Filed -->
+              <div style="height:1px;background:var(--color-border);margin:var(--s2) 0"></div>
+              <div class="demo-stage-header">④ Filed</div>
               <div class="demo-row" onclick="demoSetFiledState()">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" fill="rgba(0,135,90,.12)" stroke="#00875A" stroke-width="1.2"/><path d="M4.5 7l2 2 3-3" stroke="#00875A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 <span>Return filed</span>
-                <span class="demo-tag demo-tag-blue">Confirmed</span>
+                <span class="demo-tag demo-tag-green">Confirmed</span>
               </div>
+
+              <!-- Stage 5: Year Round -->
+              <div style="height:1px;background:var(--color-border);margin:var(--s2) 0"></div>
+              <div class="demo-stage-header">⑤ Year Round</div>
               <div class="demo-row" onclick="demoGoto('main')">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="2.5" width="11" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4 7h6M4 9.5h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
                 <span>Year-round hub</span>
-                <span class="demo-tag">Post-filing</span>
+                <span class="demo-tag">Overview</span>
               </div>
+              <div class="demo-row" onclick="demoGoto('tax-2026')">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1.5" width="10" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 5h5M4.5 7.5h5M4.5 10h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <span>2026 Tax Summary</span>
+                <span class="demo-tag">Filed return</span>
+              </div>
+              <div class="demo-row" onclick="demoGoto('action-biz')">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/></svg>
+                <span>2027 Tax Strategy</span>
+                <span class="demo-tag">Planning</span>
+              </div>
+              <div class="demo-row" onclick="demoGoto('calendar')">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1.5" y="2.5" width="11" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 6h11M4.5 1.5v2M9.5 1.5v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <span>Tax Calendar</span>
+                <span class="demo-tag">Deadlines</span>
+              </div>
+              <div class="demo-row" onclick="demoGoto('chat')">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3.5C2 2.67 2.67 2 3.5 2h7C11.33 2 12 2.67 12 3.5v5c0 .83-.67 1.5-1.5 1.5H5L2 12V3.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+                <span>Ask a tax question</span>
+                <span class="demo-tag">AI chat</span>
+              </div>
+
             </div>
           </div>
         </div>
@@ -2927,7 +4005,7 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
   <div class="toast-body">
     <div class="toast-app">TurboTax Business · Meeting</div>
     <div class="toast-title">Your meeting with Susan is starting</div>
-    <div class="toast-sub" id="toastDetail">Tue, May 13 · 9:00 AM · Video call</div>
+    <div class="toast-sub" id="toastDetail">Thu, May 15 · 9:00 AM · Video call</div>
     <button class="toast-join-btn" onclick="joinMeetingFromToast()">Join now →</button>
   </div>
   <button class="toast-dismiss" onclick="dismissToast()" title="Dismiss">✕</button>
@@ -2937,28 +4015,62 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 var widgetOpen = false;
 var viewStack = ['welcome'];
 var chatMode = 'ai'; /* 'ai' = TurboTax Assistant | 'susan' = Susan Larsen */
+var currentStage = 'yearround'; /* prep | yearround | review | filing | filed */
 var viewTitles = { main:'', welcome:'', login:'Sign in', 'stage1':'', expert:'Susan Larsen', 'expert-list':'Choose your expert', 'action-q2':'Q2 Estimated Tax', 'action-laws':'New Tax Laws', 'action-biz':'Business Changes', calendar:'Tax Calendar', chat:'Ask anything', settings:'Settings', 'tax-2026':'2026 Tax Return', 'data-in':'Connect & Upload', 'upload':'Upload forms', 'upload-review':'Uploaded Documents', 'add-institution':'Add account', 'qb-detail':'QuickBooks',
   'expert-match':'Susan Larsen', 'expert-david':'David Kim', 'expert-maria':'Maria Chen',
   'book-meeting':'Schedule a Meeting', 'demo-controls':'Demo Controls', 'video-call':'',
-  'filing':'Review & File', 'filed':'' };
+  'filing':'Review & File', 'filed':'',
+  'tax-review':'Tax Review', 'deductions':'Deductions', 'activity':'Recent Activity', 'review-summary':'Tax Summary' };
+var pendingApprovals = 3;
 var epDate = {}, epSlot = {};
 
 /* ── Ask input context ── */
+var SUSAN_PROFILE_VIEWS = ['expert', 'expert-match', 'expert-david', 'expert-maria'];
 function updateAskContext(viewId) {
   var inp = document.getElementById('askInput');
   var note = document.querySelector('.ask-async-note');
+  var iconEl = document.querySelector('.ask-icon');
   if (!inp) return;
+
+  /* Swap icon: chat bubble on Susan profile views, Intuit Assist everywhere else */
+  if (iconEl) {
+    if (SUSAN_PROFILE_VIEWS.indexOf(viewId) > -1) {
+      iconEl.innerHTML = '<svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px"><path d="M1.5 1.5h11c.55 0 1 .45 1 1v7c0 .55-.45 1-1 1H4.5L1.5 13V2.5c0-.55.45-1 1-1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>';
+    } else {
+      iconEl.innerHTML = '<img src="intuit-assist.svg" alt="" style="width:14px;height:14px;opacity:.45">';
+    }
+  }
+
   if (viewId === 'chat') {
-    /* Already in chat — keep current mode placeholder, hide the note */
     inp.placeholder = chatMode === 'susan' ? 'Ask Susan…' : 'Ask anything…';
     if (note) note.style.display = 'none';
-  } else if (viewId === 'expert') {
+  } else if (SUSAN_PROFILE_VIEWS.indexOf(viewId) > -1) {
     inp.placeholder = 'Ask Susan…';
     if (note) { note.style.display = ''; note.textContent = 'Async · Susan responds in ~2 hrs'; }
   } else {
     inp.placeholder = 'Ask anything…';
     if (note) { note.style.display = ''; note.textContent = 'AI‑powered · responds instantly'; }
   }
+}
+
+/* ── Expert timeline — grows with stage ── */
+function updateExpertTimeline() {
+  var stageOrder = ['prep', 'yearround', 'review', 'filing', 'filed'];
+  var idx = stageOrder.indexOf(currentStage);
+  if (idx < 0) idx = 1; /* default to yearround */
+
+  /* Show/hide items by data-min-stage attribute */
+  var items = document.querySelectorAll('[data-min-stage]');
+  items.forEach(function(el) {
+    var minIdx = stageOrder.indexOf(el.getAttribute('data-min-stage'));
+    el.style.display = (idx >= minIdx) ? '' : 'none';
+  });
+
+  /* Empty-state for prep: hide history, show placeholder */
+  var hist = document.getElementById('ep-history');
+  var empty = document.getElementById('ep-history-empty');
+  if (hist) hist.style.display = (currentStage === 'prep') ? 'none' : '';
+  if (empty) empty.style.display = (currentStage === 'prep') ? '' : 'none';
 }
 
 /* ── Chat identity ── */
@@ -3139,6 +4251,7 @@ function navigate(viewId) {
   updateHeader();
   updateEFC();
   updateAskContext(viewId);
+  if (SUSAN_PROFILE_VIEWS.indexOf(viewId) > -1) updateExpertTimeline();
   /* Start call timer when entering video-call */
   if (viewId === 'video-call') startCallTimer();
   /* Stop call timer when leaving video-call */
@@ -3166,23 +4279,48 @@ function goBack() {
 function updateHeader() {
   var id = viewStack[viewStack.length - 1];
   var isOnboarding = (id === 'welcome' || id === 'login');
-  var isHub = (id === 'main' || id === 'stage1');
-  /* Always show header; hide footer on onboarding and demo-controls (outside prototype) */
+  /* Hub = no back history (single-item stack). Covers main, stage1,
+     and any stepper destination which stepTo() resets to length-1. */
+  var isHub = (viewStack.length === 1) && !isOnboarding;
   document.querySelector('.widget-header').style.display = 'flex';
   document.getElementById('widgetFooter').style.display = (isOnboarding || id === 'demo-controls') ? 'none' : 'flex';
+  /* Brand icon always visible; name shows on hub/onboarding, title shows on deep views */
+  document.getElementById('whBrand').style.display = 'flex';
   if (isOnboarding) {
-    /* Onboarding: brand mark only — no back button, no gear */
     document.getElementById('backBtn').classList.remove('visible');
-    document.getElementById('whBrand').style.display = 'flex';
+    document.getElementById('whBrandName').style.display = '';
     document.getElementById('whTitle').style.display = 'none';
     document.getElementById('gearBtn').style.visibility = 'hidden';
+  } else if (isHub) {
+    document.getElementById('backBtn').classList.remove('visible');
+    document.getElementById('whBrandName').style.display = '';
+    document.getElementById('whTitle').style.display = 'none';
+    document.getElementById('gearBtn').style.visibility = 'visible';
   } else {
-    document.getElementById('backBtn').classList.toggle('visible', !isHub);
-    document.getElementById('whBrand').style.display = isHub ? 'flex' : 'none';
-    document.getElementById('whTitle').style.display = isHub ? 'none' : 'block';
+    /* Only show back button when there is actual back history (navigate() pushes stack; stepTo() resets to length 1) */
+    if (viewStack.length > 1) {
+      document.getElementById('backBtn').classList.add('visible');
+    } else {
+      document.getElementById('backBtn').classList.remove('visible');
+    }
+    document.getElementById('whBrandName').style.display = 'none';
+    document.getElementById('whTitle').style.display = 'block';
     document.getElementById('whTitle').textContent = viewTitles[id] || '';
     document.getElementById('gearBtn').style.visibility = (id === 'settings') ? 'hidden' : 'visible';
-    /* Also hide gear on onboarding (handled above), but always show close */
+  }
+  /* Update menu bar pill text for review screen */
+  var pill = document.getElementById('ttPillText');
+  if (pill) {
+    if (id === 'tax-review') {
+      var cnt = pendingApprovals;
+      pill.textContent = cnt > 0 ? cnt + ' pending · Review' : 'In Review';
+    } else if (id === 'filing') {
+      pill.textContent = 'Ready to File';
+    } else if (id === 'filed') {
+      pill.textContent = 'Filed ✓';
+    } else {
+      pill.textContent = 'Tax Assistant';
+    }
   }
 }
 function doLogin() {
@@ -3192,7 +4330,7 @@ function doLogin() {
   if (btnEl) btnEl.disabled = true;
 
   /* Step 1 — type email character by character (35ms/char) */
-  var email = 'xiao_lu@intuit.com';
+  var email = 'biztax_customer@turbotax.com';
   var i = 0;
   emailEl.value = '';
   var typeEmail = setInterval(function() {
@@ -3250,7 +4388,7 @@ function demoGoto(targetView) {
     viewStack = [targetView];
   } else {
     /* Deep view — fake a stack so back button works */
-    var stage1Views = ['data-in', 'expert-list', 'expert-match', 'expert-david', 'expert-maria', 'book-meeting', 'upload', 'upload-review', 'add-institution', 'qb-detail', 'video-call', 'filing', 'filed'];
+    var stage1Views = ['data-in', 'expert-list', 'expert-match', 'expert-david', 'expert-maria', 'book-meeting', 'upload', 'upload-review', 'add-institution', 'qb-detail', 'video-call', 'filing', 'filed', 'tax-review', 'deductions', 'activity', 'review-summary'];
     var settingsViews = ['demo-controls'];
     var root = stage1Views.includes(targetView) ? 'stage1' : settingsViews.includes(targetView) ? 'settings' : 'main';
     document.getElementById('v-' + root).classList.add('v-behind');
@@ -3268,6 +4406,22 @@ function demoGoto(targetView) {
     updateReviewFileCard();
     updateFiledHomeState();
   }
+  /* Set stage for expert timeline */
+  var prepViews = ['welcome','login','stage1','expert-list','expert-match','book-meeting','data-in','upload','upload-review','add-institution','qb-detail'];
+  var reviewViews2 = ['tax-review','deductions','activity','review-summary'];
+  var filingViews = ['filing'];
+  if (prepViews.indexOf(targetView) > -1 || prepViews.indexOf(viewStack[0]) > -1) {
+    currentStage = 'prep';
+  } else if (reviewViews2.indexOf(targetView) > -1) {
+    currentStage = 'review';
+  } else if (filingViews.indexOf(targetView) > -1) {
+    currentStage = 'filing';
+  } else if (targetView === 'filed') {
+    currentStage = 'filed';
+  } else {
+    currentStage = 'yearround';
+  }
+  updateExpertTimeline();
   updateHeader();
   updateEFC();
   updateAskContext(viewStack[viewStack.length - 1]);
@@ -3440,10 +4594,69 @@ function getDemoDocContext(file) {
   return contexts[cat] || contexts['Other'];
 }
 
+/* ── Approval card: approve → count down → card disappears ── */
+function approveItem(btn) {
+  btn.textContent = '✓ Approved';
+  btn.classList.add('done');
+  var card = btn.closest('.hub-approval-card');
+  pendingApprovals = Math.max(0, pendingApprovals - 1);
+  var badge = document.getElementById('approval-count-badge');
+  if (badge) badge.textContent = pendingApprovals;
+  /* Update menu bar pill */
+  var pill = document.getElementById('ttPillText');
+  if (pill && viewStack[viewStack.length-1] === 'tax-review') {
+    pill.textContent = pendingApprovals > 0 ? pendingApprovals + ' pending · Review' : 'In Review';
+  }
+  setTimeout(function() {
+    card.style.transition = 'opacity 350ms ease, transform 300ms ease';
+    card.style.opacity = '0';
+    card.style.transform = 'translateX(12px)';
+    setTimeout(function() { card.remove(); }, 360);
+  }, 1400);
+}
+
+/* ── Stepper: instant stage jump (no slide animation) ── */
+function stepTo(viewId) {
+  var views = document.querySelectorAll('.view');
+  views.forEach(function(v){ v.style.transition = 'none'; });
+  var rootViews = ['stage1', 'main', 'settings', 'welcome', 'login'];
+  if (rootViews.indexOf(viewId) > -1) {
+    views.forEach(function(v){ v.classList.remove('v-active','v-behind'); });
+    var el = document.getElementById('v-' + viewId);
+    if (el) el.classList.add('v-active');
+    viewStack = [viewId];
+    if (viewId === 'stage1') {
+      document.getElementById('stage1-skeleton').style.display = 'none';
+      document.getElementById('stage1-content').style.display = 'block';
+      if (returnFiled) advanceStepper(3);
+      else if (readyToFile) advanceStepper(2);
+      else if (hasUploads) advanceStepper(1);
+      updateJoinCard();
+      updateReviewFileCard();
+      updateFiledHomeState();
+    }
+  } else {
+    /* Non-root stepper destination — navigate directly, single-item stack so back never shows */
+    views.forEach(function(v){ v.classList.remove('v-active','v-behind'); });
+    var el = document.getElementById('v-' + viewId);
+    if (el) el.classList.add('v-active');
+    viewStack = [viewId];
+  }
+  updateHeader();
+  updateEFC();
+  updateAskContext(viewId);
+  setTimeout(updateFade, 0);
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      document.querySelectorAll('.view').forEach(function(v){ v.style.transition = ''; });
+    });
+  });
+}
+
 /* ── Stepper advancement ── */
 function advanceStepper(n) {
-  var steps = document.querySelectorAll('#v-stage1 .fs-step');
-  var lines = document.querySelectorAll('#v-stage1 .fs-line');
+  var steps = document.querySelectorAll('#v-stage1 .fs-dot');
+  var lines = document.querySelectorAll('#v-stage1 .fs-seg');
   steps.forEach(function(s, i) {
     s.classList.toggle('active', i === n);
     s.classList.toggle('done', i < n);
@@ -3601,7 +4814,7 @@ function updateFiledHomeState() {
 
 function filingSubmit() {
   returnFiled = true;
-  navigate('filed');
+  stepTo('filed');
   advanceStepper(3);
   updatePillText('filed');
 }
@@ -3612,22 +4825,34 @@ function filingDone() {
 
 /* ── Expert booking state ── */
 var expertBooked = false;
-var bookedDate   = 'Tue, May 13';
+var bookedDate   = 'Thu, May 15';
 var bookedTime   = '9:00 AM';
 
 /* Returns true when the Susan footer card should be visible */
 function showExpertFooterCard() {
-  /* Hide the card when already inside an expert profile view (user got here by tapping it)
-     or on views where it doesn't make contextual sense */
+  /* noCardViews is always checked first — these views never show the card */
   var noCardViews = ['welcome', 'login', 'expert-list', 'expert-match', 'expert',
                      'expert-david', 'expert-maria', 'book-meeting',
-                     'settings', 'demo-controls', 'video-call', 'filing', 'filed'];
+                     'settings', 'demo-controls', 'video-call', 'filed'];
   var curView = viewStack[viewStack.length - 1];
-  if (expertBooked) return !noCardViews.includes(curView);
+  if (noCardViews.includes(curView)) return false;
+  /* Review + filing stage views always show Susan — expert is always present in these flows */
+  var reviewViews = ['tax-review', 'deductions', 'activity', 'review-summary', 'filing'];
+  if (reviewViews.includes(curView)) return true;
+  if (expertBooked) return true;
   return viewStack[0] === 'main';
 }
 function updateEFC() {
   document.getElementById('expertFooterCard').style.display = showExpertFooterCard() ? 'flex' : 'none';
+}
+
+/* ── Refund tracker toggle ── */
+function toggleRefundTracker() {
+  var panel = document.getElementById('rt-panel');
+  var chev = document.getElementById('rt-chevron');
+  var open = panel.style.display !== 'none';
+  panel.style.display = open ? 'none' : 'block';
+  if (chev) chev.style.transform = open ? '' : 'rotate(90deg)';
 }
 
 /* Called when user taps "Continue to data collection" on the booking confirmed screen */
@@ -3646,25 +4871,19 @@ function bookingContinue() {
   var hist = document.getElementById('ep-history');
   if (hist) hist.style.display = 'none';
 
-  /* 3. Hide expert promo CTA in data-in (user has an expert now) */
-  var cta = document.getElementById('datain-expert-cta');
-  if (cta) cta.style.display = 'none';
+  /* 3. Swap expert section in data-in: hide unmatched teaser, show Susan row */
+  var unmatched = document.getElementById('datain-expert-unmatched');
+  var matched   = document.getElementById('datain-expert-matched');
+  if (unmatched) unmatched.style.display = 'none';
+  if (matched)   matched.style.display   = 'block';
 
-  /* 4. Swap stage1 path cards: hide "Meet your expert", show Susan booked card */
-  var expertPath = document.getElementById('stage1-expert-path');
-  if (expertPath) expertPath.style.display = 'none';
-  var susanBooked = document.getElementById('stage1-susan-booked');
-  if (susanBooked) susanBooked.style.display = 'flex';
-  var meetingLine = document.getElementById('stage1-susan-meeting-line');
-  if (meetingLine) meetingLine.textContent = bookedDate + ' · ' + bookedTime + ' · tap to view profile';
-
-  /* 5. Land on data-in with a clean stack */
-  demoGoto('data-in');
+  /* 4. Navigate to the tax review hub */
+  demoGoto('tax-review');
 }
 
 /* ── Book-meeting screen confirmation ── */
 function confirmBMBooking() {
-  var d = epDate['bm-sched'] || 'Tue, May 13', s = epSlot['bm-sched'] || '9:00 AM';
+  var d = epDate['bm-sched'] || 'Thu, May 15', s = epSlot['bm-sched'] || '9:00 AM';
   var detail = document.getElementById('bm-confirmed-detail');
   if (detail) detail.textContent = d + ' · ' + s + ' with Susan';
   document.getElementById('bm-picker').style.display = 'none';
@@ -3872,6 +5091,42 @@ updateHeader();
 updateEFC();
 
 /* chatSendBtn and chatInput removed — global ask input handles everything */
+
+/* ── Connect application (Google / Apple / Dropbox) ── */
+function connectApp(id) {
+  var card   = document.getElementById('app-' + id);
+  var pill   = document.getElementById('app-' + id + '-status');
+  if (!card || !pill) return;
+  if (pill.classList.contains('connected')) return; // already connected
+
+  /* Scanning state */
+  pill.className = 'ic-status scanning';
+  pill.textContent = 'Scanning…';
+  card.style.pointerEvents = 'none';
+
+  setTimeout(function() {
+    pill.className = 'ic-status connected';
+    pill.textContent = '✓ Connected';
+    card.style.pointerEvents = '';
+  }, 2000);
+}
+
+/* ── Reconnect financial account (Bank of America / Chase) ── */
+function reconnectAccount(card) {
+  var pill = card.querySelector('.ic-status');
+  if (!pill) return;
+  if (pill.classList.contains('connected')) return; // already connected
+
+  pill.className = 'ic-status scanning';
+  pill.textContent = 'Connecting…';
+  card.style.pointerEvents = 'none';
+
+  setTimeout(function() {
+    pill.className = 'ic-status connected';
+    pill.textContent = '✓ Connected';
+    card.style.pointerEvents = '';
+  }, 2000);
+}
 
 /* ── Electron mode — strip desktop simulation, show widget directly ── */
 (function() {

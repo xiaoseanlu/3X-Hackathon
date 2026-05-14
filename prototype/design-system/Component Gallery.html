@@ -1047,7 +1047,7 @@ body {
 .fs-stepper {
   display: flex; align-items: flex-start;
   padding: 16px 16px 12px;
-  border-bottom: 4px solid #fff; /* white separator — sits on gray scroll bg like all .w-sec */
+  border-bottom: 4px solid var(--border); /* visible gray separator between sections */
 }
 .fs-step { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; }
 .fs-dot {
@@ -1074,7 +1074,7 @@ body {
    business identity and return history before asking them to act.
    Two rows: (1) logo + name + entity badge, (2) prior returns chips.
    ────────────────────────────────────────────────────────────────── */
-.biz-context { padding:16px;border-bottom:4px solid #fff; /* gray bg, white separator */ }
+.biz-context { padding:16px;border-bottom:4px solid var(--border); /* white bg, visible gray separator */ }
 .bc-top { display:flex;align-items:center;gap:10px;margin-bottom:10px; }
 .bc-logo {
   width:32px;height:32px;border-radius:6px;flex-shrink:0;
@@ -1402,24 +1402,25 @@ body {
           <div style="height:8px;width:60px;background:var(--border);border-radius:2px"></div>
         </div>
       </div>
-      <!-- Gray scroll area -->
-      <div style="background:#F4F6F9;padding:0">
+      <!-- White scroll area -->
+      <div style="background:#fff;padding:0">
         <!-- w-sec 1 -->
-        <div style="background:#F4F6F9;padding:10px 12px;border-bottom:4px solid #fff">
-          <div style="font-size:9px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">.w-sec · padding:16px · border-bottom:4px solid #fff</div>
-          <div style="background:#fff;border-radius:4px;padding:6px 8px;margin-bottom:4px;border-bottom:0.5px solid var(--border);display:flex;align-items:center;justify-content:space-between">
-            <span style="font-size:10px;color:var(--text-primary)">Action row · border-bottom:1px gray hairline</span>
+        <div style="background:#fff;padding:10px 12px;border-bottom:4px solid #F4F6F9">
+          <div style="font-size:9px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">.w-sec · padding:16px · border-bottom:4px solid #F4F6F9</div>
+          <div style="position:relative;padding:6px 8px;margin-bottom:0;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:10px;color:var(--text-primary)">Action row · inset ::after separator (left:16px right:16px)</span>
             <span style="font-size:9px;color:var(--text-tertiary)">›</span>
+            <div style="position:absolute;bottom:0;left:8px;right:0;height:0.5px;background:var(--border)"></div>
           </div>
-          <div style="background:#fff;border-radius:4px;padding:6px 8px;display:flex;align-items:center;justify-content:space-between">
-            <span style="font-size:10px;color:var(--text-primary)">Action row · last-child, no border</span>
+          <div style="padding:6px 8px;display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:10px;color:var(--text-primary)">Action row · last-child, no separator</span>
             <span style="font-size:9px;color:var(--text-tertiary)">›</span>
           </div>
         </div>
-        <!-- white gap visible -->
-        <div style="height:4px;background:#fff;margin:0"></div>
+        <!-- section divider — same color as var(--border) -->
+        <div style="height:4px;background:var(--border);margin:0"></div>
         <!-- w-sec 2 -->
-        <div style="background:#F4F6F9;padding:10px 12px;border-bottom:4px solid #fff">
+        <div style="background:#fff;padding:10px 12px;border-bottom:4px solid #F4F6F9">
           <div style="font-size:9px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">.w-sec · next section group</div>
           <div style="display:flex;gap:6px">
             <div style="flex:1;background:var(--bg-card,#fff);border:0.5px solid var(--border);border-radius:6px;padding:8px">
@@ -1439,22 +1440,22 @@ body {
     <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
       <div style="background:var(--bg-card,#fff);border:0.5px solid var(--border);border-radius:6px;padding:10px 12px">
         <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:3px">.w-sec — Section block</div>
-        <code style="font-size:10px;color:var(--text-secondary);line-height:1.7;display:block">padding: var(--s4); /* 16px */<br>border-bottom: 4px solid #fff;</code>
-        <div style="font-size:10px;color:var(--text-tertiary);margin-top:4px">One per logical content group. Gray bg shows only in the 4px gaps.</div>
+        <code style="font-size:10px;color:var(--text-secondary);line-height:1.7;display:block">padding: var(--s4); /* 16px */<br>border-bottom: 4px solid var(--color-border); /* full-width visible gray divider */</code>
+        <div style="font-size:10px;color:var(--text-tertiary);margin-top:4px">One per logical content group. White bg throughout — border color (#E3E8EF) shows as a clear 4px section divider.</div>
       </div>
       <div style="background:var(--bg-card,#fff);border:0.5px solid var(--border);border-radius:6px;padding:10px 12px">
-        <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:3px">.action-row — Within-section item divider</div>
-        <code style="font-size:10px;color:var(--text-secondary);line-height:1.7;display:block">border-bottom: 1px solid var(--color-border);<br>margin: 0 calc(-1 * var(--s4)); /* bleeds to section edges */<br>/* last-child: border-bottom: none */</code>
-        <div style="font-size:10px;color:var(--text-tertiary);margin-top:4px">Gray hairline between list items within a section. Last item gets no border.</div>
+        <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:3px">.action-row — Within-section inset separator</div>
+        <code style="font-size:10px;color:var(--text-secondary);line-height:1.7;display:block">position: relative; /* no border-bottom */<br>margin: 0 calc(-1 * var(--s4)); /* tap target bleeds full width */<br>::after { left:16px; right:16px; height:1px; } /* inset line */</code>
+        <div style="font-size:10px;color:var(--text-tertiary);margin-top:4px">Inset hairline — matches content width, never full view width. Hover: background:#F4F6F9 (darkens on white). Last-child: no ::after.</div>
       </div>
       <div style="background:var(--bg-card,#fff);border:0.5px solid var(--border);border-radius:6px;padding:10px 12px">
         <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:3px">StickyChrome — Widget header only</div>
-        <code style="font-size:10px;color:var(--text-secondary);line-height:1.7;display:block">background: var(--color-bg); /* white */<br>border-bottom: 0.5px solid var(--color-border);</code>
-        <div style="font-size:10px;color:var(--text-tertiary);margin-top:4px">Only the widget header bar (back button + title + ×). The stepper and biz-context are scrollable .w-sec blocks, not sticky chrome — they sit on the gray scroll background with 4px solid #fff separators.</div>
+        <code style="font-size:10px;color:var(--text-secondary);line-height:1.7;display:block">background: rgba(255,255,255,0.88); /* frosted white */<br>border-bottom: 1px solid var(--color-border); /* scroll start marker */</code>
+        <div style="font-size:10px;color:var(--text-tertiary);margin-top:4px">Only the widget header bar (back button + title + ×). Border-bottom marks where the scrollable content begins. The stepper and biz-context are scrollable .w-sec blocks with 4px solid #F4F6F9 separators.</div>
       </div>
     </div>
 
-    <p class="hmw">Rule: every scrollable view must have <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">background:#F4F6F9</code> on its <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">.view</code> container. Every logical content group must be wrapped in <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">.w-sec</code>. Exceptions: v-book-meeting, v-filed (white bg intentional), v-video-call (dark bg intentional).</p>
+    <p class="hmw">Rule: every scrollable view uses <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">background:#fff</code> on its <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">.view</code> container. Every logical content group must be wrapped in <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">.w-sec</code> with <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">border-bottom:4px solid #F4F6F9</code>. Intra-section dividers use <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">::after</code> inset separator (never full-width). Hover state: <code style="background:var(--bg-surface);padding:1px 5px;border-radius:3px">background:#F4F6F9</code> (darkens on white). Exception: v-video-call (dark bg intentional).</p>
   </div>
 
   <div class="divider"></div>
@@ -1519,21 +1520,22 @@ body {
     <div class="fin-grid">
       <div class="fin-cell">
         <div class="fin-label">Deductions found</div>
-        <div class="fin-hero">$14,830</div>
-        <div class="fin-delta" style="color:#00875A">↑ $3,200 this year</div>
+        <div class="fin-hero">$14,050</div>
+        <div class="fin-delta" style="color:#00875A">↑ $2,800 this year</div>
         <div class="fin-bars">
-          <div class="fin-bar-row"><div class="fin-bar-name">Home Office</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:72%;background:#1B4F8A"></div></div><div class="fin-bar-val">$4,800</div></div>
-          <div class="fin-bar-row"><div class="fin-bar-name">Equipment</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:55%;background:#3B82F6"></div></div><div class="fin-bar-val">$3,600</div></div>
-          <div class="fin-bar-row"><div class="fin-bar-name">Travel</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:38%;background:#6366F1"></div></div><div class="fin-bar-val">$2,490</div></div>
-          <div class="fin-bar-row"><div class="fin-bar-name">Other</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:22%;background:#8B5CF6"></div></div><div class="fin-bar-val">$1,440</div></div>
+          <div class="fin-bar-row"><div class="fin-bar-name">Equipment</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:78%;background:#1B4F8A"></div></div><div class="fin-bar-val">$2,739</div></div>
+          <div class="fin-bar-row"><div class="fin-bar-name">Health Ins.</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:62%;background:#3B82F6"></div></div><div class="fin-bar-val">$7,200</div></div>
+          <div class="fin-bar-row"><div class="fin-bar-name">Software</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:37%;background:#6366F1"></div></div><div class="fin-bar-val">$1,309</div></div>
+          <div class="fin-bar-row"><div class="fin-bar-name">Office</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:22%;background:#8B5CF6"></div></div><div class="fin-bar-val">$450</div></div>
+          <div class="fin-bar-row"><div class="fin-bar-name">Meals / Travel</div><div class="fin-bar-track"><div class="fin-bar-fill" style="width:12%;background:#A78BFA"></div></div><div class="fin-bar-val">$402</div></div>
         </div>
       </div>
       <div class="fin-cell">
         <div class="fin-label">Estimated liability</div>
-        <div class="fin-hero">$28,400</div>
-        <div class="fin-delta" style="color:#DE350B">↓ $1,800 vs last year</div>
-        <div style="height:3px;background:var(--bg-surface);border-radius:2px;margin-top:16px;overflow:hidden"><div style="width:64%;height:100%;background:var(--brand);border-radius:2px"></div></div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-top:8px">64% of prior year · Expert reviewing</div>
+        <div class="fin-hero">$4,187</div>
+        <div class="fin-delta" style="color:#00875A">↓ $2,100 vs last year</div>
+        <div style="height:3px;background:var(--bg-surface);border-radius:2px;margin-top:16px;overflow:hidden"><div style="width:42%;height:100%;background:var(--brand);border-radius:2px"></div></div>
+        <div style="font-size:11px;color:var(--text-tertiary);margin-top:8px">Federal $3,387 · CA $800 · Susan reviewing</div>
       </div>
       <div class="fin-cell" style="border-top:0.5px solid var(--border)">
         <div class="fin-label">Q2 estimated tax</div>
@@ -1541,14 +1543,9 @@ body {
         <div style="font-size:12px;color:#FF8B00;margin-top:6px">Due June 15 · 35 days</div>
       </div>
       <div class="fin-cell" style="border-top:0.5px solid var(--border)">
-        <div class="fin-label">Return status</div>
-        <div style="font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:10px">Expert Review</div>
-        <div class="stepper">
-          <div class="step-item done"><div class="step-node done"></div><div class="step-lbl">Prep</div></div>
-          <div class="step-item"><div class="step-node curr"></div><div class="step-lbl curr">Review</div></div>
-          <div class="step-item"><div class="step-node"></div><div class="step-lbl">Ready</div></div>
-          <div class="step-item"><div class="step-node"></div><div class="step-lbl">Filed</div></div>
-        </div>
+        <div class="fin-label">Federal refund</div>
+        <div style="font-size:28px;font-weight:700;color:var(--text-primary);letter-spacing:-.8px;line-height:1">$8,420</div>
+        <div style="font-size:12px;color:#00875A;margin-top:6px">Filed May 14 · Est. deposit May 21–28</div>
       </div>
     </div>
   </div>
@@ -1678,57 +1675,59 @@ body {
 
   <!-- ─── Filing Stages Stepper ─── -->
   <div class="sec">
-    <div class="sec-label">Filing stages stepper — active tax season progress indicator</div>
-    <p class="hmw" style="margin-bottom:14px">Four stages: Form Collection → Expert Review → Ready to File → Filed. Active stage uses brand dot + halo. Done stages use success green. Future stages are muted. Used as the persistent header on Stage 1 view.</p>
+    <div class="sec-label">Filing stages stepper — 5-stage season progress indicator</div>
+    <p class="hmw" style="margin-bottom:14px">Five stages: Prep → Review → Ready to File → Filed → Year Round. Dots and connecting lines sit in a single <code style="font-size:10px;background:rgba(0,0,0,.06);padding:1px 4px;border-radius:3px">.fs-track</code> flex row (align-items:center) so lines always connect perfectly to dot centers. Labels are absolutely positioned 15px below each dot. Active dot uses brand color + halo. Done dots use success green. Clicking any dot calls <code style="font-size:10px;background:rgba(0,0,0,.06);padding:1px 4px;border-radius:3px">stepTo(viewId)</code> for an instant swap with no slide animation.</p>
 
-    <!-- Stage 1 active (what we build now) -->
-    <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px">Stage 1 active — Form Collection</div>
+    <!-- Prep active -->
+    <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px">Step 1 active — Prep</div>
     <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg-card)">
       <div class="fs-stepper">
-        <div class="fs-step active">
-          <div class="fs-dot"></div>
-          <div class="fs-label">Form<br>Collection</div>
-        </div>
-        <div class="fs-line"></div>
-        <div class="fs-step">
-          <div class="fs-dot"></div>
-          <div class="fs-label">Expert<br>Review</div>
-        </div>
-        <div class="fs-line"></div>
-        <div class="fs-step">
-          <div class="fs-dot"></div>
-          <div class="fs-label">Ready<br>to File</div>
-        </div>
-        <div class="fs-line"></div>
-        <div class="fs-step">
-          <div class="fs-dot"></div>
-          <div class="fs-label">Filed</div>
+        <div class="fs-track">
+          <div class="fs-dot active"><span class="fs-lbl">Prep</span></div>
+          <div class="fs-seg"></div>
+          <div class="fs-dot"><span class="fs-lbl">Review</span></div>
+          <div class="fs-seg"></div>
+          <div class="fs-dot"><span class="fs-lbl">Ready to File</span></div>
+          <div class="fs-seg"></div>
+          <div class="fs-dot"><span class="fs-lbl">Filed</span></div>
+          <div class="fs-seg"></div>
+          <div class="fs-dot"><span class="fs-lbl">Year Round</span></div>
         </div>
       </div>
     </div>
 
-    <!-- Stage 2 active (for reference) -->
-    <div style="font-size:11px;color:var(--text-tertiary);margin:16px 0 8px">Stage 2 active — Expert Review</div>
+    <!-- Review active -->
+    <div style="font-size:11px;color:var(--text-tertiary);margin:16px 0 8px">Step 2 active — Review (Prep done)</div>
     <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg-card)">
       <div class="fs-stepper">
-        <div class="fs-step done">
-          <div class="fs-dot"></div>
-          <div class="fs-label">Form<br>Collection</div>
+        <div class="fs-track">
+          <div class="fs-dot done"><span class="fs-lbl">Prep</span></div>
+          <div class="fs-seg done"></div>
+          <div class="fs-dot active"><span class="fs-lbl">Review</span></div>
+          <div class="fs-seg"></div>
+          <div class="fs-dot"><span class="fs-lbl">Ready to File</span></div>
+          <div class="fs-seg"></div>
+          <div class="fs-dot"><span class="fs-lbl">Filed</span></div>
+          <div class="fs-seg"></div>
+          <div class="fs-dot"><span class="fs-lbl">Year Round</span></div>
         </div>
-        <div class="fs-line done"></div>
-        <div class="fs-step active">
-          <div class="fs-dot"></div>
-          <div class="fs-label">Expert<br>Review</div>
-        </div>
-        <div class="fs-line"></div>
-        <div class="fs-step">
-          <div class="fs-dot"></div>
-          <div class="fs-label">Ready<br>to File</div>
-        </div>
-        <div class="fs-line"></div>
-        <div class="fs-step">
-          <div class="fs-dot"></div>
-          <div class="fs-label">Filed</div>
+      </div>
+    </div>
+
+    <!-- Year Round active (all done) -->
+    <div style="font-size:11px;color:var(--text-tertiary);margin:16px 0 8px">Step 5 active — Year Round (all done)</div>
+    <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--bg-card)">
+      <div class="fs-stepper">
+        <div class="fs-track">
+          <div class="fs-dot done"><span class="fs-lbl">Prep</span></div>
+          <div class="fs-seg done"></div>
+          <div class="fs-dot done"><span class="fs-lbl">Review</span></div>
+          <div class="fs-seg done"></div>
+          <div class="fs-dot done"><span class="fs-lbl">Ready to File</span></div>
+          <div class="fs-seg done"></div>
+          <div class="fs-dot done"><span class="fs-lbl">Filed</span></div>
+          <div class="fs-seg done"></div>
+          <div class="fs-dot active"><span class="fs-lbl">Year Round</span></div>
         </div>
       </div>
     </div>
@@ -1825,11 +1824,114 @@ body {
 
   <div class="divider"></div>
 
+  <!-- ─── Expert Profile Views ─── -->
+  <div class="sec">
+    <div class="sec-label">Expert profile view (v-expert-*) — Hayley layout · matched vs. non-matched variants</div>
+    <p class="hmw" style="margin-bottom:14px">All three expert profiles use the same Hayley layout: centered hero (avatar · name · credential badges · availability line · book button) → stats grid → specialty tags → "Why clients choose" action-rows → Recent Activity → bottom CTAs. The key behavioral split: Susan (<code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">v-expert-match</code>) is the matched expert — her "Book first meeting" and "Connect" buttons are active, routing to <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">v-book-meeting</code>. David and Maria are browseable-only — their booking buttons are <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">disabled</code>, styled with <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">var(--border)</code> fill + <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">cursor:not-allowed</code>, and a warm amber notice explains that booking flows only through the matched expert.</p>
+
+    <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+
+      <!-- Matched expert (Susan) — active booking -->
+      <div style="flex:1;min-width:260px;max-width:310px">
+        <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Matched expert (active booking)</div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          <!-- Hero -->
+          <div style="text-align:center;padding:20px 16px 16px;border-bottom:4px solid var(--border)">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#1B4F8A,#4A90D9);margin:0 auto 10px;position:relative">
+              <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff">SL</span>
+            </div>
+            <div style="font-size:16px;font-weight:700;color:var(--text-primary)">Susan Larsen</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin:6px 0">
+              <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--brand-subtle);color:var(--brand)">CPA</span>
+              <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--brand-subtle);color:var(--brand)">EA</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--success)"></div>
+              <span style="font-size:11px;color:var(--text-secondary)">Available now · Mon–Fri · 9am–5pm PT</span>
+            </div>
+            <!-- Active book button — narrower, calendar icon, centered -->
+            <div style="display:flex;justify-content:center;margin-top:10px">
+              <div style="display:inline-flex;align-items:center;gap:6px;padding:0 20px;height:36px;background:var(--brand);border-radius:8px;font-size:13px;font-weight:600;color:#fff">
+                <svg viewBox="0 0 16 16" fill="none" style="width:13px;height:13px;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 2v2M11 2v2M2 7h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Book first meeting
+              </div>
+            </div>
+          </div>
+          <!-- Stats — contained card, single ★ inline -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;margin:0 12px 12px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff">
+            <div style="padding:12px 8px;text-align:center;border-right:1px solid var(--border)"><div style="font-size:20px;font-weight:700;color:var(--text-primary)">19</div><div style="font-size:10px;color:var(--text-tertiary)">years exp.</div></div>
+            <div style="padding:12px 8px;text-align:center;border-right:1px solid var(--border)">
+              <div style="display:flex;align-items:center;justify-content:center;gap:3px;line-height:1;margin-bottom:3px"><span style="font-size:14px;font-weight:700;color:var(--text-primary)">★</span><span style="font-size:20px;font-weight:700;color:var(--text-primary)">4.9</span></div>
+              <div style="font-size:10px;color:var(--text-tertiary)">372 reviews</div>
+            </div>
+            <div style="padding:12px 8px;text-align:center"><div style="font-size:20px;font-weight:700;color:var(--text-primary)">847</div><div style="font-size:10px;color:var(--text-tertiary)">returns filed</div></div>
+          </div>
+          <!-- Bottom CTA — only "Not the right fit?" (Connect btn removed — redundant with hero) -->
+          <div style="padding:12px 14px">
+            <div style="height:30px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--brand)">Not the right fit? See other experts</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Non-matched expert (David/Maria) — disabled booking + match notice -->
+      <div style="flex:1;min-width:260px;max-width:310px">
+        <div style="font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">Non-matched expert (disabled booking)</div>
+        <div style="background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden">
+          <!-- Hero -->
+          <div style="text-align:center;padding:20px 16px 16px;border-bottom:4px solid var(--border)">
+            <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#2D6BC4,#4A90D9);margin:0 auto 10px;position:relative">
+              <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff">DK</span>
+            </div>
+            <div style="font-size:16px;font-weight:700;color:var(--text-primary)">David Kim</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin:6px 0">
+              <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--brand-subtle);color:var(--brand)">CPA</span>
+              <span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--brand-subtle);color:var(--brand)">Multi-state</span>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--warning)"></div>
+              <span style="font-size:11px;color:var(--text-secondary)">Responds in ~2 hrs · Mon–Fri · 8am–5pm PT</span>
+            </div>
+            <!-- Disabled book button — narrower, calendar icon, centered -->
+            <div style="display:flex;justify-content:center;margin-top:10px">
+              <div style="display:inline-flex;align-items:center;gap:6px;padding:0 20px;height:36px;background:var(--border);border-radius:8px;font-size:13px;font-weight:600;color:var(--text-tertiary);opacity:.7">
+                <svg viewBox="0 0 16 16" fill="none" style="width:13px;height:13px;flex-shrink:0"><rect x="2" y="3" width="12" height="11" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 2v2M11 2v2M2 7h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+                Book first meeting
+              </div>
+            </div>
+            <!-- Match notice (amber) -->
+            <div style="margin-top:10px;padding:8px 10px;background:#FFF8E1;border-radius:8px;display:flex;align-items:flex-start;gap:8px;text-align:left">
+              <span style="font-size:12px;flex-shrink:0">⭐</span>
+              <span style="font-size:11px;color:#7A5C00;line-height:1.5">Susan Larsen is your matched expert — booking is only available through your match.</span>
+            </div>
+          </div>
+          <!-- Stats — contained card, single ★ inline -->
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;margin:0 12px 12px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff">
+            <div style="padding:12px 8px;text-align:center;border-right:1px solid var(--border)"><div style="font-size:20px;font-weight:700;color:var(--text-primary)">12</div><div style="font-size:10px;color:var(--text-tertiary)">years exp.</div></div>
+            <div style="padding:12px 8px;text-align:center;border-right:1px solid var(--border)">
+              <div style="display:flex;align-items:center;justify-content:center;gap:3px;line-height:1;margin-bottom:3px"><span style="font-size:14px;font-weight:700;color:var(--text-primary)">★</span><span style="font-size:20px;font-weight:700;color:var(--text-primary)">4.8</span></div>
+              <div style="font-size:10px;color:var(--text-tertiary)">218 reviews</div>
+            </div>
+            <div style="padding:12px 8px;text-align:center"><div style="font-size:20px;font-weight:700;color:var(--text-primary)">512</div><div style="font-size:10px;color:var(--text-tertiary)">returns filed</div></div>
+          </div>
+          <!-- Bottom CTA — only "See other experts" (Connect btn removed) -->
+          <div style="padding:12px 14px">
+            <div style="height:30px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--brand)">See other experts</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="hmw" style="margin-top:16px"><strong>Book first meeting button:</strong> <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">display:inline-flex</code> centered in its parent — narrower than full-width, with a calendar SVG icon at left. Active = brand blue; disabled = <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">var(--border)</code> fill, <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">cursor:not-allowed</code>, <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">opacity:.7</code>. <strong>Why matched / Why clients choose:</strong> simple static rows — checkmark circle (<code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">var(--brand-subtle)</code> bg) + title + subtitle. No chevron, no hover, no cursor change. Inset <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">border-bottom:1px solid var(--border)</code> between items, none on last. <strong>Removed:</strong> "Recent Activity" section (availability already shown in hero) and bottom "Connect with [name]" CTA (redundant with hero button). The only bottom element is the "Not the right fit? / See other experts" text link. Amber match notice: <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">background:#FFF8E1</code> / <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">color:#7A5C00</code>.</p>
+  </div>
+
+  <div class="divider"></div>
+
   <!-- ─── Upload Screen ─── -->
   <div class="sec">
     <div class="sec-label">Upload screen (v-upload) — drop zone + summary card</div>
-    <p class="hmw" style="margin-bottom:14px">Drop zone at top (functional drag/drop + browse). Once files land, a <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">usum-card</code> appears below showing document count + type badges — tapping it navigates to v-upload-review. Background #F4F6F9.</p>
-    <div style="max-width:310px;background:#F4F6F9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
+    <p class="hmw" style="margin-bottom:14px">Drop zone at top (functional drag/drop + browse). Once files land, a <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">usum-card</code> appears below showing document count + type badges — tapping it navigates to v-upload-review. Background #fff (white, matching all scrollable views).</p>
+    <div style="max-width:310px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
       <!-- Drop zone -->
       <div class="drop-zone">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
@@ -1862,7 +1964,7 @@ body {
   <div class="sec">
     <div class="sec-label">QB Detail view (v-qb-detail) — connected account deep-dive with Open in browser CTA</div>
     <p class="hmw" style="margin-bottom:14px">Tapped from the QuickBooks card in v-data-in. Shows financial summary (4-cell grid), recent transactions list, an Open QuickBooks in browser link, and an expert CTA. Background #F4F6F9. The "Open QuickBooks" button is brand-blue — it's a primary action that takes the user out of the widget context.</p>
-    <div style="max-width:310px;background:#F4F6F9;border-radius:12px;overflow:hidden">
+    <div style="max-width:310px;background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden">
       <!-- QB header row -->
       <div style="display:flex;align-items:center;gap:12px;padding:16px;border-bottom:0.5px solid var(--border)">
         <div style="width:40px;height:40px;border-radius:8px;background:#2CA01C;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0">QB</div>
@@ -1956,12 +2058,12 @@ body {
       </div>
     </div>
 
-    <p class="hmw" style="margin-bottom:6px;font-style:italic;color:var(--text-tertiary)">Rule: if you're about to put a bordered card in a scrollable section on gray background, stop and ask whether it's presenting data or navigation. Navigation = action-row. Data = card.</p>
+    <p class="hmw" style="margin-bottom:6px;font-style:italic;color:var(--text-tertiary)">Rule: if you're about to put a bordered card in a scrollable section on white background, stop and ask whether it's presenting data or navigation. Navigation = action-row. Data = card.</p>
     <p class="hmw" style="margin-bottom:20px">The flat action-row is the default. Cards are the exception, justified only by structured multi-field data that benefits from visual containment.</p>
 
     <!-- ── State 1: Default (pre-booking) ── -->
     <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Stage 1 — default (pre-booking) · 2 entry point rows</div>
-    <div style="background:#F4F6F9;border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
       <div class="action-row" style="border-radius:8px 8px 0 0">
         <div class="action-icon info">
           <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 12c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
@@ -1986,7 +2088,7 @@ body {
 
     <!-- ── State 2: Expert booked ── -->
     <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Stage 1 — expert booked · Row 1 becomes status row</div>
-    <div style="background:#F4F6F9;border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
       <div class="action-row" style="border-radius:8px 8px 0 0">
         <div class="action-icon" style="background:rgba(27,79,138,.1);color:var(--brand)">
           <svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5 6.5-6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2011,7 +2113,7 @@ body {
 
     <!-- ── State 3: Meeting imminent ── -->
     <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Stage 1 — meeting starting now · Urgent green state</div>
-    <div style="background:#F4F6F9;border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
       <div class="action-row" style="background:rgba(0,135,90,.03);border-radius:8px 8px 0 0">
         <div class="action-icon" style="background:rgba(0,135,90,.1);color:var(--success)">
           <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M9 5.5l4-2.5v8l-4-2.5V5.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
@@ -2036,7 +2138,7 @@ body {
 
     <!-- ── State 4: Review & file ready ── -->
     <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Stage 1 — expert review complete · File CTA row</div>
-    <div style="background:#F4F6F9;border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
       <div class="action-row" style="border-bottom:none;border-radius:8px">
         <div class="action-icon info">
           <svg viewBox="0 0 14 14" fill="none"><path d="M2 10l2.5-2.5 3 3 4.5-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -2051,7 +2153,7 @@ body {
 
     <!-- ── State 5: Filed — data card + action rows ── -->
     <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Stage 1 — filed state · Data card (appropriate) + action rows below</div>
-    <div style="background:#F4F6F9;border-radius:8px;padding:16px;max-width:310px;margin-bottom:4px">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:16px;max-width:310px;margin-bottom:4px">
       <!-- Data card: refund confirmation — card use is appropriate here (structured numbers + IDs) -->
       <div style="background:rgba(0,135,90,.04);border:1px solid rgba(0,135,90,.2);border-radius:8px;padding:14px;margin-bottom:12px">
         <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px">2025 S Corp Return — Filed</div>
@@ -2071,7 +2173,7 @@ body {
         </div>
       </div>
       <!-- Action rows below data card — back to flat -->
-      <div style="background:#F4F6F9;border-radius:6px;padding:2px 0;margin:0 -16px">
+      <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:2px 0;margin:0 -16px">
         <div class="action-row">
           <div class="action-icon info">
             <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="1.5" width="10" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 5h5M4.5 7h3M4.5 9h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
@@ -2851,8 +2953,8 @@ body {
   <!-- ─── Settings ─── -->
   <div class="sec">
     <div class="sec-label">Settings view (v-settings) — navigated into from widget header gear icon</div>
-    <p class="hmw" style="margin-bottom:14px">Background #F4F6F9. Sections use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">s-sec</code> with <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">4px solid #fff</code> separators (matches w-sec pattern). Section labels use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">s-sec-label</code>. Account rows use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">acct-row</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">acct-lbl</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">acct-val</code>. Past returns use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-row</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-yr</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-type</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-amt</code>. Section order: Company Info → Account → Past Returns → Notifications → Log out/Quit → Demo Controls.</p>
-    <div style="background:#F4F6F9;border-radius:12px;overflow:hidden;max-width:min(310px,100%)">
+    <p class="hmw" style="margin-bottom:14px">Background #fff. Sections use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">s-sec</code> with <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">4px solid #F4F6F9</code> separators (matches w-sec pattern). Section labels use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">s-sec-label</code>. Account rows use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">acct-row</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">acct-lbl</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">acct-val</code>. Past returns use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-row</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-yr</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-type</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-amt</code>. Section order: Company Info → Account → Past Returns → Notifications → Log out/Quit → Demo Controls.</p>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;max-width:min(310px,100%)">
       <!-- Company Info -->
       <div class="s-sec">
         <div class="s-sec-label">Company Info</div>
