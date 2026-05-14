@@ -10,22 +10,33 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write   # needed to push to gh-pages branch
+      contents: write
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # Copy the prototype/ folder contents to a temp dir,
-      # then force-push it to the gh-pages branch.
-      # This is the most reliable approach on GitHub Enterprise.
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./prototype
-          publish_branch: gh-pages
-          # Keep the commit history clean — squash all deploys into one
-          force_orphan: true
-          # Friendly commit message in the gh-pages branch
-          commit_message: "Deploy prototype — ${{ github.sha }}"
+      - name: Push prototype/ to gh-pages branch
+        run: |
+          # Configure git identity
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Authenticate using the built-in token (GHE: use github.token, not secrets.GITHUB_TOKEN)
+          git remote set-url origin "https://x-access-token:${{ github.token }}@${GITHUB_SERVER_URL#https://}/xlu02/TurboTax-Assistant.git"
+
+          # Stage the prototype folder contents into a temp location
+          cp -r prototype /tmp/prototype-deploy
+
+          # Create or reset gh-pages as an orphan branch (no history bloat)
+          git fetch origin gh-pages 2>/dev/null || true
+          git checkout --orphan gh-pages-new
+
+          # Replace working tree with prototype contents only
+          git rm -rf . --quiet
+          cp -r /tmp/prototype-deploy/. .
+
+          # Commit and force-push
+          git add -A
+          git commit -m "Deploy prototype — ${{ github.sha }}"
+          git push origin gh-pages-new:gh-pages --force
