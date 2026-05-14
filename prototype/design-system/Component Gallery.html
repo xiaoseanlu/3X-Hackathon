@@ -29,26 +29,6 @@
   --border-strong:   #C1C9D2;
 }
 
-[data-theme="dark"] {
-  /* ── 4-layer depth system ── */
-  /* page body uses --bg-surface as its background */
-  --bg:              #0D0E11;   /* sticky bar + deepest chrome */
-  --bg-surface:      #111316;   /* page body background */
-  --bg-card:         #1A1D22;   /* cards and list items above the page */
-  --bg-elevated:     #22262E;   /* sheets, dropdowns, highest elevation */
-
-  --text-primary:    #F2F3F5;
-  --text-secondary:  rgba(255,255,255,.55);
-  --text-tertiary:   rgba(255,255,255,.30);
-  --border:          rgba(255,255,255,.07);
-  --border-strong:   rgba(255,255,255,.13);
-  --brand:           #4B8EE8;
-  --brand-hover:     #6BA3F0;
-  --brand-subtle:    rgba(75,142,232,.13);
-  --success:         #22C55E;
-  --warning:         #F59E0B;
-  --danger:          #F87171;
-}
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -183,24 +163,18 @@ body {
 .icon-label { font-size: 10px; color: var(--text-tertiary); text-align: center; }
 
 .sb-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--bg);
-  border: 0.5px solid var(--border-strong);
+  width: 34px;
+  height: 28px;
+  border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  cursor: pointer;
-  transition: background 80ms;
-  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  cursor: default;
 }
 
-.sb-icon:hover { background: var(--bg-surface); }
-
-.sb-icon svg { width: 20px; height: 20px; color: #D52B1E; }
-[data-theme="dark"] .sb-icon svg { color: #F2F3F5; }
+/* sb-icon lives inside a dark menubar strip — icon is always white */
+.sb-icon svg { width: 18px; height: 18px; color: #fff; }
 
 .sb-badge {
   position: absolute;
@@ -250,13 +224,12 @@ body {
 
 .sb-filed {
   position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 18px;
-  height: 18px;
+  top: -3px;
+  right: -3px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: #00875A;
-  border: 2px solid var(--bg-surface);
+  background: rgba(255,255,255,.9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -417,189 +390,6 @@ body {
 .law-actions { display: flex; gap: 12px; border-top: 0.5px solid var(--border); padding-top: 10px; }
 .law-action { font-size: 12px; font-weight: 500; color: var(--brand); cursor: pointer; }
 
-/* ─── Onboarding wizard ─── */
-.wizard-wrap { border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden; }
-.wizard-progress { padding: 14px 16px; background: var(--bg-surface); border-bottom: 0.5px solid var(--border); }
-.prog-bar-track { height: 4px; background: var(--border-strong); border-radius: 2px; overflow: hidden; margin-bottom: 6px; }
-.prog-bar-fill { height: 100%; background: var(--brand); border-radius: 2px; transition: width 400ms cubic-bezier(.4,0,.2,1); }
-.prog-label { font-size: 11px; color: var(--text-tertiary); }
-.wizard-step { padding: 16px; background: var(--bg-card); }
-.wizard-step-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--brand-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 10px;
-  font-size: 16px;
-}
-.wizard-step-title { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
-.wizard-step-body { font-size: 13px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 14px; }
-.wizard-cta {
-  width: 100%;
-  height: 38px;
-  background: var(--brand);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  transition: background 80ms;
-}
-.wizard-cta:hover { background: var(--brand-hover); }
-.wizard-steps-done {
-  padding: 12px 16px;
-  background: var(--bg-surface);
-  border-top: 0.5px solid var(--border);
-  font-size: 12px;
-  color: var(--text-tertiary);
-  cursor: pointer;
-}
-
-/* ─── Expert match card ─── */
-.expert-match {
-  border: 0.5px solid var(--border);
-  border-radius: 12px;
-  background: var(--bg-card);
-  padding: 18px 16px;
-  text-align: center;
-}
-.match-av {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: rgba(27,79,138,.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--brand);
-  margin: 0 auto 10px;
-  position: relative;
-}
-.match-av-dot {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--success);
-  border: 2px solid var(--brand-subtle);
-}
-.match-name { font-size: 16px; font-weight: 700; color: var(--text-primary); }
-.match-role { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
-.match-reason { font-size: 11px; color: var(--text-tertiary); font-style: italic; margin: 8px 0; }
-.match-trust { font-size: 11px; color: var(--text-tertiary); margin-bottom: 14px; }
-.match-cta {
-  width: 100%;
-  height: 38px;
-  background: var(--brand);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-/* ─── Expert working card ─── */
-.expert-working {
-  border: 0.5px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 16px;
-  background: var(--bg-surface);
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-}
-.ew-av {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--brand-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--brand);
-  position: relative;
-  flex-shrink: 0;
-}
-.ew-dot {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 1.5px solid var(--bg-surface);
-  animation: pulse 2.5s ease-in-out infinite;
-}
-.ew-body { flex: 1; }
-.ew-status { font-size: 13px; font-weight: 500; color: var(--text-primary); }
-.ew-detail { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
-.ew-time { font-size: 11px; color: var(--text-tertiary); margin-top: 6px; }
-.ew-cta { font-size: 12px; font-weight: 500; color: var(--brand); margin-top: 8px; cursor: pointer; }
-
-/* ─── Review approval ─── */
-.review-card {
-  border: 1px solid var(--brand);
-  border-radius: 12px;
-  background: var(--brand-subtle);
-  padding: 20px 16px;
-  text-align: center;
-}
-.review-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--brand-subtle);
-  border: 2px solid var(--brand);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 12px;
-  font-size: 20px;
-}
-.review-headline { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
-.review-sub { font-size: 12px; color: var(--text-secondary); margin-bottom: 14px; }
-.review-nums { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
-.review-num-cell { background: var(--bg-card); padding: 12px; }
-.review-num-label { font-size: 10px; color: var(--text-tertiary); margin-bottom: 4px; }
-.review-num-val { font-size: 20px; font-weight: 700; color: var(--text-primary); letter-spacing: -.5px; }
-.review-cta-primary {
-  width: 100%;
-  height: 38px;
-  background: var(--brand);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-  margin-bottom: 8px;
-}
-.review-cta-ghost {
-  width: 100%;
-  height: 36px;
-  background: transparent;
-  color: var(--brand);
-  border: 0.5px solid var(--border-strong);
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 500;
-  font-family: inherit;
-  cursor: pointer;
-}
 
 /* ─── Drag-drop zone ─── */
 .drop-zone {
@@ -1280,8 +1070,8 @@ body {
    ────────────────────────────────────────────────────────────────── */
 .fs-stepper {
   display: flex; align-items: flex-start;
-  padding: 16px 16px 12px; background: var(--bg-card);
-  border-bottom: 0.5px solid var(--border);
+  padding: 16px 16px 12px;
+  border-bottom: 4px solid #fff; /* white separator — sits on gray scroll bg like all .w-sec */
 }
 .fs-step { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; }
 .fs-dot {
@@ -1308,7 +1098,7 @@ body {
    business identity and return history before asking them to act.
    Two rows: (1) logo + name + entity badge, (2) prior returns chips.
    ────────────────────────────────────────────────────────────────── */
-.biz-context { padding:12px 16px;background:var(--bg-card);border-bottom:0.5px solid var(--border); }
+.biz-context { padding:16px;border-bottom:4px solid #fff; /* gray bg, white separator */ }
 .bc-top { display:flex;align-items:center;gap:10px;margin-bottom:10px; }
 .bc-logo {
   width:32px;height:32px;border-radius:6px;flex-shrink:0;
@@ -1377,7 +1167,7 @@ body {
   transition: border-color 140ms, background 140ms;
   display: flex; flex-direction: column; gap: 10px;
 }
-.path-card:hover { border-color: var(--brand); background: var(--brand-subtle); }
+.path-card:hover { background: #f8f9fa; } /* flat hover — no brand-blue */
 .pc-top { display: flex; align-items: center; gap: 10px; }
 .pc-icon {
   width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
@@ -1477,12 +1267,10 @@ body {
 <div class="sticky-bar">
   <div>
     <div class="sticky-title">Tax Assistant — Component Gallery</div>
-    <div class="sticky-sub">v4.0 · Team Malumin · May 2026 · synced with prototype v7</div>
+    <div class="sticky-sub">v4.1 · Team Malumin · May 2026 · synced with prototype</div>
   </div>
   <div class="mode-seg">
-    <button class="mode-btn active" onclick="setMode('light',this)">☀ Light</button>
-    <button class="mode-btn" onclick="setMode('dark',this)">☾ Dark</button>
-    <button class="mode-btn" onclick="setMode('system',this)">⊙ System</button>
+    <button class="mode-btn active">☀ Light</button>
   </div>
 </div>
 
@@ -1496,53 +1284,59 @@ body {
 
   <!-- ─── Status Bar Icon ─── -->
   <div class="sec">
-    <div class="sec-label">Status bar icon — ambient presence in the menu bar</div>
-    <div class="icon-demos">
-      <div class="icon-demo">
+    <div class="sec-label">Status bar icon — macOS menu bar template image · always white · shown on dark bar</div>
+    <p class="hmw" style="margin-bottom:14px">macOS renders menu bar icons as template images — monochrome white on the dark translucent bar. The icon's shape communicates state, not color. Badges use standard system-style overlays. Source of truth: TTA menu bar entry in Icon System below.</p>
+
+    <!-- Dark macOS menubar strip — simulates actual menu bar context -->
+    <div style="background:rgba(0,0,0,.55);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);border-radius:8px;padding:2px 12px;display:flex;gap:6px;align-items:center;width:fit-content;margin-bottom:16px">
+      <!-- Clean -->
+      <div class="icon-demo" style="align-items:center">
         <div class="sb-icon">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
+          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C0 3.13413 3.13413 0 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="white" opacity=".9"/></svg>
         </div>
-        <div class="icon-label">Clean<br>Up to date</div>
       </div>
-      <div class="icon-demo">
+      <!-- Attention badge (3) -->
+      <div class="icon-demo" style="align-items:center">
         <div class="sb-icon">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
+          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C0 3.13413 3.13413 0 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="white" opacity=".9"/></svg>
           <div class="sb-badge-num">3</div>
         </div>
-        <div class="icon-label">Attention<br>Numbered · glows</div>
       </div>
-      <div class="icon-demo">
+      <!-- Expert message pulse -->
+      <div class="icon-demo" style="align-items:center">
         <div class="sb-icon">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
-          <div class="sb-badge-num">9+</div>
+          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C0 3.13413 3.13413 0 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="white" opacity=".9"/></svg>
+          <div class="sb-pulse" style="background:#ff6b6b"></div>
         </div>
-        <div class="icon-label">Max badge<br>Capped at 9+</div>
       </div>
-      <div class="icon-demo">
+      <!-- Processing ring -->
+      <div class="icon-demo" style="align-items:center">
         <div class="sb-icon">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
-          <div class="sb-pulse" style="background:#D52B1E"></div>
-        </div>
-        <div class="icon-label">Expert message<br>Someone waiting</div>
-      </div>
-      <div class="icon-demo">
-        <div class="sb-icon">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
+          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C0 3.13413 3.13413 0 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="white" opacity=".9"/></svg>
           <div class="sb-ring"></div>
         </div>
-        <div class="icon-label">Processing<br>Syncing accounts</div>
       </div>
-      <div class="icon-demo">
+      <!-- Filed ✓ — monochrome white checkmark, no green bubble -->
+      <div class="icon-demo" style="align-items:center">
         <div class="sb-icon">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><g opacity="0.85"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C1.61081e-08 3.13413 3.13413 1.61076e-08 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="currentColor"/></g></svg>
+          <svg viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7 0C10.8659 0 14 3.13413 14 7C14 10.8659 10.8659 14 7 14C3.13413 14 0 10.8659 0 7C0 3.13413 3.13413 0 7 0ZM10.8486 3.15039C8.61345 4.86461 6.75911 7.05428 5.43848 9.56641C4.63418 8.98611 3.86048 8.3673 3.12012 7.71094C2.84784 8.30823 2.60398 8.91963 2.3877 9.54492C3.56836 10.5466 5.1478 11.6942 6.23047 12.3398C7.63514 8.70316 9.82696 6.33097 11.9238 4.67578C11.6548 4.10657 11.2888 3.59062 10.8486 3.15039Z" fill="white" opacity=".9"/></svg>
           <div class="sb-filed">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <svg width="7" height="7" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="rgba(0,0,0,.7)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
         </div>
-        <div class="icon-label">Filed ✓<br>Return complete</div>
       </div>
     </div>
-    <p class="hmw">HMW — presence: the icon is always in the corner of the customer's screen. Its state communicates the full tax health picture before they open anything.</p>
+
+    <!-- State labels below the bar -->
+    <div style="display:flex;gap:6px;align-items:flex-start;width:fit-content">
+      <div class="icon-label" style="width:34px;text-align:center">Clean<br><span style="color:var(--text-tertiary)">Default</span></div>
+      <div class="icon-label" style="width:34px;text-align:center">Attention<br><span style="color:var(--text-tertiary)">3 items</span></div>
+      <div class="icon-label" style="width:34px;text-align:center">Expert<br><span style="color:var(--text-tertiary)">Waiting</span></div>
+      <div class="icon-label" style="width:34px;text-align:center">Sync<br><span style="color:var(--text-tertiary)">Processing</span></div>
+      <div class="icon-label" style="width:34px;text-align:center">Filed ✓<br><span style="color:var(--text-tertiary)">Complete</span></div>
+    </div>
+
+    <p class="hmw" style="margin-top:14px">HMW — presence: the icon sits in the corner of the customer's screen all year. macOS template image spec: fill="white", no stroke, always rendered against the dark menu bar. Badges follow system conventions — numbered for count, pulse dot for urgent, ring for processing.</p>
   </div>
 
   <div class="divider"></div>
@@ -1676,9 +1470,9 @@ body {
         <div style="font-size:10px;color:var(--text-tertiary);margin-top:4px">Gray hairline between list items within a section. Last item gets no border.</div>
       </div>
       <div style="background:var(--bg-card,#fff);border:0.5px solid var(--border);border-radius:6px;padding:10px 12px">
-        <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:3px">StickyChrome — Non-scrolling top area</div>
+        <div style="font-size:11px;font-weight:600;color:var(--text-primary);margin-bottom:3px">StickyChrome — Widget header only</div>
         <code style="font-size:10px;color:var(--text-secondary);line-height:1.7;display:block">background: var(--color-bg); /* white */<br>border-bottom: 0.5px solid var(--color-border);</code>
-        <div style="font-size:10px;color:var(--text-tertiary);margin-top:4px">Widget header + view-specific chrome (stepper, biz-context). Always white, always a gray hairline bottom. Last chrome element uses 4px solid #fff to transition into scroll area.</div>
+        <div style="font-size:10px;color:var(--text-tertiary);margin-top:4px">Only the widget header bar (back button + title + ×). The stepper and biz-context are scrollable .w-sec blocks, not sticky chrome — they sit on the gray scroll background with 4px solid #fff separators.</div>
       </div>
     </div>
 
@@ -2236,82 +2030,6 @@ body {
         <div class="skel-block" style="height:34px;width:100%;border-radius:6px"></div>
       </div>
     </div>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- ─── Onboarding Wizard ─── -->
-  <div class="sec">
-    <div class="state-row">
-      <div class="sec-label" style="margin:0;flex:1">Contextual onboarding wizard</div>
-      <div class="state-btns">
-        <button class="sb on" onclick="setWizard(this,0)">Step 1</button>
-        <button class="sb" onclick="setWizard(this,1)">Step 2</button>
-        <button class="sb" onclick="setWizard(this,2)">Step 3</button>
-        <button class="sb" onclick="setWizard(this,3)">Step 4</button>
-      </div>
-    </div>
-    <div class="wizard-wrap" style="margin-top:16px">
-      <div class="wizard-progress">
-        <div class="prog-bar-track"><div class="prog-bar-fill" id="wizprog" style="width:25%"></div></div>
-        <div class="prog-label" id="wizlabel">Step 1 of 4 · Connect your first account</div>
-      </div>
-      <div class="wizard-step">
-        <div class="wizard-step-icon" id="wizicon">🏦</div>
-        <div class="wizard-step-title" id="wiztitle">Connect your business bank</div>
-        <div class="wizard-step-body" id="wizbody">Let's start by linking your Chase or Bank of America business account. We'll import 12 months of transactions and flag deductions automatically.</div>
-        <button class="wizard-cta" id="wizcta">Connect Bank Account</button>
-      </div>
-      <div class="wizard-steps-done" id="wizstepsdone"></div>
-    </div>
-    <p class="hmw">HMW — frequency + trust: the wizard adapts to what we know. Each step feels like progress, not a form. By the end, expert has full context automatically.</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- ─── Expert Match + Working + Review ─── -->
-  <div class="sec">
-    <div class="sec-label">Full-service expert flow — match → working → review</div>
-    <div class="three-col">
-      <div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Expert matched</div>
-        <div class="expert-match">
-          <div class="match-av" style="background:linear-gradient(135deg,#1B4F8A,#2D6BC4);color:#fff;font-size:16px">SL<div class="match-av-dot"></div></div>
-          <div class="match-name">Susan Larsen</div>
-          <div class="match-role">Business Tax · S Corp</div>
-          <div class="match-reason">Matched for S Corp experience in California</div>
-          <div class="match-trust">372 clients · 4.9★ · 19 yrs</div>
-          <button class="match-cta">Message Susan</button>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Expert working</div>
-        <div class="expert-working">
-          <div class="ew-av" style="background:linear-gradient(135deg,#1B4F8A,#2D6BC4);color:#fff">SL<div class="ew-dot" style="background:var(--success)"></div></div>
-          <div class="ew-body">
-            <div class="ew-status">Susan is working on your return</div>
-            <div class="ew-detail">Currently: Schedule C</div>
-            <div class="ew-time">Last update · 2 hrs ago</div>
-            <div class="ew-cta">Ask Susan a question</div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">Ready to review</div>
-        <div class="review-card">
-          <div class="review-icon">✓</div>
-          <div class="review-headline">Your return is ready</div>
-          <div class="review-sub">Susan has completed your return. Please review and approve.</div>
-          <div class="review-nums">
-            <div class="review-num-cell"><div class="review-num-label">Federal refund</div><div class="review-num-val" style="color:#00875A">$2,840</div></div>
-            <div class="review-num-cell"><div class="review-num-label">State owed</div><div class="review-num-val" style="color:#DE350B">$320</div></div>
-          </div>
-          <button class="review-cta-primary">Review Return</button>
-          <button class="review-cta-ghost">Ask Susan first</button>
-        </div>
-      </div>
-    </div>
-    <p class="hmw">HMW — trust + reachability: the customer never has to wonder what's happening. Expert is visible and working. When action is needed, the path is a single tap.</p>
   </div>
 
   <div class="divider"></div>
@@ -3185,25 +2903,6 @@ body {
 </div>
 
 <script>
-var wizardSteps = [
-  { pct:'25%', label:'Step 1 of 4 · Connect your first account', icon:'🏦', title:'Connect your business bank', body:'Let\'s start by linking your Chase or Bank of America business account. We\'ll import 12 months of transactions and flag deductions automatically.', cta:'Connect Bank Account', done:'' },
-  { pct:'50%', label:'Step 2 of 4 · Add more accounts', icon:'💳', title:'One account connected', body:'Chase Business is linked. Add your investment or credit accounts for a complete picture. Vanguard usually has K-1s — connecting it now saves a step at filing.', cta:'Connect Vanguard', done:'✓ Chase Business connected' },
-  { pct:'75%', label:'Step 3 of 4 · Upload documents', icon:'📄', title:'Upload what you\'ve received', body:'2 accounts connected. Drag in any W-2s, 1099s, or K-1s you\'ve already received. Your expert will categorize them automatically.', cta:'Upload Documents', done:'✓ Chase Business · ✓ Vanguard connected' },
-  { pct:'100%', label:'Step 4 of 4 · Meet your expert', icon:'👤', title:'Ready to meet Susan', body:'All your accounts and documents are in. We matched you with Susan Larsen, an S Corp specialist in California. She\'s ready to start your return.', cta:'Message Susan', done:'✓ 2 accounts · ✓ 3 documents received' }
-];
-
-function setWizard(btn, idx) {
-  btn.closest('.state-btns').querySelectorAll('.sb').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  var s = wizardSteps[idx];
-  document.getElementById('wizprog').style.width = s.pct;
-  document.getElementById('wizlabel').textContent = s.label;
-  document.getElementById('wizicon').textContent = s.icon;
-  document.getElementById('wiztitle').textContent = s.title;
-  document.getElementById('wizbody').textContent = s.body;
-  document.getElementById('wizcta').textContent = s.cta;
-  document.getElementById('wizstepsdone').textContent = s.done;
-}
 
 /* ── Expert match item gallery demo ── */
 function gallerySelectEmi(card) {
