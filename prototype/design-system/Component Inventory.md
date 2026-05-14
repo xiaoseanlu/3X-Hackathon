@@ -1,5 +1,5 @@
 # Component Inventory — Tax Assistant Widget
-**Team Malumin · Build Reference · v2.3 · May 12, 2026**
+**Team Malumin · Build Reference · v2.4 · May 13, 2026**
 
 > This document is the single source of truth for the widget's design system and component architecture.
 > Open this alongside your code. Every decision here has a rationale tied to Stripe, Atlassian, Robinhood, or Apple HIG.
@@ -1027,30 +1027,84 @@ States:
 
 ## 4. Layout System
 
-### Panel Section Anatomy
-Every section within the widget follows this spacing contract:
+### 4.1 Flat-Widget Scroll Layout (v2.3 canonical — source of truth: v-main)
+
+The widget scroll area uses a layered gray/white rhythm. **v-main (year-round hub) is the canonical reference for this pattern.** All scrollable views must match it.
 
 ```
-WidgetPanel (320px wide)
-├── PanelHeader (56px, always visible)
-├── TabBar (40px, always visible)
-├── TabContent (flex-1, scrollable)
-│   ├── Section (padding: 16px 16px 0)
-│   │   ├── SectionLabel (--text-xs, uppercase, letter-spacing, --color-text-tertiary)
-│   │   ├── [Component]
-│   │   └── [Component]
-│   ├── Separator (1px, inset 16px)
-│   ├── Section ...
-│   └── ActionItemList (no extra padding — rows handle their own)
-└── BottomBar (56px, always visible)
+WidgetPanel (340px wide)
+├── StickyChrome   bg:#FFFFFF, border-bottom:0.5px solid var(--color-border)
+│   ├── PanelHeader (40px)
+│   └── [View-specific chrome, e.g. stepper + biz-context]
+├── ScrollArea     bg:#F4F6F9 (slightly darker than white — visible contrast)
+│   ├── .w-sec     padding:16px, border-bottom:4px solid #fff
+│   │   ├── SectionLabel  (optional: 10px, uppercase, tertiary)
+│   │   ├── ActionRow     border-bottom:1px solid var(--color-border)
+│   │   └── ActionRow     border-bottom:none (last-child)
+│   ├── .w-sec     padding:16px, border-bottom:4px solid #fff
+│   │   └── [Cards, content]
+│   └── .cal-section / detail sections ...
+└── ExpertFooterCard (sticky, 64px)
 ```
 
-### Spacing Contract
-- Panel internal padding: `16px` horizontal
-- Section-to-section gap: `12px`
-- Item-to-item within a section: `8px`
-- Between label and first component: `8px`
-- Component internal padding: `12px` or `16px` (never less, never more)
+**The three core patterns:**
+
+#### `.w-sec` — Section Block
+White-bar section separator. Every logical grouping of content on a gray scroll view.
+```css
+.w-sec {
+  padding: var(--s4);            /* 16px all sides */
+  border-bottom: 4px solid #fff; /* thick white bar = visible section gap on gray bg */
+}
+```
+- Use on every content group within a scrollable view
+- The gray background (#F4F6F9) shows only in the 4px gaps between sections
+- Multiple `.w-sec` blocks stack vertically, each separated by a white band
+
+#### `ActionRow` — Within-Section Item Divider
+```css
+.action-row {
+  border-bottom: 1px solid var(--color-border); /* gray hairline between items */
+  padding: var(--s3) var(--s4);
+  margin: 0 calc(-1 * var(--s4)); /* bleeds to section edges */
+}
+.action-row:last-child { border-bottom: none; }
+```
+- Used for list items inside a `.w-sec`
+- Negative margin bleeds the hairline to full section width
+
+#### `StickyChrome` — Non-scrolling top area
+White background, 0.5px gray border-bottom. Includes the widget header + any view-specific chrome (stepper, biz-context, section intro).
+```css
+/* Examples */
+.fs-stepper  { background:var(--color-bg); border-bottom:0.5px solid var(--color-border); }
+.biz-context { background:var(--color-bg); border-bottom:0.5px solid var(--color-border); }
+/* Stage intro: use border-bottom:4px solid #fff to transition into scroll area */
+```
+
+### 4.2 Per-View Application
+
+| View | Section groupings |
+|:-----|:-----------------|
+| **v-main** *(source of truth)* | `.w-sec` 2026 year card · `.w-sec` 2027 strategy actions · `.cal-section` calendar |
+| v-stage1 | Chrome: stepper + biz-context + intro · `.w-sec` path cards · `.w-sec` filed content |
+| v-expert-list | `.w-sec` intro + emi-list |
+| v-data-in | `.w-sec` connected accounts · `.w-sec` recommended · `.w-sec` add/upload actions · `.w-sec` Susan CTA |
+| v-upload | `.w-sec` drop-zone + summary |
+| v-upload-review | `.w-sec` header summary · `.ufd-section` per category · `.w-sec` Susan CTA |
+| v-qb-detail | Chrome: qbd-header · `.w-sec` stat grid · `.w-sec` transactions · `.w-sec` CTA |
+| v-filing | `.w-sec` return summary + numbers · `.w-sec` Susan note · `.w-sec` file CTA |
+| v-expert | `ep-*` profile card system (intentional white-card layout) |
+| v-book-meeting | White bg intentional (form/scheduler) |
+| v-filed | White bg intentional (success/celebration) |
+| v-video-call | Dark bg intentional (#0F1117) |
+
+### 4.3 Spacing Contract
+- Panel internal padding: `var(--s4)` / 16px horizontal (via `.w-sec`)
+- Section-to-section separator: `4px solid #fff` (the `.w-sec` border-bottom)
+- Item-to-item within section (lists): `border-bottom: 1px solid var(--color-border)` (hairline)
+- Item-to-item within section (cards): `gap: 10px` in flex container
+- StickyChrome divider: `0.5px solid var(--color-border)` (subtle, not white-bar)
 
 ### Tab Content: Overview Tab Layout
 
