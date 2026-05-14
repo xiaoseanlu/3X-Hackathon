@@ -115,14 +115,30 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
   font-variant-numeric: tabular-nums; letter-spacing: -.01em; cursor: default; white-space: nowrap;
 }
 
-/* TurboTax icon — first in right group */
+/* TurboTax menu bar pill — icon + "Tax Assistant" text */
 .tt-icon-wrap {
-  position: relative; width: 28px; height: 22px;
-  display: flex; align-items: center; justify-content: center;
-  border-radius: 4px; cursor: pointer; transition: background 80ms;
+  position: relative;
+  height: 22px;
+  display: flex; align-items: center; gap: 5px;
+  padding: 0 8px 0 6px;
+  border-radius: 11px;
+  cursor: pointer;
+  transition: background 80ms;
+  background: rgba(255,255,255,.12);
+  border: 0.5px solid rgba(255,255,255,.18);
 }
-.tt-icon-wrap:hover, .tt-icon-wrap.active { background: rgba(255,255,255,.18); }
+.tt-icon-wrap:hover, .tt-icon-wrap.active {
+  background: rgba(255,255,255,.22);
+  border-color: rgba(255,255,255,.28);
+}
 .tt-icon-wrap svg { width: 15px; height: 15px; }
+.tt-pill-text {
+  font-size: 12px; font-weight: 500;
+  color: rgba(255,255,255,.92);
+  white-space: nowrap;
+  letter-spacing: -.01em;
+  line-height: 1;
+}
 
 /* Notification badge — hidden by default, shown via JS when notifications arrive */
 .tt-badge {
@@ -1086,9 +1102,10 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
     <span class="mb-item">Help</span>
   </div>
   <div class="mb-right">
-    <!-- TurboTax icon — FIRST in right group (per macOS convention: 3rd-party extras left of system icons) -->
+    <!-- TurboTax menu bar pill — icon + dynamic state text -->
     <div class="tt-icon-wrap" id="ttIcon" onclick="toggleWidget()">
-      <img src="menubar-icon.png" style="width:16px;height:16px;object-fit:contain;">
+      <img src="menubar-icon.png" style="width:15px;height:15px;object-fit:contain;flex-shrink:0;">
+      <span class="tt-pill-text" id="ttPillText">Tax Assistant</span>
       <div class="tt-badge"></div>
     </div>
 
@@ -1179,31 +1196,57 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 
       <!-- View: Welcome (Onboarding Splash) -->
       <div class="view v-active" id="v-welcome" style="background:var(--color-bg);overflow-y:auto">
-        <!-- Illustration -->
-        <div style="margin:var(--s5) var(--s4) 0;height:140px;border-radius:var(--r-xl);background:linear-gradient(135deg,var(--color-brand-subtle) 0%,#f4f8fd 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s3)">
-          <div style="display:flex;align-items:center;gap:22px">
-            <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s2)">
-              <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#1B4F8A,#2D6BC4);display:flex;align-items:center;justify-content:center">
-                <span style="font-size:15px;font-weight:700;color:#fff">SL</span>
-              </div>
-              <span style="font-size:10px;color:var(--color-text-tertiary);font-weight:var(--fw-medium)">Your CPA</span>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s1);margin-bottom:18px">
-              <div style="width:28px;height:1.5px;background:linear-gradient(to right,var(--color-brand),#8DB0E5);border-radius:1px"></div>
-              <div style="font-size:9px;color:var(--color-text-tertiary);white-space:nowrap">+ AI</div>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s2)">
-              <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#D52B1E,#e8614e);display:flex;align-items:center;justify-content:center">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M4 10h8M4 14h6" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
-              </div>
-              <span style="font-size:10px;color:var(--color-text-tertiary);font-weight:var(--fw-medium)">AI Support</span>
-            </div>
+
+        <!-- Hero: TT logo + tagline -->
+        <div style="padding:var(--s5) var(--s4) 0;text-align:center">
+          <div style="width:52px;height:52px;border-radius:14px;background:#D52B1E;display:inline-flex;align-items:center;justify-content:center;margin-bottom:var(--s3)">
+            <span style="font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.03em">TT</span>
           </div>
-          <div style="font-size:var(--text-xs);color:var(--color-text-tertiary)">Expert guidance · Always available</div>
+          <div style="font-size:18px;font-weight:700;color:var(--color-text-primary);letter-spacing:-0.02em;margin-bottom:var(--s2)">Tax Assistant</div>
+          <div style="font-size:var(--text-sm);color:var(--color-text-secondary);line-height:1.5">Year-round tax confidence.<br>Expert always reachable.</div>
+        </div>
+
+        <!-- Illustration: CPA + AI avatar pair -->
+        <div style="margin:var(--s4) var(--s4) 0;border-radius:var(--r-xl);background:linear-gradient(145deg,#EEF4FB 0%,#F7FAFD 100%);padding:20px var(--s4) 16px;display:flex;flex-direction:column;align-items:center;gap:10px">
+          <svg width="220" height="72" viewBox="0 0 220 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="wlc-cpa" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#1B4F8A"/>
+                <stop offset="100%" stop-color="#2D6BC4"/>
+              </linearGradient>
+              <linearGradient id="wlc-ai" x1="164" y1="0" x2="220" y2="56" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#0077C5"/>
+                <stop offset="100%" stop-color="#00A3E0"/>
+              </linearGradient>
+              <radialGradient id="wlc-glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <!-- CPA avatar -->
+            <circle cx="42" cy="32" r="28" fill="url(#wlc-cpa)"/>
+            <circle cx="42" cy="32" r="28" fill="url(#wlc-glow)"/>
+            <text x="42" y="38" text-anchor="middle" font-family="-apple-system,BlinkMacSystemFont,sans-serif" font-size="15" font-weight="700" fill="white">SL</text>
+            <!-- Connection line + middle node -->
+            <line x1="72" y1="32" x2="102" y2="32" stroke="#C8D8EC" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <circle cx="110" cy="32" r="9" fill="white" stroke="#D8E6F3" stroke-width="1.5"/>
+            <path d="M110 26.5l1.2 4.3 4.3 1.2-4.3 1.2-1.2 4.3-1.2-4.3-4.3-1.2 4.3-1.2z" fill="#0077C5"/>
+            <line x1="118" y1="32" x2="148" y2="32" stroke="#C8D8EC" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <!-- AI orb -->
+            <circle cx="178" cy="32" r="28" fill="url(#wlc-ai)"/>
+            <circle cx="178" cy="32" r="28" fill="url(#wlc-glow)"/>
+            <!-- Sparkle icon -->
+            <path d="M178 20l2 7.5 7.5 2-7.5 2-2 7.5-2-7.5-7.5-2 7.5-2z" fill="white" opacity="0.95"/>
+          </svg>
+          <!-- Labels -->
+          <div style="display:flex;width:220px;justify-content:space-between;padding:0 6px">
+            <span style="font-size:10px;font-weight:600;color:var(--color-text-secondary);letter-spacing:0.02em">Your CPA</span>
+            <span style="font-size:10px;font-weight:600;color:var(--color-text-secondary);letter-spacing:0.02em">Intuit AI</span>
+          </div>
         </div>
 
         <!-- Value props -->
-        <div style="padding:var(--s5) 20px var(--s4)">
+        <div style="padding:var(--s4) var(--s4) var(--s4)">
           <div style="display:flex;flex-direction:column;gap:var(--s3)">
             <div style="display:flex;gap:10px;align-items:flex-start">
               <div class="ob-prop-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.2 2.5L8 2.5" stroke="var(--color-brand)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -1218,7 +1261,10 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
               <div><div style="font-size:var(--text-sm);font-weight:var(--fw-semibold);color:var(--color-text-primary);line-height:1.4">Context travels automatically</div><div style="font-size:var(--text-xs);color:var(--color-text-tertiary);margin-top:2px;line-height:1.5">Every conversation picks up where you left off — no rebriefing</div></div>
             </div>
           </div>
-          <button class="ob-cta" onclick="navigate('login')" style="margin-top:var(--s5)">Log in to TurboTax</button>
+          <button class="ob-cta" onclick="navigate('login')" style="margin-top:var(--s4)">Get Started →</button>
+          <div style="text-align:center;margin-top:var(--s3)">
+            <span onclick="demoGoto('main')" style="font-size:var(--text-xs);color:var(--color-text-tertiary);cursor:pointer;text-decoration:underline;text-underline-offset:2px">Skip to demo →</span>
+          </div>
         </div>
       </div>
 
@@ -3238,6 +3284,7 @@ function demoGoto(targetView) {
   targetEl.classList.add('v-active');
   if (targetView === 'welcome' || targetView === 'login') {
     viewStack = [targetView];
+    updatePillText('default');
   } else if (targetView === 'main' || targetView === 'stage1') {
     viewStack = [targetView];
   } else {
@@ -3553,6 +3600,7 @@ function demoSetFiledState() {
   returnFiled  = true;
   demoGoto('filed');
   updateEFC();
+  updatePillText('filed');
   setTimeout(function() { advanceStepper(3); }, 50);
 }
 
@@ -3594,6 +3642,7 @@ function filingSubmit() {
   returnFiled = true;
   navigate('filed');
   advanceStepper(3);
+  updatePillText('filed');
 }
 
 function filingDone() {
@@ -3722,15 +3771,32 @@ function epConfirm(schedId, bookedId, btnId, detailId) {
     meetingReady = true;
     updateJoinCard();
     document.getElementById('meetingToast').classList.add('show');
-    /* Pulse the menubar TT icon badge */
+    /* Pulse the menubar TT icon badge + update pill text */
     var badge = document.querySelector('.tt-badge');
     if (badge) { badge.textContent = '!'; badge.style.background = '#1B4F8A'; badge.style.display = 'flex'; }
+    updatePillText('meeting');
     /* Auto-dismiss after 10s (user can join from stage1 card) */
     setTimeout(dismissToast, 10000);
   }, 8000);
 }
 function dismissToast() {
   document.getElementById('meetingToast').classList.remove('show');
+}
+
+/* ── Menu bar pill state ── */
+function updatePillText(state) {
+  var el = document.getElementById('ttPillText');
+  if (!el) return;
+  if (state === 'meeting') {
+    el.textContent = '· Meeting now';
+    el.style.color = 'rgba(255,255,255,1)';
+  } else if (state === 'filed') {
+    el.textContent = '· Filed ✓';
+    el.style.color = 'rgba(120,220,120,1)';
+  } else {
+    el.textContent = 'Tax Assistant';
+    el.style.color = 'rgba(255,255,255,.92)';
+  }
 }
 
 /* ── Business changes toggle ── */

@@ -44,6 +44,7 @@ function createApp() {
   }
 
   tray = new Tray(icon);
+  tray.setTitle(' Tax Assistant');   // menu bar pill text (macOS only)
   tray.setToolTip('TurboTax Business Tax');
   tray.on('click', toggleWindow);
 
