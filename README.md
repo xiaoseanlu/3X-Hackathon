@@ -4,6 +4,8 @@
 ## 🚀 <a href="https://github.intuit.com/pages/xlu02/TurboTax-Assistant/prototype/" target="_blank">Live prototype → github.intuit.com/pages/xlu02/TurboTax-Assistant/prototype/</a>
 *No installation. Click the link, then click the TurboTax icon in the simulated menu bar.*
 
+![TurboTax Business Tax Assistant](sample.png)
+
 ---
 
 A macOS menu bar widget that gives TurboTax Business customers always-on access to their tax situation — year-round strategy, a dedicated CPA expert, AI-powered chat, and a complete tax filing workflow. Right from the menu bar, without opening a browser or app.
