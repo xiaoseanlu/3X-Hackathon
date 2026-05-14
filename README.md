@@ -1,7 +1,7 @@
 # TurboTax Business Tax Assistant
 **Intuit × Anthropic Hackathon · May 2026 · Team Malumin**
 
-## 🚀 [Live prototype → github.intuit.com/pages/xlu02/TurboTax-Assistant](https://github.intuit.com/pages/xlu02/TurboTax-Assistant/)
+## 🚀 <a href="https://github.intuit.com/pages/xlu02/TurboTax-Assistant/" target="_blank">Live prototype → github.intuit.com/pages/xlu02/TurboTax-Assistant</a>
 *No installation. Click the link, then click the TurboTax icon in the simulated menu bar.*
 
 ---
@@ -21,7 +21,7 @@ A macOS menu bar widget that gives TurboTax Business customers always-on access 
 
 ### Option A — Live link (zero setup) ⭐ Fastest
 
-**[→ Open the live prototype](https://github.intuit.com/pages/xlu02/TurboTax-Assistant/)**
+**<a href="https://github.intuit.com/pages/xlu02/TurboTax-Assistant/" target="_blank">→ Open the live prototype</a>**
 
 Click the TurboTax icon in the simulated macOS menu bar at the top of the page to open the widget. No cloning, no installs, works in any browser.
 
@@ -225,7 +225,7 @@ Claude reads the instructions, loads the design system context, and picks up exa
 - Component Gallery fully synced with prototype
 - Electron menu bar app: tray icon, right-click quit, IPC bridge
 - `Launch Widget.command` one-double-click setup
-- GitHub Pages live at [github.intuit.com/pages/xlu02/TurboTax-Assistant](https://github.intuit.com/pages/xlu02/TurboTax-Assistant/)
+- GitHub Pages live at <a href="https://github.intuit.com/pages/xlu02/TurboTax-Assistant/" target="_blank">github.intuit.com/pages/xlu02/TurboTax-Assistant</a>
 
 ### 🔲 May 14 — Final Polish + Ship
 - Merge Hailey's features: Decision Cards (expense anomaly detection), Tax Readiness % bar, Deductions tab, Activity timeline
