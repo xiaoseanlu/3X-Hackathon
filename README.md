@@ -10,108 +10,157 @@
 
 ## The Problem
 
-Small business owners who use TurboTax Business Full Service log in to TurboTax an average of **1.8 times a year.** That means for most customers, expert tax help effectively shows up for two weeks — and disappears for the other fifty.
+TurboTax Business has staked its future on a promise: year-round, expert-centered service for small business owners. The problem is that we haven't built a product around customer behavior.
 
-The problem isn't that small business owners don't care about taxes. They do. It's that tax decisions don't only happen at filing time. They happen every day — through a purchase, a hire, a new expense category, a regulatory change. But expert guidance is completely disconnected from those moments.
+TurboTax and QuickBooks are opened a few times a year at most. Relationships don't accumulate that way. Trust doesn't either. What TurboTax Business is selling as a year-round relationship is being experienced by customers as a seasonal transaction — they log in when they have to, hand off their documents, and disappear. Their CPA goes dark between seasons.
 
-The result is a pattern we heard over and over in customer research:
+The structural issue: the relationship requires frequent small moments, and our surfaces can't host them. No product at Intuit currently lives where the customer works.
 
-> *"I've kind of always had the feeling that, like, did we get everything? Did I give you everything? Was there anything else I could have done?"*
+Real customers, from our Hey Marvin research:
+
+> *"We have a cursory call or sort of go over everything… and then they sort of go away by themselves, and then they come back when it's done."*
 > — Keisha W., small business owner
 
-> *"I had a really bad day last February. My accountant looked at me with a not-so-friendly face and asked if I had more deductions. I ended up owing more than I expected. It was a sad day."*
-> — Monika, yoga instructor
-
-> *"It feels overwhelming. It feels confusing. I never really feel like I have a good grasp on things."*
-> — Jessica, health & wellness business owner
-
-Customers pay for expert tax help. But they're only experiencing it as a stressful, once-a-year event — when it's almost too late to do anything meaningful with the advice.
+> *"I had a really bad day last February. My accountant looked at me with a not-so-friendly face and asked if I had more deductions. I ended up owing more than I expected."*
+> — Monika, yoga instructor / solopreneur
 
 ---
 
-## The Idea
+## The Strategy: Ambient Presence
 
-What if your tax expert was actually with you all year?
+> *"The solution isn't more presence, it's smarter presence. Persistent but invisible — running in the background, surfacing only when something actually matters. Event-driven, not weekly-cadence."* — Haley, Team Malumin
 
-Not as a portal you log into. Not as an app you have to remember to check. Just quietly present — surfacing what matters, when it matters — while you get on with running your business.
+The Tax Assistant Widget is a macOS menu bar app. It lives in the top-right corner of the customer's screen — the same real estate as Slack, Dropbox, and their calendar. Always there. No login, no new tab, no context switch. A customer working in QuickBooks can glance up, see a notification badge, click, and handle a tax decision in 15 seconds without opening a browser.
 
-**TurboTax Business Tax Assistant** is a macOS menu bar widget that makes year-round expert tax management feel effortless. It lives in your menu bar alongside your Wi-Fi icon and battery indicator. It watches for things that need your attention. And when something comes up, it's one tap to handle it — right there, without switching context or opening a browser.
-
-> *"If I can have somebody else there just to always make sure that I'm on top of it — help me carry that weight a little bit — that would be helpful on an ongoing basis."*
-> — Tyson K., small business owner
+This is not a mini version of TurboTax. It's a different kind of surface entirely: **ambient, glanceable, expert-anchored.** The product doesn't ask customers to do tax prep. It asks them to make small decisions at the moment they arise, with their expert already in the loop.
 
 ---
 
-## Product Design Strategy
+## Five Customer Problems — and How We Addressed Each One
 
-### The menu bar as a new interaction layer
-The menu bar is the one place on a Mac that's always visible, always accessible, and never requires a context switch. By living there, the TurboTax Assistant creates a new interaction layer for tax management — one that fits around the way small business owners already work, rather than asking them to adopt new habits.
+These five problems are the core of the project. They came from the team's pre-hackathon alignment work and were the lens through which every feature decision was made.
 
-### Two-layer information architecture
-Every view follows a consistent two-layer model. Layer 1 surfaces a summary — the key number, the upcoming deadline, the item that needs a decision. Layer 2 provides the full context when the user wants to go deeper. This keeps the widget fast and scannable at a glance, while making full detail available in one tap.
+### Presence
+*Between filings, I have no sense that anyone is actually working on my tax situation. The rest of the time, it feels like I'm on my own.*
 
-### Every drill-down ends with a human
-Every detail view — every layer-2 deep-dive into a deduction, a tax law, a calendar entry — terminates with a direct path to Susan, the customer's assigned expert. The design principle is that AI surfaces and organizes; the expert validates and advises. The widget always returns the customer to a human connection point.
+**How might we** make the expert continuously visible in the customer's workspace, so the relationship feels active even when nothing is happening?
 
-### Expert presence as a constant
-Susan Larsen's footer card is pinned to the bottom of every view. This is a deliberate design decision: the expert isn't buried in a settings screen or a separate tab. She's always visible, always one tap away. Her availability status updates in real time. When you open the widget, Susan is there.
+Susan Larsen's card lives in the widget's sticky footer across every view. After the customer books their first meeting, Susan's name, availability, and upcoming meeting are always one glance away — not buried in a product they have to log into.
 
-### Year-round continuity
-The experience is designed around the idea that tax preparation is already finished by the time filing season arrives — because the work happened continuously throughout the year. The assistant tracks decisions, categorizes expenses, flags issues early, and builds a complete picture of the business over time. By April, there's no scramble. It's already organized.
+### Frequency
+*When something comes up, I have to decide whether it's worth bothering my expert about. Most of the time I decide it isn't, and then I forget. By the time we talk, the small things have piled up.*
+
+**How might we** create small moments between the expert and the customer often enough that trust and context accumulate, without overwhelming either side?
+
+> *"If I had some kind of one-place repository that did everything… if that was automated, that'd be fantastic. It's just one less thing I'd have to do."*
+> — Small business owner, Hey Marvin
+
+The widget surfaces lightweight touch points — a notification badge, a quick document upload, an ask input — that lower the cost of reaching out to near zero. Each small interaction keeps the thread alive between the big ones.
+
+### Reachability
+*Reaching my expert means logging in, finding the right place, writing a message, and then waiting. The cost of asking is high enough that I save up my questions.*
+
+**How might we** make the expert reachable from inside the customer's day, without requiring them to stop what they're doing?
+
+The widget requires no login after setup. The "Ask" input is visible from every view. For anything requiring a real conversation, joining Susan's video call is a single tap the moment she's ready.
+
+### Proactivity
+*I make decisions that affect my taxes all the time — a purchase, a hire, a distribution — without realizing they affect my taxes. By the time my expert sees the consequences, the decision is already made.*
+
+**How might we** surface tax-relevant moments to the customer as they happen, so decisions are made with expert input instead of regret?
+
+The widget's main view surfaces year-round events as they become relevant: Q2 estimated tax due, new tax laws affecting S Corps, business changes that need categorization. These aren't reports — they're actionable cards at the moment of relevance, with a direct path to Susan or an approval flow.
+
+### Trust
+*Every time I do reach out, I have to re-explain my business, my year, what's changed. My expert is starting from scratch each time, which makes me feel like a ticket rather than a client.*
+
+**How might we** eliminate the context-rebuild cost on both sides, so the customer doesn't hesitate to reach out and the expert can be useful the moment they engage?
+
+> *"There is a value to having somebody who knows you. I click, and within a day or two, we have a meeting, we can talk about my business."*
+> — Seth W., small business owner, Hey Marvin
+
+Susan's profile in the widget shows her full history with the customer: every review, filing, payment, and planning session. When documents are uploaded or accounts connected, that context is available to Susan before the meeting starts.
+
+---
+
+## Why Expert-Anchored?
+
+The team debated two directions: product-anchored (a lightweight action tool surfacing automated insights) vs. expert-anchored (a persistent CPA relationship manager). We landed on expert-anchored, and the logic matters.
+
+The small business market has a confidence gap. These are owners who know their product deeply and their taxes shallowly. They aren't looking for better software — they're looking for someone they can trust to handle this. The widget doesn't just connect you to an expert. It makes the expert the felt center of the experience at every step.
+
+Susan is the product's north star. Every design decision flows from that:
+- The first thing the widget does is get you matched with Susan and schedule your first call.
+- Your home screen shows Susan's status, your upcoming meeting, and what she's working on.
+- The meeting notification doesn't say "your appointment is starting." It says "Susan is ready."
+- Even the ask input becomes "Ask Susan" when you're inside her profile.
 
 ---
 
 ## What's Built
 
 ### The Widget Shell
-A fully functional macOS menu bar widget built as a single self-contained HTML file (~5,500 lines of HTML, CSS, and JS). Runs as a live prototype in any browser via GitHub Pages, and as a real Electron menu bar app that installs a TurboTax icon in your actual macOS menu bar. The widget opens centered below the icon with a smooth slide animation, scroll-fades content into the expert footer, and handles push/pop navigation with parallax transitions between views.
+A fully interactive macOS menu bar widget — a single self-contained HTML file (~5,500 lines, all CSS and JS inline). Runs as a live prototype in any browser via GitHub Pages, and as a real Electron menu bar app with a TurboTax icon in your actual macOS menu bar. Push/pop navigation with parallax transitions, scroll-fades into the expert footer, context-aware header and menu bar pill text.
 
 ### Year-Round Hub
-The default state between tax seasons. Shows the customer's complete tax picture at a glance: business health stats (revenue, expenses, estimated tax owed, refund projection), a live view of the last filed return, and a 2027 Tax Year Strategy section with upcoming deadlines and action items. The hub is the anchor the customer returns to after handling anything — the place that makes it clear that tax work is continuous, not seasonal.
+The default state between tax seasons. Shows the customer's complete tax picture at a glance: last filed return, business health stats (revenue, expenses, estimated tax, refund projection), and a 2027 Tax Year Strategy section with upcoming deadlines and quick-tap action cards. The hub is what makes the experience feel continuous rather than seasonal.
 
 ### Quick-Tap Action Cards
-The year-round hub surfaces pending items that need a decision — upcoming estimated payments, new tax law alerts, business change flags — as compact action cards. Each card shows exactly what's needed: the amount, the deadline, the context. One tap dismisses it after handling. The menu bar icon badge updates in real time as items are resolved, giving a persistent signal of what's waiting without requiring the widget to be open.
+Pending items — estimated payments, new tax law alerts, business change flags — surface as compact cards with the key number, deadline, and context. One tap dismisses after handling. The menu bar icon badge updates in real time as items are resolved.
 
 ### The Tax Review Arc
-A complete review workflow spanning three linked views. The **Tax Review Hub** shows a high-level overview of the review stage: pending approval items (income classification, equipment deductions, home office categorization), a Financial Summary card showing total deductions found with a category breakdown, and a Recent Activity feed. Drilling into **Deductions Detail** shows a full breakdown by category — software, equipment, meals, office, travel — with individual line items and amounts. The **Activity Timeline** shows a chronological log of everything that's been reviewed, approved, or flagged across the engagement.
+A complete review workflow spanning three linked views: **Tax Review Hub** (pending approvals, financial summary, recent activity), **Deductions Detail** (full breakdown by category with individual line items), and **Activity Timeline** (chronological log of everything reviewed, approved, or flagged).
 
 ### The Filing Arc
-When the review is complete, the **Ready to File** view shows the expert-approved filing package: a green-checkmark hero, the refund amount, every form included in the return, and a direct link to schedule a final review with Susan. Filing advances to the **Filed** view — a success confirmation with a live refund tracker (Filed → Processing → Approved → Deposited), confirmation IDs, and a "Continue to tax planning" CTA that returns to the year-round hub. The arc is designed so that filing feels like a milestone, not a scramble.
+**Ready to File** shows the expert-approved package: green-checkmark hero, refund amount, forms included, and a link to schedule a final review with Susan. Filing advances to **Filed** — a success screen with a live refund tracker (Filed → Processing → Approved → Deposited) and a "Continue to tax planning" CTA that returns to the year-round hub.
 
 ### Five-Step Global Progress Stepper
-A persistent stepper spanning Prep → Review → Ready to File → Filed → Year Round appears across all active tax season views. Every dot is clickable and navigates directly to that stage — giving the customer a clear sense of where they are and what's coming next, without requiring them to find their way through menus.
+Persistent across all active tax season views: Prep → Review → Ready to File → Filed → Year Round. Every dot is clickable and navigates directly to that stage.
 
 ### Susan Larsen — Your Dedicated Expert
-Susan isn't a generic support agent. She's a CPA with 19 years of experience, 847 returns filed, and a 4.9 rating — and the prototype treats her as a real, continuous relationship. Her **expert profile** shows her full credentials and a stage-aware activity timeline that grows as the engagement deepens: a year-round check-in becomes a review session becomes a filed return becomes ongoing tax planning. The **booking sheet** lets the customer schedule a call or video chat with date and time selection. Post-booking, Susan's status updates across every view to reflect the upcoming meeting.
+Her profile shows credentials, a stage-aware activity timeline that grows as the engagement deepens, and a booking sheet for scheduling a call or video chat with date and time selection. Post-booking, Susan's status updates across every view.
 
 ### Expert Matching
-For customers who haven't yet been matched, the **Expert List** view lets them browse matched CPAs by specialty, rating, availability, and background. Susan's profile is the featured match, with Marcus Reid available as an alternative. Selecting a match navigates to the full expert profile.
+For unmatched customers, the **Expert List** lets them browse matched CPAs by specialty, rating, and availability before committing to a match.
 
-### QuickBooks Data Sync
-The **Connected Accounts** view shows every linked financial institution and app in a fully-connected state — Chase Business Checking, Mercury, Stripe, QuickBooks — with a transaction analysis feed. Tapping any institution surfaces account balances and a document list of what's been automatically pulled and categorized. This view represents the assistant's always-on data collection: it knows the business because it's been watching it all year.
+### Connected Accounts (QuickBooks Data Sync)
+Every linked financial institution and app shown in a fully-connected state — Chase, Mercury, Stripe, QuickBooks — with a transaction analysis feed. Tapping any institution surfaces balances and a document list of what's been automatically pulled and categorized.
 
 ### Document Upload
-A **drag-and-drop upload** view for tax documents that aren't automatically synced. After upload, a categorized review screen shows the file details and Susan's review status. The upload experience is designed to feel like sending something to an expert, not filing it in a folder.
+Drag-and-drop upload for tax documents not automatically synced. After upload, a categorized review screen shows the file and Susan's review status — designed to feel like sending something to an expert, not filing in a folder.
 
 ### Tax Calendar
-A full-year tax calendar accessible from the year-round hub, broken into quarterly sections. Each event includes a description, date, and days-remaining countdown. Every calendar entry is also a Susan connection point — the event context travels automatically into the conversation.
+A full-year calendar by quarter with event descriptions and days-remaining countdowns. Every calendar entry connects to a Susan touch point.
 
 ### AI Chat
-A context-aware ask input is pinned to the bottom of every view. The AI icon switches to Susan's photo when the customer is in her profile views, creating a natural transition between AI-assisted self-service and expert-directed guidance. Smart demo mode provides pre-scripted responses that demonstrate real tax advisory scenarios.
+Context-aware ask input pinned to every view. Switches from AI icon to Susan's photo when inside her profile. Smart demo mode with pre-scripted responses demonstrating real tax advisory scenarios.
 
-### Tax-2026 Drill-Down
-The **2026 Tax Year** summary section is tappable and navigates to a full return breakdown: federal and state tax cards, every deduction applied (home office, mileage, health insurance, professional services, software — $19,100 total), credits applied (R&D, payroll), and a business financial summary with gross revenue, W-2 salary, and net profit. A direct link opens TurboTax for document access.
-
-### Settings and Demo Controls
-Account info, plan details, company profile (Acme Design Co., S Corp), notification preferences, and connected accounts — all editable inline. A full demo control panel allows jumping to any stage or view instantly, making the prototype easy to walk through in any order during a presentation.
+### Settings + Demo Controls
+Account info, company profile, notification preferences, connected accounts — plus a full demo control panel for jumping to any stage or view.
 
 ---
 
-## The Before / After
+## Design Principles
 
-**Before:** Customers log in 1.8×/year. Expert contact is limited to filing season. Deductions are missed. Tax surprises are common. The expert rebuilds context from scratch every year. Filing is a scramble.
+**Flat and dense, not light and airy.** Small business owners are busy. They need information density and clear hierarchy. Every pixel earns its place.
 
-**After:** Tax management is built into the customer's workday. Small decisions get handled in seconds. The assigned expert builds continuous context across the year. When April arrives, the work is already done.
+**Progressive disclosure over feature listing.** The home screen shows almost nothing on first login. As the customer completes each stage — booking, uploading, meeting — new cards and paths appear. Complexity reveals itself only as it becomes relevant.
+
+**State over settings.** Nothing asks customers to configure the widget. Everything adapts to where they are in the journey. The stepper advances automatically. Susan's footer appears after booking. The "Join Meeting" card appears when she's ready.
+
+**Context-aware AI, not generic AI.** The ask input knows what view the customer is on. The product doesn't pretend the AI and the expert are the same thing.
+
+**The expert is always reachable.** Susan's footer card is persistent across every view. No matter where you navigate, you're one tap away from your CPA. That's the felt promise of year-round service.
+
+---
+
+## The Bigger Bet
+
+> From a seasonal transaction to a trusted relationship. The expert your customers pay for, finally present in the moments that matter.
+
+Customers won't change how they work. They won't remember to open TurboTax in July. But they will notice a notification badge when they're already at their computer. They will tap a "Join meeting" card when their CPA is ready. They will upload a W-2 by dropping it into a widget they can see right now.
+
+The widget doesn't change the customer's workflow. It inserts itself into the gaps between everything else they're doing — which is exactly where a year-round relationship needs to live.
 
 ---
 
@@ -119,11 +168,9 @@ Account info, plan details, company profile (Acme Design Co., S Corp), notificat
 
 ### Option A — Live link (zero setup) ⭐ Fastest
 
-**<a href="https://github.intuit.com/pages/xlu02/TurboTax-Assistant/prototype/" target="_blank">→ Open the live prototype</a>**
+**[→ Open the live prototype](https://github.intuit.com/pages/xlu02/TurboTax-Assistant/prototype/)**
 
-Click the TurboTax icon in the simulated macOS menu bar at the top of the page to open the widget. No cloning, no installs, works in any browser.
-
----
+Click the TurboTax icon in the simulated macOS menu bar to open the widget. No cloning, no installs, works in any browser.
 
 ### Option B — Run as a real macOS menu bar app
 
@@ -132,13 +179,7 @@ Click the TurboTax icon in the simulated macOS menu bar at the top of the page t
 1. Clone the repo
 2. Double-click **`Launch Widget.command`** in Finder
 
-The first run installs dependencies (~30 seconds). After that it launches instantly. The TurboTax icon appears in your actual macOS menu bar.
-
-> **⚠️ First-run security warning:** macOS will say it "cannot verify" the file. This is expected for unsigned developer tools.
->
-> **To bypass it (one-time only):** Right-click `Launch Widget.command` → click **Open** → click **Open** again in the dialog. You won't see this warning again.
-
----
+> **⚠️ First-run security warning:** Right-click `Launch Widget.command` → **Open** → **Open** again. You won't see this warning after the first time.
 
 ### Option C — Run from terminal
 
@@ -152,15 +193,13 @@ npm start
 
 ## Demo Flow
 
-The fastest walk-through of the full experience:
-
-1. Open widget → **year-round hub** (QB stats, 2027 strategy, Susan card)
-2. Demo Controls → **Tax Review Hub** → see review stage with pending approval items
-3. Tap **Deductions** → full deductions breakdown by category
-4. Tap back → tap **Ready to File** in stepper → filing screen with forms list
-5. Tap **File Federal & State Return** → success screen + refund tracker
-6. Tap **Continue to tax planning** → back to year-round hub
-7. Tap **Susan's footer card** → expert profile with full activity timeline
+1. Open widget → year-round hub (QB stats, 2027 strategy, Susan card)
+2. Demo Controls → Tax Review Hub → pending approval items
+3. Tap Deductions → full breakdown by category
+4. Tap Ready to File in stepper → filing screen with forms list
+5. Tap File Federal & State Return → success screen + refund tracker
+6. Tap Continue to tax planning → back to year-round hub
+7. Tap Susan's footer card → expert profile with full activity timeline
 
 ---
 
@@ -168,51 +207,24 @@ The fastest walk-through of the full experience:
 
 ```
 TurboTax-Assistant/
-│
-├── README.md                        ← You are here
+├── README.md
 ├── AI_INSTRUCTIONS.md               ← Read before starting a Claude session
-├── CHANGELOG.md                     ← Full version history
-├── Launch Widget.command            ← Double-click to run the menu bar app
-│
-├── prototype/                       ← The widget (single self-contained HTML file)
-│   ├── index.html                   ← Everything: HTML + CSS + JS (~5,500 lines)
-│   ├── Susan.png                    ← Expert photo
-│   ├── wallpaper.png                ← macOS Sonoma Blue desktop wallpaper
-│   ├── menubar-icon.png             ← TurboTax menu bar icon
-│   ├── intuit-assist.svg            ← Intuit Assist AI icon
-│   ├── turbotax-logo.svg            ← TurboTax logo
+├── CHANGELOG.md
+├── Launch Widget.command
+├── prototype/
+│   ├── index.html                   ← The widget (~5,500 lines, fully self-contained)
 │   └── design-system/
-│       ├── Component Gallery.html   ← Visual reference for every component
+│       ├── Component Gallery.html
 │       ├── Component Inventory.md   ← Design token + component spec source of truth
 │       └── Product Design Requirements.md
-│
-├── electron-app/                    ← macOS app wrapper (Electron)
-│   ├── main.js                      ← Tray icon + window management
-│   ├── preload.js                   ← IPC bridge
-│   ├── package.json
-│   └── assets/
-│
-└── .github/
-    └── workflows/
-        └── deploy.yml               ← Auto-deploys prototype/ to GitHub Pages on push to main
+├── electron-app/
+│   ├── main.js
+│   ├── preload.js
+│   └── package.json
+└── documents/
+    ├── Product & Design Strategy.md
+    └── Demo Script + Elevator Pitch.md
 ```
-
----
-
-## Design System
-
-| File | Role |
-|------|------|
-| `Component Inventory.md` | Every design token, spacing rule, and component spec |
-| `Component Gallery.html` | Visual reference — open in browser to see every component live |
-| `prototype/index.html` | The prototype — must always match the Gallery |
-
-**Core principles**
-- **Flat design doctrine** — no shadows on inner components, no nested cards, no borders on gray backgrounds
-- **4px spacing grid** — `--s1` through `--s8` tokens only
-- **Color tokens** — `var(--color-brand)`, `var(--color-success)`, etc. No hardcoded hex
-- **Two-layer IA** — Layer 1: summary cards and action rows. Layer 2: full detail views, always terminating in a Susan connection point
-- **Expert as constant** — Susan's footer card is pinned to every view
 
 ---
 
@@ -221,7 +233,9 @@ TurboTax-Assistant/
 | Role | Person |
 |------|--------|
 | XD | Sean Lu |
-| XD | Hailey |
+| XD | Haley Malucchi |
 | PM | Armin Naghashzadeh |
 
-*Questions? Design → Sean or Hailey · Product → Armin*
+*Design → Sean or Haley · Product → Armin*
+
+*Built during the Intuit × Anthropic Hackathon, May 12–14, 2026*
