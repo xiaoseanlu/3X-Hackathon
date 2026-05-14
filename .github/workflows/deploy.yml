@@ -1,0 +1,31 @@
+name: Deploy prototype to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:   # allow manual trigger from the Actions tab
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   # needed to push to gh-pages branch
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # Copy the prototype/ folder contents to a temp dir,
+      # then force-push it to the gh-pages branch.
+      # This is the most reliable approach on GitHub Enterprise.
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./prototype
+          publish_branch: gh-pages
+          # Keep the commit history clean — squash all deploys into one
+          force_orphan: true
+          # Friendly commit message in the gh-pages branch
+          commit_message: "Deploy prototype — ${{ github.sha }}"

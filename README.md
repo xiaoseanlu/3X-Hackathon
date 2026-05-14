@@ -1,6 +1,11 @@
 # TurboTax Business Tax Assistant
 **Intuit × Anthropic Hackathon · May 2026 · Team Malumin**
 
+## 🚀 [**Live prototype → pages.github.intuit.com/xlu02/TurboTax-Assistant**](https://pages.github.intuit.com/xlu02/TurboTax-Assistant/)
+*No installation. Click the link, then click the TurboTax icon in the simulated menu bar.*
+
+---
+
 A macOS menu bar widget that gives TurboTax Business customers always-on access to their tax situation — year-round strategy, a persistent CPA expert (Susan Larsen), and AI-powered chat. Right from the menu bar, without opening a browser or app.
 
 **Team**
@@ -14,18 +19,17 @@ A macOS menu bar widget that gives TurboTax Business customers always-on access 
 
 ## Getting Started
 
-### Option A — Open in browser (fastest, zero setup)
+### Option A — Live link (zero setup) ⭐ Fastest
 
-```bash
-git clone <repo-url>
-open "prototype/index.html"
-```
+**[→ Open the live prototype](https://pages.github.intuit.com/xlu02/TurboTax-Assistant/)**
 
-The widget opens in your browser. Click the TurboTax icon in the simulated menu bar at the top of the page to open the widget.
+Auto-deploys whenever anything is pushed to `main`. No cloning, no installs.
+
+> **To use it:** click the TurboTax icon in the simulated menu bar at the top of the page.
 
 ---
 
-### Option B — Double-click to launch as a menu bar app ⭐ Recommended
+### Option B — Double-click to launch as a menu bar app
 
 **Prerequisite:** Node.js 18+ — [download here](https://nodejs.org) if you don't have it.
 

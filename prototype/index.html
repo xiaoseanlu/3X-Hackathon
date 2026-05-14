@@ -79,8 +79,11 @@
 /* ── Layout ── */
 body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-select: none; -webkit-font-smoothing: antialiased; }
 
-/* ── Desktop (macOS Sonoma-style gradient fallback — Figma CDN URLs expire) ── */
-.desktop { position: fixed; inset: 0; background: linear-gradient(160deg, #3a6186 0%, #89a4c7 40%, #c8d8e8 70%, #a8c4d8 100%); }
+/* ── Desktop — macOS Sonoma Blue wallpaper ── */
+.desktop {
+  position: fixed; inset: 0;
+  background: url('wallpaper.png') center center / cover no-repeat;
+}
 
 /* ── Menu Bar ── */
 .menubar {
@@ -121,14 +124,14 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .tt-icon-wrap:hover, .tt-icon-wrap.active { background: rgba(255,255,255,.18); }
 .tt-icon-wrap svg { width: 15px; height: 15px; }
 
-/* Notification badge — numbered with glow pulse */
+/* Notification badge — hidden by default, shown via JS when notifications arrive */
 .tt-badge {
   position: absolute; top: 0px; right: -1px;
   min-width: 14px; height: 14px;
   background: #FF3B30; border-radius: 7px;
   border: 1.5px solid rgba(0,0,0,.1);
   font-size: 8px; font-weight: 700; color: #fff;
-  display: flex; align-items: center; justify-content: center;
+  display: none; align-items: center; justify-content: center;
   padding: 0 3px; font-family: var(--font-family);
   animation: badge-glow 2.2s ease-in-out infinite;
 }
@@ -268,14 +271,9 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 .filed-done-btn { width:100%;height:40px;background:none;border:1px solid var(--color-border);border-radius:var(--r-md);font-size:var(--text-sm);font-weight:var(--fw-medium);color:var(--color-text-primary);cursor:pointer;font-family:var(--font-family);transition:all var(--dur-fast);margin-top:var(--s2); }
 .filed-done-btn:hover { border-color:var(--color-brand);color:var(--color-brand); }
 
-/* ── Widget Anchor ── */
-.widget-anchor { position: fixed; top: 32px; right: 10px; z-index: 9999; }
-.widget-notch {
-  position: absolute; top: -6px; right: 8px;
-  width: 12px; height: 12px; background: var(--color-bg);
-  border-left: 1px solid var(--color-border); border-top: 1px solid var(--color-border);
-  transform: rotate(45deg); z-index: 1;
-}
+/* ── Widget Anchor — left is set dynamically by positionWidget() ── */
+.widget-anchor { position: fixed; top: 32px; z-index: 9999; }
+/* .widget-notch removed */
 
 /* ── Main Widget Panel — flat, single surface ── */
 .widget {
@@ -1090,11 +1088,8 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
   <div class="mb-right">
     <!-- TurboTax icon — FIRST in right group (per macOS convention: 3rd-party extras left of system icons) -->
     <div class="tt-icon-wrap" id="ttIcon" onclick="toggleWidget()">
-      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="10" cy="10" r="9" fill="#D52B1E"/>
-        <path d="M6.5 10.2l2.3 2.4 4.7-5.1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <div class="tt-badge">3</div>
+      <img src="menubar-icon.png" style="width:16px;height:16px;object-fit:contain;">
+      <div class="tt-badge"></div>
     </div>
 
     <!-- System status icons — consistent SVG style -->
@@ -1150,8 +1145,6 @@ body { font-family: var(--font-family); height: 100vh; overflow: hidden; user-se
 
 <!-- ── Widget Anchor ── -->
 <div class="widget-anchor">
-  <div class="widget-notch" id="widgetNotch"></div>
-
   <!-- ── Main Widget ── -->
   <div class="widget hidden" id="widget">
 
@@ -2984,11 +2977,31 @@ function chatAvHTML() {
   return '<div class="chat-av"><span class="chat-av-text">TT</span></div>';
 }
 
+/* ── Widget positioning — centers the panel below the tray icon ── */
+function positionWidget() {
+  var icon   = document.getElementById('ttIcon');
+  var anchor = document.querySelector('.widget-anchor');
+  if (!icon || !anchor) return;
+  var WIDGET_W = 340;
+  var rect = icon.getBoundingClientRect();
+  var iconCenterX = rect.left + rect.width / 2;
+  var left = iconCenterX - WIDGET_W / 2;
+  /* Clamp so the widget never clips off either edge */
+  left = Math.max(8, Math.min(left, window.innerWidth - WIDGET_W - 8));
+  anchor.style.left = left + 'px';
+}
+
 /* ── Widget open/close ── */
 function toggleWidget() {
   widgetOpen = !widgetOpen;
+  if (widgetOpen) positionWidget();
   document.getElementById('widget').classList.toggle('hidden', !widgetOpen);
   document.getElementById('ttIcon').classList.toggle('active', widgetOpen);
+  /* Clear badge when opening the widget */
+  if (widgetOpen) {
+    var badge = document.querySelector('.tt-badge');
+    if (badge) { badge.style.display = 'none'; badge.textContent = ''; }
+  }
 }
 function closeAll() {
   widgetOpen = false;
@@ -3711,7 +3724,7 @@ function epConfirm(schedId, bookedId, btnId, detailId) {
     document.getElementById('meetingToast').classList.add('show');
     /* Pulse the menubar TT icon badge */
     var badge = document.querySelector('.tt-badge');
-    if (badge) { badge.textContent = '!'; badge.style.background = '#1B4F8A'; }
+    if (badge) { badge.textContent = '!'; badge.style.background = '#1B4F8A'; badge.style.display = 'flex'; }
     /* Auto-dismiss after 10s (user can join from stage1 card) */
     setTimeout(dismissToast, 10000);
   }, 8000);
@@ -3842,11 +3855,9 @@ updateEFC();
   var menubar = document.querySelector('.menubar');
   var dock    = document.querySelector('.dock');
   var toast   = document.querySelector('.meeting-toast');
-  var notch   = document.getElementById('widgetNotch');
   if (desktop) desktop.style.display = 'none';
   if (menubar) menubar.style.display = 'none';
   if (dock)    dock.style.display    = 'none';
-  if (notch)   notch.style.display   = 'none';
 
   /* Login QR code */
   (function() {
