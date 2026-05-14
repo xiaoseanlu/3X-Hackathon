@@ -337,22 +337,21 @@ body {
 .action-cta { font-size: 12px; font-weight: 500; color: var(--brand); flex-shrink: 0; cursor: pointer; }
 .action-ext { font-size: 13px; color: var(--text-tertiary); margin-left: 4px; flex-shrink: 0; }
 
-/* ─── Notification banner ─── */
-.notif-list { border-radius: 12px; overflow: hidden; border: 0.5px solid var(--border); }
-.notif-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 14px 16px;
-  background: var(--bg-card);
-  transition: background 80ms;
+/* ─── Notification banner (notif-banner-*) ─── */
+/* Banners appear event-driven inside the scroll area — one at a time, not stacked in a list */
+.notif-banner {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 16px; margin: 8px 16px 0;
+  border-left: 3px solid var(--brand);
+  background: var(--bg-surface);
+  border-radius: 6px;
 }
-.notif-item + .notif-item { border-top: 0.5px solid var(--border); }
-.notif-bar { width: 3px; align-self: stretch; flex-shrink: 0; }
-.notif-body { flex: 1; min-width: 0; }
-.notif-title { font-size: 13px; font-weight: 500; color: var(--text-primary); }
-.notif-text { font-size: 12px; color: var(--text-secondary); margin-top: 3px; line-height: 1.5; }
-.notif-action { font-size: 12px; font-weight: 500; cursor: pointer; flex-shrink: 0; white-space: nowrap; }
+.notif-banner.success { border-left-color: var(--success); background: #E3FCEF; }
+.notif-banner.warning { border-left-color: var(--warning); background: #FFF4E5; }
+.notif-banner-body { flex: 1; min-width: 0; }
+.notif-banner-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+.notif-banner-text { font-size: 11px; color: var(--text-secondary); margin-top: 2px; line-height: 1.4; }
+.notif-banner-dismiss { background: none; border: none; color: var(--text-tertiary); cursor: pointer; flex-shrink: 0; padding: 0; font-size: 12px; }
 
 /* ─── Year-round calendar ─── */
 .calendar-list { display: flex; flex-direction: column; gap: 0; }
@@ -624,16 +623,8 @@ body {
 }
 .seg-btn.on { background: var(--brand); color: #fff; }
 
-/* ─── Expert booking sheet ─── */
-.sheet-wrap { border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden; }
-.sheet-header {
-  padding: 14px 16px;
-  border-bottom: 0.5px solid var(--border);
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  background: var(--bg-surface);
-}
+/* ─── Expert booking — v-book-meeting (full-screen view) ─── */
+/* sheet-wrap / bl-* classes removed — booking is a full-screen view, not an inline sheet */
 .sheet-av {
   width: 44px;
   height: 44px;
@@ -658,29 +649,6 @@ body {
   background: var(--success);
   border: 2px solid var(--bg-surface);
 }
-/* Booking layer — expands below Book a Meeting button */
-.bl-body { padding: 12px 16px 4px; }
-.bl-avail {
-  display: flex; align-items: center; gap: 7px;
-  padding: 8px 12px; border-radius: 8px;
-  background: rgba(0,135,90,.07); margin-bottom: 12px;
-  font-size: 12px; color: var(--text-secondary);
-}
-.bl-avail-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); flex-shrink: 0; }
-.bl-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 4px; }
-.bl-type {
-  padding: 12px 10px;
-  border: 0.5px solid var(--border);
-  border-radius: 10px;
-  background: var(--bg-card);
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  cursor: pointer; transition: all 80ms;
-}
-.bl-type:hover { background: var(--bg-surface); border-color: var(--border-strong); }
-.bl-type.sel { background: var(--brand-subtle); border-color: var(--brand); }
-.bl-type-icon { color: var(--text-secondary); }
-.bl-type.sel .bl-type-icon { color: var(--brand); }
-.bl-type-label { font-size: 12px; font-weight: 500; color: var(--text-primary); text-align: center; line-height: 1.35; }
 
 /* ─── Expert profile card ─── */
 .ep-card { border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -960,6 +928,14 @@ body {
 .ar-sub   { font-size: 11px; color: var(--text-tertiary); }
 .ar-chev  { color: var(--text-tertiary); flex-shrink: 0; }
 .ar-chev svg { width: 12px; height: 12px; }
+/* Prototype-name aliases — action-icon/body/title/sub/chev = ar-icon/body/title/sub/chev */
+.action-icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.action-icon.info    { background: var(--brand-subtle); color: var(--brand); }
+.action-icon.neutral { background: var(--bg-surface); color: var(--text-secondary); }
+.action-icon svg { width: 14px; height: 14px; }
+.action-body { flex: 1; min-width: 0; }
+.action-chev { color: var(--text-tertiary); flex-shrink: 0; }
+.action-chev svg { width: 12px; height: 12px; }
 
 /* ─── Expert Footer Card 3.9b ─── */
 .efc-demo { border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden; }
@@ -1128,13 +1104,13 @@ body {
 .bc-chip.current { color:var(--brand);border-color:var(--brand);background:var(--brand-subtle);font-weight:600; }
 
 /* ── Expert Match Item (emi-*) ───────────────────────────────────────
-   Selectable expert cards used on v-expert-list matching screen.
+   Tap-to-detail expert cards on v-expert-list. Tapping navigates directly
+   to that expert's profile — no selection state, no "Match with expert" CTA.
    Three variants: top-pick (Susan), available-soon (David), async (Maria). */
 .emi-list { display:flex;flex-direction:column;gap:10px; }
-/* border:1px matches ic-card and path-card — selected state (brand blue) is the visual differentiator */
+/* hover: brand-blue border + subtle tint — communicates tappability */
 .emi-card { display:flex;align-items:flex-start;gap:12px;padding:14px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:border-color 140ms,background 140ms;position:relative; }
 .emi-card:hover { border-color:var(--brand);background:var(--brand-subtle); }
-.emi-card.selected { border-color:var(--brand);background:var(--brand-subtle); }
 .emi-avatar { position:relative;flex-shrink:0; }
 .emi-avatar-inner { width:52px;height:52px;border-radius:50%;overflow:hidden;position:relative;background:var(--bg-surface); }
 .emi-avatar-inner img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:1; }
@@ -1157,9 +1133,11 @@ body {
 .emi-top-pick { font-size:10px;font-weight:600;color:var(--brand);background:var(--brand-subtle);border:0.5px solid rgba(27,79,138,.2);padding:2px 7px;border-radius:100px; }
 
 /* ── Path Cards (path-card, pc-*) ───────────────────────────────────
-   Equal-weight CTA cards used on Stage 1 to present parallel entry points.
-   Two per view, stacked. Border + white bg, no shadow (flat doctrine).
-   Hover: border goes brand-colored, bg gets brand-subtle tint.
+   LEGACY — path-card bordered cards are retired from navigation use.
+   Cards are now only appropriate for structured DATA display (refund
+   confirmations, QB stat grids, filing numbers). For navigation entry
+   points, use action-row instead (see Entry Points section).
+   path-card CSS is preserved for backwards compat + data-card use.
    ────────────────────────────────────────────────────────────────── */
 .path-card {
   border: 1px solid var(--border); border-radius: 8px;
@@ -1288,7 +1266,7 @@ body {
     <p class="hmw" style="margin-bottom:14px">macOS renders menu bar icons as template images — monochrome white on the dark translucent bar. The icon's shape communicates state, not color. Badges use standard system-style overlays. Source of truth: TTA menu bar entry in Icon System below.</p>
 
     <!-- Dark macOS menubar strip — simulates actual menu bar context -->
-    <div style="background:rgba(0,0,0,.55);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);border-radius:8px;padding:2px 12px;display:flex;gap:6px;align-items:center;width:fit-content;margin-bottom:16px">
+    <div style="background:rgba(0,0,0,.55);backdrop-filter:blur(30px) saturate(180%);-webkit-backdrop-filter:blur(30px) saturate(180%);border-radius:8px;padding:5px 28px;display:flex;gap:48px;align-items:center;margin-bottom:10px">
       <!-- Clean -->
       <div class="icon-demo" style="align-items:center">
         <div class="sb-icon">
@@ -1327,8 +1305,8 @@ body {
       </div>
     </div>
 
-    <!-- State labels below the bar -->
-    <div style="display:flex;gap:6px;align-items:flex-start;width:fit-content">
+    <!-- State labels below the bar — gap and padding must match the strip above -->
+    <div style="display:flex;gap:48px;align-items:flex-start;padding:0 28px;margin-bottom:16px">
       <div class="icon-label" style="width:34px;text-align:center">Clean<br><span style="color:var(--text-tertiary)">Default</span></div>
       <div class="icon-label" style="width:34px;text-align:center">Attention<br><span style="color:var(--text-tertiary)">3 items</span></div>
       <div class="icon-label" style="width:34px;text-align:center">Expert<br><span style="color:var(--text-tertiary)">Waiting</span></div>
@@ -1787,13 +1765,13 @@ body {
 
   <!-- ─── Expert Match Items ─── -->
   <div class="sec">
-    <div class="sec-label">Expert match item (emi-*) — selectable expert cards on v-expert-list</div>
-    <p class="hmw" style="margin-bottom:14px">Three states: top-pick (Susan, online dot, "Top pick" badge), available-soon (David, muted dot), async (Maria, muted dot). Select via click — border turns brand blue, bg tints brand-subtle, checkmark fills. Continue CTA enables on first selection. Gallery is interactive: click to toggle selected state.</p>
+    <div class="sec-label">Expert match item (emi-*) — tap-to-detail expert cards on v-expert-list</div>
+    <p class="hmw" style="margin-bottom:14px">Three variants: top-pick (Susan — green dot + "Top pick" badge), available-soon (David — muted dot), async (Maria — muted dot). Tapping a card navigates directly to that expert's profile view — no selection state, no "Match with expert" CTA. Chevron at trailing edge communicates tap-to-detail.</p>
     <div style="max-width:310px">
-      <div class="emi-list" id="galleryEmiList">
+      <div class="emi-list">
 
         <!-- Susan — top pick -->
-        <div class="emi-card" onclick="gallerySelectEmi(this)">
+        <div class="emi-card">
           <div class="emi-avatar">
             <div class="emi-avatar-inner">
               <div class="emi-avatar-initials">SL</div>
@@ -1810,11 +1788,11 @@ body {
             <div class="emi-stats"><span class="emi-star">★</span><span>4.9</span><span class="emi-sep">·</span><span>372 reviews</span><span class="emi-sep">·</span><span>California</span></div>
             <div class="emi-avail"><span class="emi-avail-dot"></span><span>Available now</span></div>
           </div>
-          <div class="emi-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="flex-shrink:0;color:var(--text-tertiary);margin-top:4px"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
 
         <!-- David Kim -->
-        <div class="emi-card" onclick="gallerySelectEmi(this)">
+        <div class="emi-card">
           <div class="emi-avatar">
             <div class="emi-avatar-inner"><div class="emi-avatar-initials" style="color:var(--text-secondary)">DK</div></div>
           </div>
@@ -1824,11 +1802,11 @@ body {
             <div class="emi-stats"><span class="emi-star">★</span><span>4.8</span><span class="emi-sep">·</span><span>218 reviews</span><span class="emi-sep">·</span><span>California</span></div>
             <div class="emi-avail" style="color:var(--text-tertiary)"><span class="emi-avail-dot" style="background:var(--text-tertiary)"></span><span>Responds in ~2 hrs</span></div>
           </div>
-          <div class="emi-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="flex-shrink:0;color:var(--text-tertiary);margin-top:4px"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
 
         <!-- Maria Chen -->
-        <div class="emi-card" onclick="gallerySelectEmi(this)">
+        <div class="emi-card">
           <div class="emi-avatar">
             <div class="emi-avatar-inner"><div class="emi-avatar-initials" style="color:var(--text-secondary)">MC</div></div>
           </div>
@@ -1838,11 +1816,10 @@ body {
             <div class="emi-stats"><span class="emi-star">★</span><span>4.7</span><span class="emi-sep">·</span><span>145 reviews</span><span class="emi-sep">·</span><span>California</span></div>
             <div class="emi-avail" style="color:var(--text-tertiary)"><span class="emi-avail-dot" style="background:var(--text-tertiary)"></span><span>Responds in ~4 hrs</span></div>
           </div>
-          <div class="emi-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="flex-shrink:0;color:var(--text-tertiary);margin-top:4px"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
 
       </div>
-      <button id="galleryEmiBtn" style="margin-top:12px;width:100%;height:40px;background:var(--brand);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;opacity:.4;transition:opacity 140ms" disabled>Match with expert</button>
     </div>
   </div>
 
@@ -1850,8 +1827,8 @@ body {
 
   <!-- ─── Upload Screen ─── -->
   <div class="sec">
-    <div class="sec-label">Upload screen (v-upload) — dedicated tax form upload view</div>
-    <p class="hmw" style="margin-bottom:14px">Full-screen drop zone at top, file list below. Three file states: uploaded+processed (green check), processing (amber spinner). Expert note at bottom. Background #F4F6F9 matches other hub screens.</p>
+    <div class="sec-label">Upload screen (v-upload) — drop zone + summary card</div>
+    <p class="hmw" style="margin-bottom:14px">Drop zone at top (functional drag/drop + browse). Once files land, a <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">usum-card</code> appears below showing document count + type badges — tapping it navigates to v-upload-review. Background #F4F6F9.</p>
     <div style="max-width:310px;background:#F4F6F9;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px">
       <!-- Drop zone -->
       <div class="drop-zone">
@@ -1859,21 +1836,24 @@ body {
         <div class="drop-zone-primary">Drop W-2s, 1099s, K-1s here <span class="drop-zone-link">or browse</span></div>
         <div class="drop-zone-caption">PDF, JPG, PNG up to 25 MB · <span class="drop-zone-link">Import from Google Drive</span></div>
       </div>
-      <div style="font-size:10px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em">Uploaded (3)</div>
-      <!-- File: processed -->
-      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px">
-        <div style="width:32px;height:36px;background:var(--brand-subtle);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="var(--brand)" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="var(--brand)" stroke-width="1.1" stroke-linecap="round"/></svg></div>
-        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">W-2_2025_Acme.pdf</div><div style="font-size:11px;color:var(--text-tertiary)">124 KB · W-2</div></div>
-        <div style="width:18px;height:18px;border-radius:50%;background:var(--success);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M1.5 4.5l2 2 4-4" stroke="#fff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <!-- Upload summary card — tap to review -->
+      <div class="usum-card">
+        <div class="usum-top">
+          <span class="usum-count">3 documents uploaded</span>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" style="color:var(--brand)"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="usum-cats">
+          <span class="ufd-badge ready">W-2</span>
+          <span class="ufd-badge ready">1099-NEC</span>
+          <span class="ufd-badge question">K-1</span>
+        </div>
+        <div class="usum-next" style="padding:8px 12px;display:flex;align-items:center;gap:8px;border-top:0.5px solid var(--border)">
+          <div class="usum-next-label" style="font-size:11px;color:var(--text-secondary)">Susan will review once all forms are processed</div>
+        </div>
       </div>
-      <!-- File: processing -->
-      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px">
-        <div style="width:32px;height:36px;background:rgba(245,158,11,.08);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="9" height="12" rx="1.5" stroke="#D97706" stroke-width="1.3"/><path d="M4.5 4.5h4M4.5 7h3" stroke="#D97706" stroke-width="1.1" stroke-linecap="round"/></svg></div>
-        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">K-1_Vanguard_2025.pdf</div><div style="font-size:11px;color:#D97706">Processing…</div></div>
-        <div style="width:18px;height:18px;border-radius:50%;background:rgba(245,158,11,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="3.5" stroke="#D97706" stroke-width="1.2" stroke-dasharray="2 2"/></svg></div>
-      </div>
-      <div style="font-size:11px;color:var(--text-tertiary);text-align:center">Expert will review once all forms are processed</div>
     </div>
+
+    <p class="hmw" style="margin-top:14px;margin-bottom:14px">After uploading, tapping the <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">usum-card</code> opens v-upload-review — a categorized file detail screen using <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ufd-section</code> / <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ufd-file</code> / <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ufd-badge</code>. Badge variants: <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ready</code> (green), <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">question</code> (amber), <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">deductible</code> (brand blue), <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">processing</code> (gray), <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ai-pending</code> (purple).</p>
   </div>
 
   <div class="divider"></div>
@@ -1918,14 +1898,19 @@ body {
           <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Adobe Creative Cloud</div><div style="font-size:11px;color:var(--text-tertiary)">May 8, 2026 · Software</div></div>
           <div style="font-size:13px;font-weight:600;color:var(--danger)">−$59</div>
         </div>
-        <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;border-bottom:0.5px solid var(--border)">
           <div style="width:8px;height:8px;border-radius:50%;background:var(--success);flex-shrink:0"></div>
           <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Blue Sky Design payment</div><div style="font-size:11px;color:var(--text-tertiary)">May 3, 2026</div></div>
           <div style="font-size:13px;font-weight:600;color:var(--success)">+$3,200</div>
         </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 16px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--danger);flex-shrink:0"></div>
+          <div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--text-primary)">Staples — office supplies</div><div style="font-size:11px;color:var(--text-tertiary)">May 1, 2026 · Office</div></div>
+          <div style="font-size:13px;font-weight:600;color:var(--danger)">−$143</div>
+        </div>
       </div>
-      <!-- Open QuickBooks button -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:16px;padding:12px 16px;background:var(--brand);color:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">
+      <!-- Open QuickBooks button — qbd-open-btn class -->
+      <div class="qbd-open-btn" style="display:flex;align-items:center;justify-content:center;gap:8px;margin:16px;padding:12px 16px;background:var(--brand);color:#fff;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M5 2H2.5A1.5 1.5 0 0 0 1 3.5v7A1.5 1.5 0 0 0 2.5 12h7A1.5 1.5 0 0 0 11 10.5V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M8 1h4v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.5 7.5L12 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         Open QuickBooks in browser
       </div>
@@ -1938,46 +1923,178 @@ body {
 
   <div class="divider"></div>
 
-  <!-- ─── Path Cards ─── -->
+  <!-- ─── Entry Points: Card vs. Flat-Row Framework ─── -->
   <div class="sec">
-    <div class="sec-label">Path cards (pc-*) — equal-weight entry point cards for Stage 1</div>
-    <p class="hmw" style="margin-bottom:14px">Two stacked cards of identical visual weight present the parallel entry paths: expert-led or document-first. Border + white bg, no shadow (flat doctrine). Hover lifts border to brand blue + brand-subtle bg. Each card has icon, title, sub-copy, optional meta row, and a CTA button.</p>
-    <div style="display:flex;flex-direction:column;gap:10px;max-width:310px">
+    <div class="sec-label">Entry points — card vs. flat-row decision framework</div>
 
-      <!-- Path: Meet your expert -->
-      <div class="path-card">
-        <div class="pc-top">
-          <div class="pc-icon brand">
-            <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3.5" stroke="currentColor" stroke-width="1.4"/><path d="M2.5 15c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <!-- Framework rule table -->
+    <div style="background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:20px;max-width:560px">
+      <!-- Header -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;background:#F4F6F9;border-bottom:1px solid var(--border)">
+        <div style="padding:9px 14px;font-size:11px;font-weight:700;color:var(--text-primary);border-right:1px solid var(--border)">✦ Use flat action-rows</div>
+        <div style="padding:9px 14px;font-size:11px;font-weight:700;color:var(--text-primary)">▪ Use cards (data display only)</div>
+      </div>
+      <!-- Row 1 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)">
+        <div style="padding:9px 14px;font-size:11px;color:var(--text-secondary);border-right:1px solid var(--border);line-height:1.5">Navigation items — tapping goes somewhere</div>
+        <div style="padding:9px 14px;font-size:11px;color:var(--text-secondary);line-height:1.5">Financial numbers (refund amount, QB stats, filing hero)</div>
+      </div>
+      <!-- Row 2 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)">
+        <div style="padding:9px 14px;font-size:11px;color:var(--text-secondary);border-right:1px solid var(--border);line-height:1.5">Entry-point choices (Stage 1 paths, data-in actions)</div>
+        <div style="padding:9px 14px;font-size:11px;color:var(--text-secondary);line-height:1.5">Confirmation blocks (IRS acceptance, confirmation IDs)</div>
+      </div>
+      <!-- Row 3 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)">
+        <div style="padding:9px 14px;font-size:11px;color:var(--text-secondary);border-right:1px solid var(--border);line-height:1.5">List items anywhere on gray (F4F6F9) background</div>
+        <div style="padding:9px 14px;font-size:11px;color:var(--text-secondary);line-height:1.5">Data grids (qbd-stat-grid, Q2 estimate breakdown)</div>
+      </div>
+      <!-- Row 4 -->
+      <div style="display:grid;grid-template-columns:1fr 1fr">
+        <div style="padding:9px 14px;font-size:11px;color:var(--text-secondary);border-right:1px solid var(--border);line-height:1.5">Status rows (booked, join-meeting, review-file)</div>
+        <div style="padding:9px 14px;font-size:11px;color:var(--text-secondary);line-height:1.5">Upload summary card (usum-card) — counts + badges</div>
+      </div>
+    </div>
+
+    <p class="hmw" style="margin-bottom:6px;font-style:italic;color:var(--text-tertiary)">Rule: if you're about to put a bordered card in a scrollable section on gray background, stop and ask whether it's presenting data or navigation. Navigation = action-row. Data = card.</p>
+    <p class="hmw" style="margin-bottom:20px">The flat action-row is the default. Cards are the exception, justified only by structured multi-field data that benefits from visual containment.</p>
+
+    <!-- ── State 1: Default (pre-booking) ── -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Stage 1 — default (pre-booking) · 2 entry point rows</div>
+    <div style="background:#F4F6F9;border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
+      <div class="action-row" style="border-radius:8px 8px 0 0">
+        <div class="action-icon info">
+          <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M1.5 12c0-3.04 2.46-5.5 5.5-5.5s5.5 2.46 5.5 5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        </div>
+        <div class="action-body">
+          <div class="action-title">Meet your expert</div>
+          <div class="action-sub">Susan Larsen · CPA · EA · ★ 4.9 — they'll tell you exactly what's needed</div>
+        </div>
+        <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="action-row" style="border-bottom:none;border-radius:0 0 8px 8px">
+        <div class="action-icon neutral">
+          <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="1.5" width="10" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 5h5M4.5 7h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="action-body">
+          <div class="action-title">Connect accounts &amp; upload forms</div>
+          <div class="action-sub">W-2s, 1099s, K-1s, financial accounts — ~10–30 min</div>
+        </div>
+        <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+
+    <!-- ── State 2: Expert booked ── -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Stage 1 — expert booked · Row 1 becomes status row</div>
+    <div style="background:#F4F6F9;border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
+      <div class="action-row" style="border-radius:8px 8px 0 0">
+        <div class="action-icon" style="background:rgba(27,79,138,.1);color:var(--brand)">
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 7l3.5 3.5 6.5-6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="action-body">
+          <div class="action-title" style="color:var(--brand)">Susan Larsen · Your expert</div>
+          <div class="action-sub">First conversation scheduled · tap to view</div>
+        </div>
+        <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="action-row" style="border-bottom:none;border-radius:0 0 8px 8px">
+        <div class="action-icon neutral">
+          <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="1.5" width="10" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 5h5M4.5 7h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="action-body">
+          <div class="action-title">Connect accounts &amp; upload forms</div>
+          <div class="action-sub">W-2s, 1099s, K-1s, financial accounts — ~10–30 min</div>
+        </div>
+        <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+
+    <!-- ── State 3: Meeting imminent ── -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Stage 1 — meeting starting now · Urgent green state</div>
+    <div style="background:#F4F6F9;border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
+      <div class="action-row" style="background:rgba(0,135,90,.03);border-radius:8px 8px 0 0">
+        <div class="action-icon" style="background:rgba(0,135,90,.1);color:var(--success)">
+          <svg viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M9 5.5l4-2.5v8l-4-2.5V5.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="action-body">
+          <div class="action-title" style="color:var(--success)">Join meeting · Starting now</div>
+          <div class="action-sub">Susan Larsen is ready · Video call · 30 min</div>
+        </div>
+        <div class="action-chev" style="color:var(--success)"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <div class="action-row" style="border-bottom:none;border-radius:0 0 8px 8px">
+        <div class="action-icon neutral">
+          <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="1.5" width="10" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 5h5M4.5 7h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
+        <div class="action-body">
+          <div class="action-title">Connect accounts &amp; upload forms</div>
+          <div class="action-sub">W-2s, 1099s, K-1s, financial accounts — ~10–30 min</div>
+        </div>
+        <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+
+    <!-- ── State 4: Review & file ready ── -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Stage 1 — expert review complete · File CTA row</div>
+    <div style="background:#F4F6F9;border-radius:8px;padding:4px 0;max-width:310px;margin-bottom:20px">
+      <div class="action-row" style="border-bottom:none;border-radius:8px">
+        <div class="action-icon info">
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2 10l2.5-2.5 3 3 4.5-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="action-body">
+          <div class="action-title" style="color:var(--brand)">Review &amp; file your return</div>
+          <div class="action-sub">Expert review complete · Susan recommends filing today</div>
+        </div>
+        <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </div>
+
+    <!-- ── State 5: Filed — data card + action rows ── -->
+    <div style="font-size:11px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Stage 1 — filed state · Data card (appropriate) + action rows below</div>
+    <div style="background:#F4F6F9;border-radius:8px;padding:16px;max-width:310px;margin-bottom:4px">
+      <!-- Data card: refund confirmation — card use is appropriate here (structured numbers + IDs) -->
+      <div style="background:rgba(0,135,90,.04);border:1px solid rgba(0,135,90,.2);border-radius:8px;padding:14px;margin-bottom:12px">
+        <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px">2025 S Corp Return — Filed</div>
+        <div style="display:flex;gap:10px;margin-bottom:10px">
+          <div style="flex:1;background:rgba(0,135,90,.06);border-radius:6px;padding:8px;text-align:center">
+            <div style="font-size:14px;font-weight:700;color:var(--success)">$8,420</div>
+            <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px">Federal refund</div>
           </div>
-          <div class="pc-text">
-            <div class="pc-title">Meet your expert</div>
-            <div class="pc-sub">Let your CPA guide you through what's needed — they'll reach out to get started</div>
+          <div style="flex:1;background:rgba(255,139,0,.06);border-radius:6px;padding:8px;text-align:center">
+            <div style="font-size:14px;font-weight:700;color:var(--warning)">$2,340</div>
+            <div style="font-size:10px;color:var(--text-tertiary);margin-top:2px">CA owed</div>
           </div>
         </div>
-        <div class="pc-meta">
-          <div class="pc-meta-av">SL</div>
-          <span>Susan Larsen · CPA · EA · S Corp · 4.9★</span>
+        <div style="font-size:10px;color:var(--text-tertiary);border-top:0.5px solid var(--border);padding-top:8px;line-height:1.8">
+          Federal: <strong>2025-F-482931</strong> · Accepted by IRS<br>
+          California: <strong>CA-2025-089201</strong> · Accepted by FTB
         </div>
       </div>
-
-      <!-- Path: Upload documents -->
-      <div class="path-card">
-        <div class="pc-top">
-          <div class="pc-icon neutral">
-            <svg viewBox="0 0 18 18" fill="none"><rect x="3" y="2" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M6 6h6M6 9h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6 13l2-2 1.5 1.5L11 11l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <!-- Action rows below data card — back to flat -->
+      <div style="background:#F4F6F9;border-radius:6px;padding:2px 0;margin:0 -16px">
+        <div class="action-row">
+          <div class="action-icon info">
+            <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="1.5" width="10" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M4.5 5h5M4.5 7h3M4.5 9h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
           </div>
-          <div class="pc-text">
-            <div class="pc-title">Connect accounts &amp; upload forms</div>
-            <div class="pc-sub">Link financial accounts or drop W-2s, 1099s, and K-1s — we'll organize everything</div>
+          <div class="action-body">
+            <div class="action-title">View your 2025 tax return</div>
+            <div class="action-sub">Summary, documents, and confirmation details</div>
           </div>
+          <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
-        <div class="pc-meta">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="var(--text-tertiary)" stroke-width="1.1"/><path d="M6 3v3l2 1" stroke="var(--text-tertiary)" stroke-width="1.1" stroke-linecap="round"/></svg>
-          <span>~10–30 min to process · expert reviews after</span>
+        <div class="action-row" style="border-bottom:none">
+          <div class="action-icon info">
+            <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><path d="M7 4v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+          </div>
+          <div class="action-body">
+            <div class="action-title" style="color:var(--brand)">Start your 2026 tax year</div>
+            <div class="action-sub">Year-round tracking, estimates, and guidance from Susan</div>
+          </div>
+          <div class="action-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
       </div>
     </div>
+    <p class="hmw" style="max-width:310px;margin-top:8px">The refund confirmation is a <em>card</em> — it displays structured financial data (two amounts + two confirmation IDs). The rows below it revert to flat action-rows because they are navigation, not data.</p>
   </div>
 
   <div class="divider"></div>
@@ -2312,22 +2429,20 @@ body {
         </div>
       </div>
 
-      <!-- State 3: Add new institution -->
+      <!-- State 3: Add financial account — action-row (NOT ic-add dashed card) -->
       <div style="font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);font-weight:600;margin-top:6px;margin-bottom:2px">Add account</div>
-      <div class="ic-add">
-        <div class="ic-add-circle">
+      <div class="action-row" style="border-radius:8px;border:1px solid var(--border)">
+        <div class="ar-icon neutral">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 3v8M3 7h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         </div>
-        <div>
-          <div class="ic-add-text">Add financial account</div>
-          <div class="ic-add-sub">ETrade, Fidelity, Robinhood, PayPal &amp; more</div>
+        <div class="ar-body">
+          <div class="ar-title">Add financial account</div>
+          <div class="ar-sub">ETrade, Fidelity, Robinhood, PayPal &amp; more</div>
         </div>
-        <div style="margin-left:auto;color:var(--text-tertiary)">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
+        <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
     </div>
-    <p class="hmw" style="margin-top:14px">HMW — proactivity + trust: we lead with what we already know (QB connected, BofA recommended) so customers feel understood, not interrogated. The add-new card is always last — discovery after recognition.</p>
+    <p class="hmw" style="margin-top:14px">HMW — proactivity + trust: we lead with what we already know (QB connected, BofA recommended) so customers feel understood, not interrogated. "Add financial account" is a standard <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">action-row</code> — not a dashed <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ic-add</code> card. <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ic-reconnect-btn</code> is legacy CSS (not used in HTML).</p>
   </div>
 
   <!-- ─── Institution Search ─── -->
@@ -2350,6 +2465,8 @@ body {
       <div class="inst-row"><div class="inst-logo" style="background:#FF9900">AMZ</div><div class="inst-row-name">Amazon Seller</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
       <div class="inst-row"><div class="inst-logo" style="background:#E53238">EB</div><div class="inst-row-name">eBay</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
       <div class="inst-row"><div class="inst-logo" style="background:#635BFF">STR</div><div class="inst-row-name">Stripe</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="inst-row"><div class="inst-logo" style="background:#96BF48">SHO</div><div class="inst-row-name">Shopify</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="inst-row"><div class="inst-logo" style="background:#811830">VAN</div><div class="inst-row-name">Vanguard</div><div class="inst-row-chev"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
     </div>
   </div>
 
@@ -2419,8 +2536,8 @@ body {
           <svg viewBox="0 0 14 14" fill="none"><path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
         </div>
         <div class="ar-body">
-          <div class="ar-title">Upload Schedule K-1</div>
-          <div class="ar-sub">Expected from Vanguard</div>
+          <div class="ar-title">Upload your tax documents</div>
+          <div class="ar-sub">W-2s, 1099s, K-1s, Schedule C — drop or browse</div>
         </div>
         <div class="ar-chev"><svg viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5L8 6l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       </div>
@@ -2428,113 +2545,53 @@ body {
   </div>
 
   <div class="sec">
-    <div class="sec-label">Notification banners — event-driven only</div>
-    <div class="notif-list">
-      <div class="notif-item"><div class="notif-bar" style="background:var(--success)"></div><div class="notif-body"><div class="notif-title">Chase Business connected</div><div class="notif-text">12 months imported · 3 deductions flagged</div></div><div style="font-size:13px;color:var(--text-tertiary);cursor:pointer">✕</div></div>
-      <div class="notif-item"><div class="notif-bar" style="background:var(--warning)"></div><div class="notif-body"><div class="notif-title">Q2 estimated tax due in 14 days</div><div class="notif-text">$3,840 due June 15 · Expert confirmed amount</div></div><div class="notif-action" style="color:var(--brand)">Pay now</div></div>
-      <div class="notif-item"><div class="notif-bar" style="background:var(--brand)"></div><div class="notif-body"><div class="notif-title">2025 home office rules updated</div><div class="notif-text">Susan reviewed the impact on your return</div></div><div style="font-size:13px;color:var(--text-tertiary);cursor:pointer">✕</div></div>
-      <div class="notif-item"><div class="notif-bar" style="background:var(--danger)"></div><div class="notif-body"><div class="notif-title">Chase connection expired</div><div class="notif-text">Reconnect to keep transactions current</div></div><div class="notif-action" style="color:var(--danger)">Reconnect</div></div>
+    <div class="sec-label">Notification banners (notif-banner-*) — event-driven, one at a time</div>
+    <p class="hmw" style="margin-bottom:14px">Banners appear inside the scroll area below the action-row list. Not stacked — one banner fires per event (account connected, payment confirmed, deadline approaching). Three variants by severity: <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">default</code> (brand blue), <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">success</code> (green), <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">warning</code> (amber).</p>
+    <div style="max-width:310px;display:flex;flex-direction:column;gap:8px">
+      <div class="notif-banner success"><div class="notif-banner-body"><div class="notif-banner-title">Chase Business connected</div><div class="notif-banner-text">12 months imported · 3 deductions flagged</div></div><button class="notif-banner-dismiss">✕</button></div>
+      <div class="notif-banner warning"><div class="notif-banner-body"><div class="notif-banner-title">Q2 payment confirmed</div><div class="notif-banner-text">Susan confirmed $3,840 · due June 15</div></div><button class="notif-banner-dismiss">✕</button></div>
+      <div class="notif-banner"><div class="notif-banner-body"><div class="notif-banner-title">2025 home office rules updated</div><div class="notif-banner-text">Susan reviewed the impact on your return</div></div><button class="notif-banner-dismiss">✕</button></div>
     </div>
   </div>
 
   <div class="divider"></div>
 
-  <!-- ─── Expert Booking Sheet ─── -->
+  <!-- ─── Expert Booking (v-book-meeting) ─── -->
   <div class="sec">
-    <div class="sec-label">Expert booking sheet — Book a Meeting opens a layer with Call or Video options</div>
-    <p class="hmw" style="margin-bottom:16px">HMW — scheduling: tapping "Book a Meeting" expands a layer inline showing Susan's live availability first, then two booking paths (Call / Video Chat). No modals — stays inside the widget panel. Date and time selection follow after choosing a meeting type.</p>
-    <div class="two-col">
-
-      <!-- State 1: Default — button not yet tapped -->
-      <div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">State 1 — before booking</div>
-        <div class="sheet-wrap">
-          <div class="sheet-header">
-            <div class="sheet-av">SL<div class="sheet-av-dot"></div></div>
-            <div>
-              <div style="font-size:14px;font-weight:600;color:var(--text-primary)">Susan Larsen</div>
-              <div style="font-size:12px;color:var(--text-tertiary);margin-top:2px">CPA · EA · S Corp · Available</div>
-            </div>
-          </div>
-          <div class="bl-body" style="padding-bottom:12px">
-            <button class="ep-book-btn" onclick="toggleBookingGallery(this,'bl-demo-1')">Book a Meeting</button>
-          </div>
-          <div id="bl-demo-1" style="display:none;border-top:0.5px solid var(--border)">
-            <div class="bl-body">
-              <div class="bl-avail">
-                <span class="bl-avail-dot"></span>
-                Available now · Mon–Fri · 9am–6pm PT
-              </div>
-              <div class="bl-type-grid">
-                <div class="bl-type" onclick="selBlType(this,'bl-demo-1')">
-                  <svg class="bl-type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.64 3.35 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                  <div class="bl-type-label">Schedule a Call</div>
-                </div>
-                <div class="bl-type" onclick="selBlType(this,'bl-demo-1')">
-                  <svg class="bl-type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-                  <div class="bl-type-label">Schedule a Video Chat</div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div class="sec-label">Expert booking (v-book-meeting) — full-screen scheduling view</div>
+    <p class="hmw" style="margin-bottom:16px">Navigated to from "Schedule first conversation" button in any expert profile hero. Full-screen white view using <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ep-scheduler</code> (inline, border:none). Pattern: expert identity row → date strip (<code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ep-date-strip</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ep-day</code>) → time grid (<code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ep-slots</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ep-slot</code>) → confirm button → success state.</p>
+    <div style="max-width:310px;background:var(--bg-card);border-radius:12px;border:0.5px solid var(--border);overflow:hidden">
+      <!-- Expert identity row -->
+      <div style="display:flex;align-items:center;gap:12px;padding:16px 16px 14px;border-bottom:0.5px solid var(--border)">
+        <div class="sheet-av" style="width:40px;height:40px;font-size:13px">SL<div class="sheet-av-dot"></div></div>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--text-primary)">Susan Larsen · CPA · EA</div>
+          <div style="font-size:11px;color:var(--text-tertiary);margin-top:2px">30-min intro call · Video or phone</div>
         </div>
       </div>
-
-      <!-- State 2: Open — type selected, date/time visible -->
-      <div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">State 2 — booking layer open, type selected</div>
-        <div class="sheet-wrap">
-          <div class="sheet-header">
-            <div class="sheet-av">SL<div class="sheet-av-dot"></div></div>
-            <div>
-              <div style="font-size:14px;font-weight:600;color:var(--text-primary)">Susan Larsen</div>
-              <div style="font-size:12px;color:var(--text-tertiary);margin-top:2px">CPA · EA · S Corp · Available</div>
-            </div>
-          </div>
-          <div class="bl-body" style="padding-bottom:12px">
-            <button class="ep-book-btn open">Book a Meeting</button>
-          </div>
-          <div style="border-top:0.5px solid var(--border)">
-            <div class="bl-body">
-              <div class="bl-avail">
-                <span class="bl-avail-dot"></span>
-                Available now · Mon–Fri · 9am–6pm PT
-              </div>
-              <div class="bl-type-grid" style="margin-bottom:12px">
-                <div class="bl-type sel">
-                  <svg class="bl-type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.64 3.35 2 2 0 0 1 3.62 1h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                  <div class="bl-type-label">Schedule a Call</div>
-                </div>
-                <div class="bl-type">
-                  <svg class="bl-type-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-                  <div class="bl-type-label">Schedule a Video Chat</div>
-                </div>
-              </div>
-              <!-- Date strip -->
-              <div class="ep-sched-label">Select a date</div>
-              <div class="ep-date-strip" style="margin-bottom:10px">
-                <div class="ep-day today sel" style="cursor:default"><span class="ep-day-dow">TUE</span><span class="ep-day-num">12</span></div>
-                <div class="ep-day"><span class="ep-day-dow">WED</span><span class="ep-day-num">13</span></div>
-                <div class="ep-day"><span class="ep-day-dow">THU</span><span class="ep-day-num">14</span></div>
-                <div class="ep-day unavail"><span class="ep-day-dow">FRI</span><span class="ep-day-num">15</span></div>
-                <div class="ep-day"><span class="ep-day-dow">MON</span><span class="ep-day-num">18</span></div>
-              </div>
-              <!-- Time slots -->
-              <div class="ep-sched-label" style="margin-bottom:6px">Select a time</div>
-              <div class="ep-slots" style="margin-bottom:12px">
-                <button class="ep-slot sel">9:00 AM</button>
-                <button class="ep-slot booked">9:30 AM</button>
-                <button class="ep-slot">10:00 AM</button>
-                <button class="ep-slot booked">10:30 AM</button>
-                <button class="ep-slot">2:00 PM</button>
-                <button class="ep-slot">3:30 PM</button>
-              </div>
-              <button class="ep-confirm-btn">Confirm Call · Tue, May 12 · 9:00 AM</button>
-            </div>
-          </div>
+      <!-- Scheduler -->
+      <div class="ep-scheduler" style="display:block;border:none;padding:16px 16px 0">
+        <div class="ep-sched-label">Select a date</div>
+        <div class="ep-date-strip">
+          <div class="ep-day sel"><span class="ep-day-dow">TUE</span><span class="ep-day-num">13</span></div>
+          <div class="ep-day"><span class="ep-day-dow">WED</span><span class="ep-day-num">14</span></div>
+          <div class="ep-day unavail"><span class="ep-day-dow">THU</span><span class="ep-day-num">15</span></div>
+          <div class="ep-day"><span class="ep-day-dow">MON</span><span class="ep-day-num">19</span></div>
+          <div class="ep-day"><span class="ep-day-dow">TUE</span><span class="ep-day-num">20</span></div>
+        </div>
+        <div class="ep-sched-label" style="margin-top:16px">Select a time</div>
+        <div class="ep-slots">
+          <button class="ep-slot sel">9:00 AM</button>
+          <button class="ep-slot booked">9:30 AM</button>
+          <button class="ep-slot">10:00 AM</button>
+          <button class="ep-slot booked">10:30 AM</button>
+          <button class="ep-slot">2:00 PM</button>
+          <button class="ep-slot">3:30 PM</button>
         </div>
       </div>
-
+      <div style="padding:16px">
+        <button class="ep-confirm-btn">Confirm Call · Tue, May 13 · 9:00 AM</button>
+      </div>
     </div>
   </div>
 
@@ -2793,104 +2850,62 @@ body {
 
   <!-- ─── Settings ─── -->
   <div class="sec">
-    <div class="sec-label">Settings view — navigated into from widget header gear icon</div>
-    <div class="two-col">
-      <!-- Settings view matches #v-settings in prototype exactly -->
-      <div style="border:0.5px solid var(--border);border-radius:12px;overflow:hidden;max-width:min(280px,100%)">
-        <!-- Simulated widget header in settings state -->
-        <div style="display:flex;align-items:center;padding:10px 14px;border-bottom:0.5px solid var(--border);background:#fff;gap:8px">
-          <button style="background:none;border:none;cursor:pointer;padding:0;color:var(--text-secondary);display:flex;align-items:center">
-            <svg viewBox="0 0 12 12" fill="none" style="width:10px;height:10px"><path d="M7.5 2L3.5 6l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <span style="font-size:13px;font-weight:600;color:var(--text-primary)">Settings</span>
+    <div class="sec-label">Settings view (v-settings) — navigated into from widget header gear icon</div>
+    <p class="hmw" style="margin-bottom:14px">Background #F4F6F9. Sections use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">s-sec</code> with <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">4px solid #fff</code> separators (matches w-sec pattern). Section labels use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">s-sec-label</code>. Account rows use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">acct-row</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">acct-lbl</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">acct-val</code>. Past returns use <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-row</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-yr</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-type</code> · <code style="background:var(--bg-surface);padding:1px 4px;border-radius:3px">ret-amt</code>. Section order: Company Info → Account → Past Returns → Notifications → Log out/Quit → Demo Controls.</p>
+    <div style="background:#F4F6F9;border-radius:12px;overflow:hidden;max-width:min(310px,100%)">
+      <!-- Company Info -->
+      <div class="s-sec">
+        <div class="s-sec-label">Company Info</div>
+        <div style="display:flex;align-items:center;gap:10px;padding:4px 0 10px;border-bottom:0.5px solid var(--border)">
+          <div style="width:36px;height:36px;border-radius:6px;background:var(--brand-subtle);color:var(--brand);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">AC</div>
+          <div><div style="font-size:14px;font-weight:600;color:var(--text-primary)">Acme Design Co.</div><div style="font-size:11px;color:var(--text-tertiary)">S Corp · California · Est. 2018</div></div>
         </div>
-        <!-- Settings content — Company Info -->
-        <div class="settings-section">
-          <div class="settings-section-label">Company Info</div>
-          <div style="margin-bottom:10px">
-            <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:2px">Acme Design Co.</div>
-            <div style="font-size:11px;color:var(--text-tertiary)">S Corp · California · Est. 2018</div>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:11px;color:var(--text-tertiary)">Owner</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">Sean Lu</span></div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:11px;color:var(--text-tertiary)">Size</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">1–5 employees</span></div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:11px;color:var(--text-tertiary)">Type</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">S Corp</span></div>
-          <div style="padding:6px 0 8px;border-bottom:0.5px solid var(--border)"><span style="font-size:11px;color:var(--text-tertiary);display:block;margin-bottom:3px">About</span><span style="font-size:11px;color:var(--text-secondary);line-height:1.5">Brand identity, product design, and UX consulting for tech startups.</span></div>
-          <div style="padding-top:8px">
-            <button style="display:inline-flex;align-items:center;gap:5px;background:none;border:0.5px solid var(--border);border-radius:5px;padding:4px 8px;cursor:pointer;color:var(--brand);font-size:11px;font-weight:500;font-family:inherit">
-              <svg viewBox="0 0 14 14" fill="none" style="width:10px;height:10px"><path d="M9 2l3 3L4 13H1v-3L9 2z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              Update company info
-            </button>
-            <div style="font-size:10px;color:var(--text-tertiary);margin-top:5px">Opens TurboTax login in browser</div>
-          </div>
-        </div>
-        <!-- Past Returns -->
-        <div class="settings-section">
-          <div class="settings-section-label">Past Returns</div>
-          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2025</span><span style="font-size:11px;color:var(--text-tertiary)">Federal + CA</span><span style="font-size:12px;font-weight:600;color:var(--danger)">−$4,187</span></div>
-          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2024</span><span style="font-size:11px;color:var(--text-tertiary)">Federal + CA</span><span style="font-size:12px;font-weight:600;color:var(--success)">+$1,240</span></div>
-          <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:0.5px solid var(--border)"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2023</span><span style="font-size:11px;color:var(--text-tertiary)">Federal + CA</span><span style="font-size:12px;font-weight:600;color:var(--danger)">−$2,950</span></div>
-          <div style="display:flex;justify-content:space-between;padding:5px 0"><span style="font-size:12px;font-weight:600;color:var(--text-primary)">2022</span><span style="font-size:11px;color:var(--text-tertiary)">Federal only</span><span style="font-size:12px;font-weight:600;color:var(--success)">+$3,820</span></div>
-        </div>
-        <!-- Account -->
-        <div class="settings-section">
-          <div class="settings-section-label">Account</div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Name</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">Sean Lu</span></div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Email</span><span style="font-size:11px;font-weight:500;color:var(--text-primary)">xiao_lu@intuit.com</span></div>
-          <div style="display:flex;justify-content:space-between;padding:4px 0"><span style="font-size:11px;color:var(--text-tertiary)">Plan</span><span style="font-size:11px;font-weight:500;color:var(--brand)">TurboTax Business Tax Full Service</span></div>
-        </div>
-        <!-- Notifications -->
-        <div class="settings-section">
-          <div class="settings-section-label">Notifications</div>
-          <div class="settings-row"><span class="settings-row-label">Expert messages</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="settings-row"><span class="settings-row-label">Tax deadlines</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-          <div class="settings-row"><span class="settings-row-label">Tax law updates</span><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
-          <div class="settings-row" style="border:none"><span class="settings-row-label">Document requests</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
-        </div>
-        <!-- Log out + Quit -->
-        <div class="settings-section" style="border-bottom:none;display:flex;flex-direction:column;gap:2px;padding-top:10px;padding-bottom:10px">
-          <button style="background:none;border:none;width:100%;text-align:left;padding:6px 0;font-size:12px;color:#425466;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;border-bottom:0.5px solid var(--border)">
-            <svg viewBox="0 0 14 14" fill="none" style="width:12px;height:12px"><path d="M5 2H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M9 10l3-3-3-3M12 7H5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Log out
-          </button>
-          <button style="background:none;border:none;width:100%;text-align:left;padding:6px 0;font-size:12px;color:#DE350B;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px">
-            <svg viewBox="0 0 14 14" fill="none" style="width:12px;height:12px"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-            Quit widget
-          </button>
-        </div>
+        <div class="acct-row"><span class="acct-lbl">Owner</span><span class="acct-val">Malumin</span></div>
+        <div class="acct-row"><span class="acct-lbl">Size</span><span class="acct-val">1–5 employees</span></div>
+        <div class="acct-row"><span class="acct-lbl">Type</span><span class="acct-val">S Corp</span></div>
       </div>
-      <div>
-        <div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px">⚠ Deprecated — tabs UI superseded by multi-view nav</div>
-        <div class="widget-wrap" style="opacity:.45;pointer-events:none">
-          <div class="mini-widget">
-            <div class="mw-header">
-              <div class="mw-av" style="background:linear-gradient(135deg,#1B4F8A,#2D6BC4);color:#fff;font-size:10px">SL<div class="mw-av-dot"></div></div>
-              <div style="flex:1"><div style="font-size:9px;color:var(--text-tertiary)">Your Expert</div><div style="font-size:12px;font-weight:600;color:var(--text-primary)">Susan Larsen</div></div>
-              <div style="font-size:11px;color:var(--brand);background:var(--brand-subtle);padding:2px 7px;border-radius:4px;font-weight:500">In Review</div>
-            </div>
-            <div class="mw-tabs">
-              <button class="mw-tab active">Overview</button>
-              <button class="mw-tab">Deductions</button>
-              <button class="mw-tab">Activity</button>
-            </div>
-            <div class="mw-body">
-              <div class="mw-fin-grid">
-                <div class="mw-fin-cell"><div class="mw-fin-label">Deductions</div><div class="mw-fin-num">$14,830</div><div class="mw-fin-sub" style="color:var(--success)">↑ $3,200</div></div>
-                <div class="mw-fin-cell"><div class="mw-fin-label">Q2 Tax Due</div><div class="mw-fin-num">$3,840</div><div class="mw-fin-sub" style="color:var(--warning)">Jun 15</div></div>
-              </div>
-              <div class="mw-sec-label">needs attention</div>
-              <div class="mw-items">
-                <div class="mw-item"><div class="mw-dot" style="background:var(--brand)"></div><div class="mw-item-info"><div class="mw-item-title">Upload Schedule K-1</div><div class="mw-item-sub">From Vanguard</div></div><div class="mw-item-cta">Upload</div></div>
-                <div class="mw-item"><div class="mw-dot" style="background:var(--success)"></div><div class="mw-item-info"><div class="mw-item-title">Expert has a question</div><div class="mw-item-sub">Susan · 2 hrs ago</div></div><div class="mw-item-cta">Connect</div></div>
-              </div>
-            </div>
-            <div class="mw-bar">
-              <div class="mw-ask"><span>Ask a question…</span></div>
-              <div class="mw-connect">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                Connect
-              </div>
-            </div>
+      <!-- Account -->
+      <div class="s-sec">
+        <div class="s-sec-label">Account</div>
+        <div class="acct-row"><span class="acct-lbl">Name</span><span class="acct-val">Sean Lu</span></div>
+        <div class="acct-row"><span class="acct-lbl">Email</span><span class="acct-val">xiao_lu@intuit.com</span></div>
+        <div class="acct-row"><span class="acct-lbl">Plan</span><span class="acct-val" style="color:var(--brand)">TurboTax Business · Full Service</span></div>
+      </div>
+      <!-- Past Returns -->
+      <div class="s-sec">
+        <div class="s-sec-label">Past Returns</div>
+        <div class="ret-row"><span class="ret-yr">2025</span><span class="ret-type">Federal + CA</span><span class="ret-amt neg" style="font-size:13px;font-weight:600;color:var(--danger)">−$4,187</span></div>
+        <div class="ret-row"><span class="ret-yr">2024</span><span class="ret-type">Federal + CA</span><span class="ret-amt pos" style="font-size:13px;font-weight:600;color:var(--success)">+$1,240</span></div>
+        <div class="ret-row"><span class="ret-yr">2023</span><span class="ret-type">Federal + CA</span><span class="ret-amt neg" style="font-size:13px;font-weight:600;color:var(--danger)">−$2,950</span></div>
+        <div class="ret-row" style="border-bottom:none"><span class="ret-yr">2022</span><span class="ret-type">Federal only</span><span class="ret-amt pos" style="font-size:13px;font-weight:600;color:var(--success)">+$3,820</span></div>
+      </div>
+      <!-- Notifications -->
+      <div class="s-sec">
+        <div class="s-sec-label">Notifications</div>
+        <div class="settings-row"><span class="settings-row-label">Expert messages</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="settings-row"><span class="settings-row-label">Tax deadlines</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="settings-row"><span class="settings-row-label">Tax law updates</span><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+        <div class="settings-row" style="border:none"><span class="settings-row-label">Document requests</span><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+      <!-- Log out + Quit -->
+      <div class="s-sec">
+        <button style="display:flex;align-items:center;gap:6px;width:100%;background:none;border:none;padding:6px 0;font-size:13px;color:var(--text-secondary);cursor:pointer;font-family:inherit;border-bottom:0.5px solid var(--border)">
+          <svg viewBox="0 0 14 14" fill="none" style="width:13px;height:13px;flex-shrink:0"><path d="M5 2H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M9 10l3-3-3-3M12 7H5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Log out
+        </button>
+        <button style="display:flex;align-items:center;gap:6px;width:100%;background:none;border:none;padding:6px 0;font-size:13px;color:var(--danger);cursor:pointer;font-family:inherit">
+          <svg viewBox="0 0 14 14" fill="none" style="width:13px;height:13px;flex-shrink:0"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Quit widget
+        </button>
+      </div>
+      <!-- Demo Controls entry row -->
+      <div class="s-sec" style="border-bottom:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 0;cursor:pointer">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:4px;background:var(--warning);flex-shrink:0"><svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v3.5M4.5 6.5v.5" stroke="#fff" stroke-width="1.3" stroke-linecap="round"/></svg></span>
+            <span style="font-size:13px;font-weight:500;color:var(--text-primary)">Demo Controls</span>
           </div>
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M3.5 2L7 5l-3.5 3" stroke="var(--text-tertiary)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
       </div>
     </div>
@@ -2904,13 +2919,6 @@ body {
 
 <script>
 
-/* ── Expert match item gallery demo ── */
-function gallerySelectEmi(card) {
-  document.querySelectorAll('#galleryEmiList .emi-card').forEach(function(c){ c.classList.remove('selected'); });
-  card.classList.add('selected');
-  var btn = document.getElementById('galleryEmiBtn');
-  if (btn) { btn.disabled = false; btn.style.opacity = '1'; }
-}
 
 function setAI(btn, hovered) {
   btn.closest('.state-btns').querySelectorAll('.sb').forEach(b => b.classList.remove('on'));
@@ -2937,19 +2945,6 @@ function ndPop() {
   document.getElementById(prev).classList.add('nv-active');
 }
 
-/* ── Expert booking sheet interactions ── */
-function toggleBookingGallery(btn, layerId) {
-  var layer = document.getElementById(layerId);
-  var isOpen = layer.style.display !== 'none' && layer.style.display !== '';
-  layer.style.display = isOpen ? 'none' : 'block';
-  btn.classList.toggle('open', !isOpen);
-  btn.textContent = isOpen ? 'Book a Meeting' : 'Book a Meeting';
-}
-
-function selBlType(el, layerId) {
-  el.closest('.bl-type-grid').querySelectorAll('.bl-type').forEach(t => t.classList.remove('sel'));
-  el.classList.add('sel');
-}
 
 /* ── (Legacy — kept for reference, no longer rendered) ── */
 function selCh(el, idx) {
