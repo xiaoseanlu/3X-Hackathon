@@ -396,3 +396,43 @@ Two modes, one chat view. **One global input field** — `#askInput` in the bott
 4. No server, no build step required
 
 For Electron DevTools: `Cmd+Option+I` while widget is focused.
+
+---
+
+## Working with Claude (Cowork) — Required Protocol
+
+### File writes must use Desktop Commander, not Edit/Write tools
+The Cowork Edit and Write tools operate on a sandbox buffer — they do **not** write to the Mac filesystem. All changes to `prototype/index.html` must go through **Desktop Commander Python scripts**:
+1. Write the script with `mcp__Desktop_Commander__write_file`
+2. Run it with `mcp__Desktop_Commander__start_process` + `interact_with_process`
+3. Verify with a Desktop Commander grep or line-count
+
+### Always verify HTML structure after any insertion
+After every Python script that inserts or removes HTML, run a div-balance check before committing. A single misplaced `</div>` can close the `views-host` container early, pushing all subsequent views out of their `overflow:hidden` parent into normal document flow — which manifests as a full-screen side-panel layout blowout on every screen.
+
+Use `check2.py`-style verification (saved in the project root):
+```bash
+python3 check2.py  # confirms all 8 major views open and close correctly
+```
+
+### Use maximally specific anchor strings in str.replace()
+The prototype has many similar comment markers. Always include enough surrounding context in anchor strings to guarantee a single match — never use a short string that could match multiple locations.
+
+### Deploy to GitHub Pages — orphan branch method
+GitHub Actions is blocked on Intuit GHE. Always deploy manually:
+```bash
+# 1. Commit prototype/index.html to main first (required)
+git add prototype/index.html && git commit -m "..."
+
+# 2. Create orphan branch, add prototype files, push
+git checkout --orphan gh-pages-clean
+git rm -rf --cached . --quiet
+git add prototype/index.html prototype/Susan.png prototype/wallpaper.png prototype/menubar-icon.png prototype/intuit-assist.svg prototype/turbotax-logo.svg prototype/design-system/
+git commit -m "Deploy prototype"
+git push origin gh-pages-clean:gh-pages --force
+
+# 3. Clean up (use -f, not stash — project files are untracked on orphan branch)
+git checkout -f main
+git branch -D gh-pages-clean
+```
+Live URL: https://github.intuit.com/pages/xlu02/TurboTax-Assistant/prototype/
