@@ -4399,6 +4399,8 @@ function goBack() {
   prevEl.classList.add('v-active');
   /* Advance stepper when returning to stage1 with uploads done */
   if (prevId === 'stage1' && hasUploads) advanceStepper(1);
+  /* Re-evaluate data-in title and state when navigating back into it */
+  if (prevId === 'data-in') updateDataInView();
   updateHeader();
   var nowId = viewStack[viewStack.length - 1];
   updateEFC();
@@ -4427,10 +4429,13 @@ function updateHeader() {
     document.getElementById('gearBtn').style.visibility = 'visible';
   } else {
     /* Only show back button when there is actual back history (navigate() pushes stack; stepTo() resets to length 1) */
+    var _bb = document.getElementById('backBtn');
     if (viewStack.length > 1) {
-      document.getElementById('backBtn').classList.add('visible');
+      _bb.classList.add('visible');
+      _bb.style.display = 'flex';
     } else {
-      document.getElementById('backBtn').classList.remove('visible');
+      _bb.classList.remove('visible');
+      _bb.style.display = '';
     }
     document.getElementById('whBrandName').style.display = 'none';
     document.getElementById('whTitle').style.display = 'block';
