@@ -89,6 +89,11 @@ function createApp() {
     win.hide();
   });
 
+  // IPC: update native tray title from prototype JS
+  ipcMain.handle('set-tray-title', (event, text) => {
+    if (tray) tray.setTitle(text ? ' ' + text : ' Tax Assistant');
+  });
+
   // Dev keyboard shortcuts
   win.webContents.on('before-input-event', (event, input) => {
     // Cmd+R — reload prototype (picks up edits to prototype/index.html instantly)

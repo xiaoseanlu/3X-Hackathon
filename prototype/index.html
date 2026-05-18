@@ -4374,6 +4374,9 @@ function navigate(viewId) {
   /* Reset scroll position of incoming view */
   nextEl.scrollTop = 0;
   viewStack.push(viewId);
+  /* Sync currentStage so pill text stays accurate on navigate() paths */
+  var _navStageMap = { 'stage1':'prep', 'tax-review':'review', 'deductions':'review', 'activity':'review', 'review-summary':'review', 'filing':'filing', 'filed':'filed', 'main':'yearround' };
+  if (_navStageMap[viewId]) currentStage = _navStageMap[viewId];
   updateHeader();
   updateEFC();
   updateAskContext(viewId);
@@ -5142,16 +5145,23 @@ function syncPillText() {
   var el = document.getElementById('ttPillText');
   if (!el) return;
   el.style.color = '#fff';
-  if (returnFiled || currentStage === 'filed') {
-    el.textContent = '· Filed ✓';
-  } else if (readyToFile || currentStage === 'filing') {
-    el.textContent = '· Ready to file';
+  var pillText;
+  /* currentStage takes priority — year-round hub always wins over returnFiled */
+  if (currentStage === 'yearround') {
+    pillText = hubPendingActions > 0 ? '· ' + hubPendingActions + ' to review' : '· Year Round';
   } else if (currentStage === 'review') {
-    el.textContent = pendingApprovals > 0 ? '· ' + pendingApprovals + ' to approve' : '· In review';
-  } else if (currentStage === 'yearround') {
-    el.textContent = hubPendingActions > 0 ? '· ' + hubPendingActions + ' to review' : '· Year round';
+    pillText = pendingApprovals > 0 ? '· ' + pendingApprovals + ' to approve' : '· In review';
+  } else if (currentStage === 'filing' || readyToFile) {
+    pillText = '· Ready to file';
+  } else if (currentStage === 'filed' || returnFiled) {
+    pillText = '· Filed ✓';
   } else {
-    el.textContent = 'Tax Assistant';
+    pillText = 'Tax Assistant';
+  }
+  el.textContent = pillText;
+  /* Sync native macOS tray title when running inside Electron */
+  if (window.electronAPI && window.electronAPI.setTrayTitle) {
+    window.electronAPI.setTrayTitle(pillText);
   }
 }
 function updatePillText(state) { syncPillText(); }

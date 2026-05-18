@@ -20,6 +20,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Hide the Electron window (called by × close button in the widget)
   hideWindow: () => ipcRenderer.invoke('hide-window'),
 
+  // Update the native macOS tray title (menu bar pill text)
+  setTrayTitle: (text) => ipcRenderer.invoke('set-tray-title', text),
+
   // Future: real Claude API call
   // askClaude: (prompt) => ipcRenderer.invoke('ask-claude', prompt),
 
