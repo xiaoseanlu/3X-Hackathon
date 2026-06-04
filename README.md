@@ -1,8 +1,14 @@
 # TurboTax Business Tax Assistant
 **Intuit × Anthropic Hackathon · May 2026 · Team Malumin**
 
-## 🚀 <a href="https://xiaoseanlu.github.io/3X-Hackathon/prototype/" target="_blank">Live prototype → xiaoseanlu.github.io/3X-Hackathon/prototype/</a>
-*No installation. Click the link, then click the TurboTax icon in the simulated menu bar.*
+## 🚀 Live Prototype — No installation required
+
+| | Link |
+|---|---|
+| **Intuit GHE** | [github.intuit.com/pages/xlu02/TurboTax-Assistant/prototype/](https://github.intuit.com/pages/xlu02/TurboTax-Assistant/prototype/) |
+| **Public** | [xiaoseanlu.github.io/3X-Hackathon/prototype/](https://xiaoseanlu.github.io/3X-Hackathon/prototype/) |
+
+*Click the link, then click the TurboTax icon in the simulated menu bar.*
 
 ![TurboTax Business Tax Assistant](sample.png)
 
@@ -173,7 +179,8 @@ The widget doesn't change the customer's workflow. It inserts itself into the ga
 
 ### Option A — Live link (zero setup) ⭐ Fastest
 
-**[→ Open the live prototype](https://xiaoseanlu.github.io/3X-Hackathon/prototype/)**
+- **Intuit GHE:** [→ Open the live prototype](https://github.intuit.com/pages/xlu02/TurboTax-Assistant/prototype/)
+- **Public:** [→ Open the live prototype](https://xiaoseanlu.github.io/3X-Hackathon/prototype/)
 
 Click the TurboTax icon in the simulated macOS menu bar to open the widget. No cloning, no installs, works in any browser.
 
